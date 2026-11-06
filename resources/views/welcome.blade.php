@@ -1,0 +1,8645 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>E-SPP SMP Muhammadiyah 3 Metro - Sistem Pembayaran SPP Online</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1e40af;
+            --primary-blue-hover: #1d4ed8;
+            --primary-blue-light: #eff6ff;
+            --muh-gold: #f59e0b;
+            --muh-gold-light: #fef3c7;
+            --bg-page: #f8fafc;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --white: #ffffff;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-dark);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /* ==================== LOGIN SCREEN ==================== */
+        .login-wrapper {
+            display: flex;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+        }
+
+        .login-banner {
+            flex: 1.1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 60px;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-banner::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, rgba(30, 58, 138, 0) 70%);
+            border-radius: 50%;
+        }
+
+        .banner-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            z-index: 2;
+        }
+
+        .banner-logo {
+            width: 54px;
+            height: 54px;
+            background: var(--muh-gold);
+            color: #0f172a;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+            box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+        }
+
+        .banner-title {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .banner-subtitle {
+            font-size: 13px;
+            color: #93c5fd;
+        }
+
+        .banner-body {
+            margin: auto 0;
+            max-width: 540px;
+            z-index: 2;
+        }
+
+        .banner-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--muh-gold-light);
+            margin-bottom: 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        .banner-body h1 {
+            font-size: 42px;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+
+        .banner-body h1 span {
+            color: var(--muh-gold);
+        }
+
+        .banner-body p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #cbd5e1;
+            margin-bottom: 28px;
+        }
+
+        .banner-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .feature-icon {
+            font-size: 18px;
+        }
+
+        .banner-footer {
+            font-size: 13px;
+            color: #94a3b8;
+            z-index: 2;
+        }
+
+        /* Login Side Form */
+        .login-panel {
+            flex: 0 0 520px;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 40px;
+            overflow-y: auto;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 440px;
+        }
+
+        .login-head {
+            margin-bottom: 24px;
+        }
+
+        .login-head h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .login-head p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Role Switcher Tabs */
+        .role-tabs {
+            display: flex;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            gap: 4px;
+        }
+
+        .role-tab {
+            flex: 1;
+            padding: 10px 12px;
+            border: none;
+            background: transparent;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .role-tab.active {
+            background: var(--white);
+            color: var(--primary-blue);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 14px;
+            font-family: inherit;
+            border: 1.5px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--white);
+            color: var(--text-dark);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.12);
+        }
+
+        .form-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .form-meta label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 13px;
+            background: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn-submit:hover {
+            background: var(--primary-blue-hover);
+        }
+
+        .btn-submit:active {
+            transform: scale(0.99);
+        }
+
+        /* Demo Accounts Section */
+        .demo-section {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .demo-section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .demo-section-title {
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        .demo-section-sub {
+            font-size: 11px;
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .demo-btn {
+            background: #f8fafc;
+            border: 1.5px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px 12px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .demo-btn:hover {
+            border-color: var(--primary-blue);
+            background: var(--primary-blue-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.08);
+        }
+
+        .demo-btn-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+
+        .demo-btn-tag {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        .tag-siswa { background: #dbeafe; color: #1e40af; }
+        .tag-ortu { background: #fef3c7; color: #92400e; }
+        .tag-admin { background: #fee2e2; color: #991b1b; }
+        .tag-bendahara { background: #d1fae5; color: #065f46; }
+
+        .demo-btn-info {
+            font-size: 11px;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ==================== APP SHELL (DASHBOARD) ==================== */
+        .app-shell {
+            display: none;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .topbar {
+            background: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+        }
+
+        .topbar-content {
+            max-width: 1380px;
+            margin: 0 auto;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .topbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .topbar-logo {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-blue);
+            color: var(--white);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .topbar-brand-title {
+            font-size: 16px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .topbar-brand-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .topbar-user {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 14px;
+            background: #f1f5f9;
+            border-radius: 30px;
+            font-size: 13px;
+        }
+
+        .user-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .user-name-tag {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .user-role-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .role-badge-siswa { background: #dbeafe; color: #1e40af; }
+        .role-badge-ortu { background: #fef3c7; color: #92400e; }
+        .role-badge-petugas { background: #fee2e2; color: #b91c1c; }
+
+        .btn-logout {
+            padding: 8px 16px;
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-logout:hover {
+            background: #fca5a5;
+            color: #7f1d1d;
+        }
+
+        /* App layout: sidebar (kiri) + konten, selebar layar */
+        .app-layout {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            width: 100%;
+            max-width: none;
+            margin: 0;
+            padding: 0;
+            flex: 1;
+        }
+
+        /* Main Navigation Bar - full tinggi, menempel tepi kiri */
+        .main-nav {
+            flex: 0 0 260px;
+            width: 260px;
+            align-self: flex-start;
+            position: sticky;
+            top: var(--nav-top, 84px);
+            height: calc(100vh - var(--nav-top, 84px));
+            overflow-y: auto;
+            background: #ffffff;
+            border: none;
+            border-right: 1px solid var(--border-color);
+            border-radius: 0;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.03);
+            padding: 16px 12px;
+        }
+
+        .nav-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+        }
+
+        .nav-link-btn {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.35;
+            color: var(--text-muted);
+            text-decoration: none;
+            background: transparent;
+            border: none;
+            border-left: 3px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            text-align: left;
+            transition: all 0.2s;
+        }
+
+        .nav-link-btn:hover {
+            color: var(--primary-blue);
+            background: #f1f5fb;
+        }
+
+        .nav-link-btn.active {
+            color: var(--primary-blue);
+            background: #eef4ff;
+            border-left-color: var(--primary-blue);
+            font-weight: 700;
+        }
+
+        /* Content Container */
+        .page-body {
+            flex: 1;
+            min-width: 0;
+            max-width: none;
+            margin: 0;
+            padding: 28px 32px 48px;
+        }
+
+        /* Grid bantu agar rapi di layar sempit */
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .form-grid-2 > *,
+        .laporan-stats > *,
+        .pay-method-grid > * {
+            min-width: 0;
+        }
+
+        .pay-method-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .laporan-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .toolbar-search {
+            width: 240px;
+        }
+
+        .publish-url-input {
+            flex: 1;
+            min-width: 260px;
+        }
+
+        .view-section {
+            display: none;
+            animation: fadeIn 0.25s ease-in-out;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Banner Welcome Card */
+        .welcome-hero {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            border-radius: 16px;
+            padding: 32px;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(30, 64, 175, 0.15);
+        }
+
+        .welcome-hero::after {
+            content: 'SMP M3';
+            position: absolute;
+            right: 20px;
+            bottom: -20px;
+            font-size: 110px;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.05);
+            pointer-events: none;
+        }
+
+        .welcome-hero h2 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .welcome-hero p {
+            font-size: 14px;
+            color: #bfdbfe;
+            max-width: 650px;
+            line-height: 1.6;
+        }
+
+        .welcome-hero-action {
+            display: flex;
+            gap: 12px;
+            z-index: 2;
+        }
+
+        .btn-hero {
+            padding: 12px 20px;
+            background: var(--muh-gold);
+            color: #0f172a;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-hero:hover {
+            background: #fbbf24;
+            transform: translateY(-2px);
+        }
+
+        /* Stat Grid Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .stat-blue .stat-icon { background: #dbeafe; color: #1e40af; }
+        .stat-green .stat-icon { background: #d1fae5; color: #065f46; }
+        .stat-orange .stat-icon { background: #fef3c7; color: #92400e; }
+        .stat-red .stat-icon { background: #fee2e2; color: #991b1b; }
+
+        .stat-info h5 {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .stat-info .stat-val {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+
+        .stat-info .stat-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* 6 SIAKAD Menu Cards Grid */
+        .dashboard-menu-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .menu-action-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 36px;
+        }
+
+        .menu-feature-card {
+            border-radius: 14px;
+            padding: 24px;
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 170px;
+            text-decoration: none;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .menu-feature-card .card-icon-wrap {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 14px;
+            backdrop-filter: blur(4px);
+        }
+
+        .menu-feature-card h4 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .menu-feature-card p {
+            font-size: 13px;
+            opacity: 0.9;
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+
+        .menu-feature-card .card-footer-link {
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Color Variants */
+        .theme-blue { background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%); }
+        .theme-emerald { background: linear-gradient(135deg, #059669 0%, #047857 100%); }
+        .theme-purple { background: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%); }
+        .theme-amber { background: linear-gradient(135deg, #d97706 0%, #b45309 100%); }
+        .theme-cyan { background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%); }
+        .theme-rose { background: linear-gradient(135deg, #e11d48 0%, #be123c 100%); }
+
+        /* Kelas SMP Grid */
+        .kelas-section-box {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 36px;
+        }
+
+        .kelas-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .kelas-header h3 {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .kelas-pills-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+        }
+
+        .kelas-pill-btn {
+            padding: 16px 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background: #f8fafc;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .kelas-pill-btn:hover {
+            border-color: var(--primary-blue);
+            background: var(--primary-blue-light);
+            transform: translateY(-2px);
+        }
+
+        .kelas-pill-btn.active-kelas {
+            border-color: var(--primary-blue);
+            background: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .kelas-pill-title {
+            font-size: 20px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .kelas-pill-desc {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        /* Generic Card Container */
+        .content-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .content-card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .content-card-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .content-card-sub {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Student Bill Header Details */
+        .bill-profile-bar {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+        }
+
+        .bill-col h5 {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .bill-data-row {
+            display: flex;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .bill-data-label {
+            width: 140px;
+            color: var(--text-muted);
+        }
+
+        .bill-data-val {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* Clean Data Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        /* Di layar sempit tabel bisa digeser di dalam kartunya,
+           tidak membuat seluruh halaman melebar */
+        @media (max-width: 900px) {
+            .data-table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                white-space: nowrap;
+            }
+        }
+
+        .data-table th {
+            background: #f8fafc;
+            padding: 12px 16px;
+            font-weight: 700;
+            color: var(--text-muted);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .data-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-dark);
+        }
+
+        .data-table tr:hover {
+            background: #fdfdfd;
+        }
+
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .badge-lunas { background: #dcfce7; color: #15803d; }
+        .badge-belum { background: #fee2e2; color: #b91c1c; }
+        .badge-pending { background: #fef3c7; color: #b45309; }
+
+        /* Bank Account Cards */
+        .bank-accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .bank-box {
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+            background: var(--white);
+            transition: all 0.2s;
+        }
+
+        .bank-box:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .bank-logo-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .bank-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .bank-va {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-top: 4px;
+            font-family: monospace;
+        }
+
+        /* Buttons */
+        .btn-action-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--primary-blue);
+            color: var(--white);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-action-primary:hover {
+            background: var(--primary-blue-hover);
+        }
+
+        .btn-action-success {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--success);
+            color: var(--white);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-action-success:hover {
+            background: #059669;
+        }
+
+        .btn-action-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            background: #f1f5f9;
+            color: var(--text-dark);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-action-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: var(--white);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            animation: modalPop 0.2s ease-out;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .modal-close-btn {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .modal-body {
+            padding: 24px;
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            background: #f8fafc;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        /* Printable Receipt (Kuitansi) */
+        .receipt-box {
+            border: 2px solid #0f172a;
+            padding: 24px;
+            background: #fff;
+            border-radius: 8px;
+            color: #0f172a;
+        }
+
+        .receipt-head {
+            text-align: center;
+            border-bottom: 2px dashed #0f172a;
+            padding-bottom: 14px;
+            margin-bottom: 16px;
+        }
+
+        .receipt-head h3 {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .receipt-head p {
+            font-size: 12px;
+            color: #475569;
+        }
+
+        .receipt-stamp {
+            display: inline-block;
+            border: 2px solid #16a34a;
+            color: #16a34a;
+            font-weight: 900;
+            padding: 4px 12px;
+            border-radius: 6px;
+            transform: rotate(-5deg);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast-msg {
+            background: #0f172a;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .menu-action-grid { grid-template-columns: repeat(2, 1fr); }
+            .kelas-pills-grid { grid-template-columns: repeat(3, 1fr); }
+            .bank-accounts-grid { grid-template-columns: 1fr; }
+            .bill-profile-bar { grid-template-columns: 1fr; }
+            .app-layout { gap: 0; padding: 0; }
+            .main-nav { flex-basis: 228px; width: 228px; }
+            .page-body { padding: 24px 22px 44px; }
+            .inv-workspace-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .login-wrapper { flex-direction: column; }
+            .login-banner { display: none; }
+            .login-panel { flex: 1; padding: 28px 20px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .menu-action-grid { grid-template-columns: 1fr; }
+            .kelas-pills-grid { grid-template-columns: repeat(2, 1fr); }
+            .welcome-hero { flex-direction: column; align-items: flex-start; gap: 16px; }
+
+            /* Header lebih ringkas di HP */
+            .topbar-content { padding: 8px 12px; gap: 8px; }
+            .topbar-brand { gap: 8px; }
+            .topbar-logo { width: 32px; height: 32px; flex: 0 0 32px; font-size: 14px; border-radius: 8px; }
+            .topbar-brand-title { font-size: 11px; line-height: 1.3; }
+            .topbar-brand-sub { display: none; }
+            .topbar-user { gap: 8px; }
+            .user-pill { padding: 4px 8px; gap: 6px; }
+            .user-avatar { width: 24px; height: 24px; font-size: 11px; }
+            .user-name-tag { font-size: 11px; }
+            .user-role-badge { font-size: 9px; padding: 2px 6px; }
+            .btn-logout { padding: 6px 10px; font-size: 11px; }
+
+            /* Sidebar kiri di HP: full tinggi, tetap pakai label */
+            .app-layout { gap: 0; padding: 0; }
+            .main-nav {
+                flex: 0 0 132px;
+                width: 132px;
+                height: calc(100vh - var(--nav-top, 84px));
+                padding: 10px 8px;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            .nav-container { gap: 4px; }
+            .nav-link-btn {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+                padding: 9px 8px;
+                font-size: 10.5px;
+                line-height: 1.25;
+                white-space: normal;
+                overflow-wrap: anywhere;
+            }
+            .nav-link-btn span { font-size: 15px; line-height: 1; }
+            .page-body { padding: 16px 12px 32px; }
+
+            /* Form & statistik jadi satu kolom di HP */
+            .form-grid-2,
+            .laporan-stats { grid-template-columns: 1fr; }
+            .laporan-stats { gap: 12px; margin-bottom: 18px; }
+            .content-card-head { flex-wrap: wrap; gap: 12px; }
+            .toolbar-actions { flex-wrap: wrap; width: 100%; }
+            .toolbar-search { width: 100%; }
+
+            /* Kartu & baris konten tetap muat di layar HP */
+            .content-card { padding: 18px; }
+            .stats-grid > * { min-width: 0; }
+            .stat-card { min-width: 0; gap: 12px; padding: 16px; }
+            .stat-info .stat-val { font-size: 19px; overflow-wrap: anywhere; }
+            .profile-identity-row { flex-wrap: wrap; gap: 18px !important; }
+            .form-actions-split { flex-wrap: wrap; gap: 10px; }
+            #paymentMonthList > label { flex-wrap: wrap; gap: 8px; padding: 12px 14px !important; }
+            #paySubtotal { font-size: 20px !important; }
+            .publish-url-input { min-width: 0 !important; }
+            .publish-info-item { min-width: 0 !important; }
+            #viewPublikasi code { word-break: break-all; }
+            .inv-table-card { padding: 16px; }
+        }
+            /* ============ BUAT TAGIHAN SPP (PETUGAS) ============ */
+        .create-invoice-form {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 28px;
+            max-width: 700px;
+            margin-bottom: 30px;
+        }
+
+        .create-invoice-form h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .create-invoice-form .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .create-invoice-form .form-full {
+            grid-column: 1 / -1;
+        }
+
+        .invoice-list {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .invoice-list h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        @media (max-width: 900px) {
+            .invoice-table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        .invoice-table thead {
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .invoice-table th {
+            text-align: left;
+            padding: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .invoice-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-dark);
+        }
+
+        .invoice-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .status-belum { background: #fef3c7; color: #92400e; }
+        .status-lunas { background: #dcfce7; color: #166534; }
+
+        /* ================= 1920x1080 MODERN INVOICE CREATION DASHBOARD ================= */
+        .invoice-dashboard-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            border-radius: 16px;
+            padding: 26px 32px;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(30, 58, 138, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .invoice-dashboard-hero::after {
+            content: 'INVOICE';
+            position: absolute;
+            right: 20px;
+            bottom: -25px;
+            font-size: 110px;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.04);
+            pointer-events: none;
+        }
+
+        .inv-hero-left h2 {
+            font-size: 24px;
+            font-weight: 800;
+            margin: 6px 0;
+            letter-spacing: -0.3px;
+        }
+
+        .inv-hero-left p {
+            font-size: 13.5px;
+            color: #93c5fd;
+            max-width: 720px;
+            line-height: 1.5;
+        }
+
+        .inv-badge-role {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: #fef08a;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .inv-hero-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+            z-index: 2;
+        }
+
+        .inv-status-pill {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+        }
+
+        .btn-refresh-inv {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-refresh-inv:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }
+
+        /* 4 Metrics Summary Cards */
+        .inv-stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .inv-stat-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s;
+        }
+
+        .inv-stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .inv-stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .icon-blue { background: #eff6ff; color: #1e40af; }
+        .icon-red { background: #fef2f2; color: #b91c1c; }
+        .icon-green { background: #ecfdf5; color: #047857; }
+        .icon-purple { background: #faf5ff; color: #6b21a8; }
+
+        .inv-stat-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            display: block;
+        }
+
+        .inv-stat-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1.2;
+            margin: 2px 0;
+        }
+
+        .inv-stat-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* Dual Workspace Grid (1920x1080 Layout: Form 36%, Table 64%) */
+        .inv-workspace-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (min-width: 1600px) {
+            .inv-workspace-grid {
+                grid-template-columns: 420px 1fr;
+            }
+        }
+
+        .inv-form-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .inv-card-header {
+            margin-bottom: 18px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .inv-card-header h3 {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .inv-card-header p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Mode Tabs */
+        .inv-mode-tabs {
+            display: flex;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 10px;
+            margin-bottom: 18px;
+            gap: 4px;
+        }
+
+        .inv-mode-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            background: transparent;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .inv-mode-btn.active {
+            background: #ffffff;
+            color: var(--primary-blue);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+
+        .inv-sync-notice {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            padding: 12px 14px;
+            display: flex;
+            gap: 10px;
+            font-size: 12px;
+            color: #1e3a8a;
+            margin-top: 14px;
+            line-height: 1.4;
+        }
+
+        .btn-create-inv {
+            flex: 1;
+            padding: 12px 18px;
+            background: var(--primary-blue);
+            color: #ffffff;
+            border: none;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        
+        /* Modern Button BAYAR (PAY) */
+        .btn-pay-modern {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            padding: 13px 26px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.4);
+            transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-pay-modern:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 100%);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.55);
+            transform: translateY(-2px);
+        }
+        .btn-pay-modern:active {
+            transform: translateY(0);
+        }
+
+        /* Selector Button 10 Jenis Pos SPP */
+        .btn-pos-selector {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+            border-radius: 7px;
+            padding: 4px 11px;
+            font-size: 11.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-pos-selector:hover {
+            background: #dbeafe;
+            border-color: #93c5fd;
+            color: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        /* Modal Preset Pos SPP Card */
+        .pos-preset-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            text-align: left;
+        }
+        .pos-preset-card:hover {
+            border-color: #2563eb;
+            background: #f0f7ff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px -2px rgba(37, 99, 235, 0.16);
+        }
+        .pos-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .pos-card-title {
+            font-size: 13.5px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.3;
+        }
+        .pos-card-desc {
+            font-size: 11.5px;
+            color: #64748b;
+            margin-top: 2px;
+            line-height: 1.35;
+        }
+        .pos-card-price {
+            font-size: 13.5px;
+            font-weight: 900;
+            color: #16a34a;
+            margin-top: 4px;
+        }
+        .pos-card-badge {
+            font-size: 11px;
+            font-weight: 700;
+            color: #2563eb;
+            background: #dbeafe;
+            padding: 4px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .pos-preset-card:hover .pos-card-badge {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        /* Custom Centered Modals (Backdrop & Boxes) */
+        .custom-modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.72);
+            backdrop-filter: blur(5px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeInModal 0.2s ease-out;
+        }
+        .custom-modal-box {
+            background: #ffffff;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.35);
+            animation: zoomModal 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes zoomModal {
+            from { opacity: 0; transform: scale(0.92); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .custom-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 24px;
+        }
+        .modal-close-cross {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 700;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0 6px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+        .modal-close-cross:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-create-inv:hover {
+            background: var(--primary-blue-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Right Panel: Invoice Table Card */
+        .inv-table-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .inv-table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+
+        .inv-table-header h3 {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .inv-table-header p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .inv-filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .inv-filter-select {
+            padding: 8px 12px;
+            font-size: 12.5px;
+            font-weight: 600;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            background: #ffffff;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .inv-search-input {
+            padding: 8px 14px;
+            font-size: 12.5px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            width: 220px;
+            color: var(--text-dark);
+        }
+
+        .inv-table-container {
+            overflow-x: auto;
+        }
+
+        .inv-table-modern {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 13px;
+        }
+
+        .inv-table-modern th {
+            background: #f8fafc;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        .inv-table-modern td {
+            padding: 13px 14px;
+            border-bottom: 1px solid #f1f5f9;
+            color: var(--text-dark);
+            vertical-align: middle;
+        }
+
+        .inv-table-modern tr:hover td {
+            background: #f8fafc;
+        }
+
+        .inv-badge-paid {
+            background: #dcfce7;
+            color: #15803d;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .inv-badge-unpaid {
+            background: #fee2e2;
+            color: #b91c1c;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* ================= MIDTRANS SNAP POPUP MODAL (IDENTICAL TO IMAGE 2) ================= */
+        .snap-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            overflow-y: auto;
+            animation: snapFadeIn 0.2s ease-out;
+        }
+
+        @keyframes snapFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .snap-modal-box {
+            background: #ffffff;
+            width: 100%;
+            max-width: 440px;
+            max-height: calc(100vh - 16px);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            animation: snapScaleUp 0.25s ease-out;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #212529;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Area utama Snap: header + nominal tetap, daftar metode bisa digulir. */
+        #snapMainView {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            flex: 1 1 auto;
+        }
+
+        @keyframes snapScaleUp {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Header like Image 2: "SMP MUHAMMADIYAH 3 METRO" / merchant title & X */
+        .snap-header {
+            padding: 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f1f5f9;
+            flex: 0 0 auto;
+        }
+
+        .snap-merchant-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .snap-btn-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            font-weight: 700;
+            color: #64748b;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .snap-btn-close:hover {
+            color: #0f172a;
+        }
+
+        /* Amount & Order ID like Image 2 */
+        .snap-amount-row {
+            padding: 12px 18px 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex: 0 0 auto;
+        }
+
+        .snap-amount-val {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1e293b;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .snap-copy-icon {
+            font-size: 15px;
+            color: #3b82f6;
+            cursor: pointer;
+        }
+
+        .snap-order-row {
+            padding: 0 18px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12.5px;
+            color: #64748b;
+            flex: 0 0 auto;
+        }
+
+        .snap-order-id {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .snap-order-details-link {
+            color: #2563eb;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        /* Countdown strip like Image 2: "Choose within 23:59:36 &#9650;" */
+        .snap-countdown-strip {
+            background: #e2e8f0;
+            padding: 6px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 12px;
+            color: #334155;
+            font-weight: 600;
+            flex: 0 0 auto;
+        }
+
+        .snap-body-scroll {
+            flex: 1 1 auto;
+            min-height: 0;
+            max-height: none;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            padding-bottom: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: #94a3b8 #e2e8f0;
+        }
+
+        .snap-body-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .snap-body-scroll::-webkit-scrollbar-track {
+            background: #e2e8f0;
+        }
+
+        .snap-body-scroll::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 999px;
+        }
+
+        .snap-section-title {
+            padding: 8px 18px 2px;
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        /* Payment Method Row like Image 2 */
+        .snap-method-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 18px;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: background 0.15s;
+            min-height: 50px;
+            box-sizing: border-box;
+        }
+
+        .snap-method-item:hover {
+            background: #f8fafc;
+        }
+
+        .snap-method-name {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1px;
+        }
+
+        .snap-method-logos {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .snap-logo-badge {
+            font-size: 9.5px;
+            font-weight: 800;
+            padding: 1px 5px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .badge-gopay { background: #00a5cf; color: #ffffff; }
+        .badge-gopay-later { background: #0081a7; color: #ffffff; font-size: 10px; }
+        .badge-qris { background: #dc2626; color: #ffffff; }
+        .badge-visa { background: #1a1f71; color: #ffffff; }
+        .badge-mc { background: #eb001b; color: #ffffff; }
+        .badge-shopee { background: #ee4d2d; color: #ffffff; }
+        .badge-ovo { background: #4c2a86; color: #ffffff; }
+        .badge-dana { background: #118eea; color: #ffffff; }
+        .badge-va { background: #0284c7; color: #ffffff; }
+
+        .snap-method-arrow {
+            font-size: 16px;
+            color: #94a3b8;
+            font-weight: 700;
+        }
+
+        /* QRIS / Sub-Payment Detail Screen inside Snap */
+        .snap-detail-view {
+            display: none;
+            padding: 18px;
+            text-align: center;
+            overflow-y: auto;
+            flex: 1 1 auto;
+            min-height: 0;
+        }
+
+        .snap-qr-box {
+            background: #ffffff;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 16px;
+            display: inline-block;
+            margin: 14px 0;
+        }
+
+        .btn-snap-simulate-pay {
+            width: 100%;
+            padding: 13px;
+            background: #10b981;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s;
+        }
+
+        .btn-snap-simulate-pay:hover {
+            background: #059669;
+        }
+
+        .btn-snap-back {
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            padding: 6px;
+        }
+
+        .btn-snap-back:hover {
+            color: #0f172a;
+        }
+
+        /* ============================================================
+           RESPONSIVE TAMBAHAN (diletakkan paling akhir agar menang
+           dari definisi komponen yang berada di bawah blok @media awal)
+           ============================================================ */
+        .inv-workspace-grid > * { min-width: 0; }
+
+        @media (max-width: 1024px) {
+            .inv-workspace-grid { grid-template-columns: 1fr; }
+            .inv-workspace-grid > * { min-width: 0; }
+            .inv-stats-row { grid-template-columns: repeat(2, 1fr); }
+            .inv-stat-card { min-width: 0; padding: 14px; gap: 10px; }
+            .inv-stat-info { min-width: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .inv-table-card { padding: 16px; }
+            .inv-table-header { gap: 10px; }
+            .bill-profile-bar { padding: 14px; gap: 14px; }
+            .bill-col { min-width: 0; }
+            .bill-data-label { width: 92px; }
+            .bill-data-row { gap: 8px; }
+            .form-grid-2 input,
+            .form-grid-2 select { min-width: 0; }
+            .pay-method-grid { grid-template-columns: repeat(2, 1fr); }
+            .pay-method-grid > div { overflow-wrap: anywhere; }
+            .banner-head { flex-wrap: wrap; gap: 10px; }
+            .radio-row { flex-direction: column; gap: 8px; }
+            .inv-stats-row { grid-template-columns: 1fr; }
+            .inv-stat-value { font-size: 18px; overflow-wrap: anywhere; }
+            .inv-filter-group { width: 100%; }
+            .inv-search-input { width: 100%; min-width: 0; }
+            .inv-actions-row { flex-wrap: wrap; }
+            .summary-row { flex-wrap: wrap; gap: 6px; }
+        }
+
+        @media (max-width: 400px) {
+            .main-nav { flex-basis: 118px; width: 118px; padding: 8px 6px; }
+            .nav-link-btn { font-size: 10px; padding: 8px 6px; }
+            .nav-link-btn span { font-size: 14px; }
+            .page-body { padding: 14px 10px 28px; }
+            .content-card { padding: 14px; }
+            .stat-card { padding: 14px; gap: 10px; }
+        }
+
+        /* ============================================================
+           MENU AKUN (PETUGAS, GURU, KEPALA SEKOLAH, SISWA, WALI KELAS)
+           ============================================================ */
+        .akun-grid {
+            display: grid;
+            gap: 18px;
+        }
+
+        .akun-card {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 18px;
+            min-width: 0;
+        }
+
+        .akun-card h4 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .akun-count {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--primary-blue);
+            background: #dbeafe;
+            border-radius: 999px;
+            padding: 3px 10px;
+        }
+
+        .akun-table-wrap {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .akun-card .data-table {
+            font-size: 12.5px;
+            background: #fff;
+        }
+
+        .akun-card .data-table th,
+        .akun-card .data-table td {
+            padding: 9px 12px;
+        }
+
+        .credential-pass {
+            display: inline-block;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 12px;
+            font-weight: 700;
+            color: #0f172a;
+            background: #e2e8f0;
+            border-radius: 6px;
+            padding: 2px 8px;
+        }
+
+        @media (max-width: 480px) {
+            .akun-card { padding: 12px; }
+        }
+
+</style>
+</head>
+<body>
+
+    <!-- ==========================================
+         LOGIN SCREEN
+         ========================================== -->
+    <section id="pageLogin" class="login-wrapper">
+        <div class="login-banner">
+            <div class="banner-header">
+                <div class="banner-logo">M3</div>
+                <div>
+                    <div class="banner-title">SMP MUHAMMADIYAH 3 METRO</div>
+                    <div class="banner-subtitle">Kota Metro, Lampung • Terakreditasi "A"</div>
+                </div>
+            </div>
+
+            <div class="banner-body">
+                <div class="banner-badge">
+                    <span>✅</span> Portal Resmi E-SPP Terintegrasi
+                </div>
+                <h1>Pembayaran SPP <span>Mudah, Cepat</span> & Transparan</h1>
+                <p>
+                    Sistem Pembayaran SPP Online berbasis digital SMP Muhammadiyah 3 Metro.
+                    Mendukung pembayaran langsung via Midtrans Payment Gateway (QRIS, VA Bank Muamalat, Mandiri, BSI) 
+                    serta rekonsiliasi kasir realtime untuk wali murid dan pihak sekolah.
+                </p>
+
+                <div class="banner-features">
+                    <div class="feature-item">
+                        <span class="feature-icon">⚡</span>
+                        <span>QRIS & Virtual Account Otomatis</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🗼</span>
+                        <span>Kuitansi Digital Siap Cetak</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔒️</span>
+                        <span>Standar Keamanan 3NF & Enkripsi</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">📊</span>
+                        <span>Akses Mandiri Siswa & Orang Tua</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="banner-footer">
+                © 2026 SMP Muhammadiyah 3 Metro • Dikembangkan untuk Kemudahan Administrasi Pendidikan
+            </div>
+        </div>
+
+        <div class="login-panel">
+            <div class="login-box">
+                <div class="login-head">
+                    <h2>Masuk ke Portal E-SPP</h2>
+                    <p>Silakan pilih role Anda dan masukkan akun untuk melanjutkan</p>
+                </div>
+
+                <!-- Role Selector Tabs -->
+                <div class="role-tabs">
+                    <button type="button" class="role-tab active" id="tabSiswa" onclick="selectLoginRole('siswa')">👤 Siswa</button>
+                    <button type="button" class="role-tab" id="tabOrtu" onclick="selectLoginRole('ortu')">👨‍👩‍👧‍👦 Orang Tua</button>
+                    <button type="button" class="role-tab" id="tabPetugas" onclick="selectLoginRole('petugas')">👮 Petugas</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="formLogin" onsubmit="executeLogin(event)">
+                    <div class="form-group">
+                        <label class="form-label" id="labelUsername">NISN Siswa</label>
+                        <input type="text" class="form-control" id="loginUsername" placeholder="Masukkan 10 digit NISN" required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="loginPassword" placeholder="Masukkan password" required autocomplete="current-password">
+                    </div>
+
+                    <div class="form-meta">
+                        <label><input type="checkbox" checked> Ingat Akun Saya</label>
+                        <a href="javascript:void(0)" onclick="showToast('Hubungi Bagian Tata Usaha SMP Muhammadiyah 3 Metro jika lupa password.')" style="color:var(--primary-blue);text-decoration:none;font-weight:600;">Lupa Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="btnLoginSubmit">Masuk ke Dashboard</button>
+
+                <div style="text-align: center; margin-top: 16px;">
+                    <a href="/register" style="color: var(--primary-blue); text-decoration: none; font-size: 14px; font-weight: 600;">📝 Belum punya akun? Daftar di sini</a>
+                </div>
+                </form>
+
+                <!-- Demo Accounts Shortcut (One-Click) -->
+                <div class="demo-section">
+                    <div class="demo-section-head">
+                        <span class="demo-section-title">Akun Uji Coba (Klik Langsung Masuk)</span>
+                        <span class="demo-section-sub">1-Click Auto Login</span>
+                    </div>
+                    <div class="demo-grid">
+                        <div class="demo-btn" onclick="quickLogin('0081234567', 'password123', 'siswa')">
+                            <div class="demo-btn-title">
+                                <span>Ahmad Dahlan (7A)</span>
+                                <span class="demo-btn-tag tag-siswa">Siswa</span>
+                            </div>
+                            <div class="demo-btn-info">0081234567 • pass: password123</div>
+                        </div>
+
+                        <div class="demo-btn" onclick="quickLogin('0087654321', 'password123', 'siswa')">
+                            <div class="demo-btn-title">
+                                <span>Siti Walidah (8A)</span>
+                                <span class="demo-btn-tag tag-siswa">Siswa</span>
+                            </div>
+                            <div class="demo-btn-info">0087654321 • pass: password123</div>
+                        </div>
+
+                        <div class="demo-btn" onclick="quickLogin('ortu001', 'password123', 'ortu')">
+                            <div class="demo-btn-title">
+                                <span>Budi Santoso</span>
+                                <span class="demo-btn-tag tag-ortu">Wali Murid</span>
+                            </div>
+                            <div class="demo-btn-info">ortu001 • pass: password123</div>
+                        </div>
+
+                        <div class="demo-btn" onclick="quickLogin('admin', 'admin123', 'petugas')">
+                            <div class="demo-btn-title">
+                                <span>Admin Petugas</span>
+                                <span class="demo-btn-tag tag-admin">Admin</span>
+                            </div>
+                            <div class="demo-btn-info">admin • pass: admin123</div>
+                        </div>
+
+                        <div class="demo-btn" onclick="quickLogin('bendahara', 'bendahara123', 'petugas')">
+                            <div class="demo-btn-title">
+                                <span>Hj. Siti Aminah</span>
+                                <span class="demo-btn-tag tag-bendahara">Bendahara</span>
+                            </div>
+                            <div class="demo-btn-info">bendahara • pass: bendahara123</div>
+                        </div>
+
+                        <div class="demo-btn" onclick="quickLogin('kepsek', 'kepsek123', 'petugas')">
+                            <div class="demo-btn-title">
+                                <span>Drs. H. M. Fauzi</span>
+                                <span class="demo-btn-tag tag-admin">Kepsek</span>
+                            </div>
+                            <div class="demo-btn-info">kepsek • pass: kepsek123</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         APP SHELL (MAIN APPLICATION)
+         ========================================== -->
+    <div id="appShell" class="app-shell">
+
+        <!-- Top Header Bar -->
+        <header class="topbar">
+            <div class="topbar-content">
+                <a href="?menu=home" onclick="handleNavClick(event, 'viewHome', 'home')" class="topbar-brand">
+                    <div class="topbar-logo">M3</div>
+                    <div>
+                        <div class="topbar-brand-title">PEMBAYARAN SPP SMP MUHAMMADIYAH 3 METRO</div>
+                        <div class="topbar-brand-sub">Sistem Informasi Pembayaran SPP Online</div>
+                    </div>
+                </a>
+
+                <div class="topbar-user">
+                    <div class="user-pill">
+                        <div class="user-avatar" id="topAvatar">A</div>
+                        <div>
+                            <span class="user-name-tag" id="topUserName">Pengguna</span>
+                            <span class="user-role-badge role-badge-siswa" id="topUserRole">SISWA</span>
+                        </div>
+                    </div>
+                    <button class="btn-logout" onclick="performLogout()">Keluar</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Layout: sidebar kiri + konten -->
+        <div class="app-layout">
+
+        <!-- Dynamic Role Navigation -->
+        <nav class="main-nav">
+            <div class="nav-container">
+                <a href="?menu=home" class="nav-link-btn active" id="navHome" data-menu="home" onclick="handleNavClick(event, 'viewHome', 'home')">
+                    <span>🏠</span> Beranda
+                </a>
+                <a href="?menu=tagihan" class="nav-link-btn siswa-only" id="navTagihan" data-menu="tagihan" onclick="handleNavClick(event, 'viewTagihan', 'tagihan')">
+                    <span>📄</span> Tagihan SPP
+                </a>
+                <a href="?menu=bayar" class="nav-link-btn siswa-only" id="navBayar" data-menu="bayar" onclick="handleNavClick(event, 'viewBayar', 'bayar')">
+                    <span>💳</span> Bayar SPP Online
+                </a>
+                <a href="?menu=riwayat" class="nav-link-btn" id="navRiwayat" data-menu="riwayat" onclick="handleNavClick(event, 'viewRiwayat', 'riwayat')">
+                    <span>🗼</span> Riwayat & Kuitansi
+                </a>
+                <a href="?menu=profil" class="nav-link-btn siswa-only" id="navProfil" data-menu="profil" onclick="handleNavClick(event, 'viewProfil', 'profil')">
+                    <span>👤</span> Profil Siswa
+                </a>
+
+                <!-- Petugas Only Tabs -->
+                <a href="?menu=kasir" class="nav-link-btn petugas-only" id="navKasir" data-menu="kasir" onclick="handleNavClick(event, 'viewKasir', 'kasir')" style="display:none;">
+                    <span>💵</span> Kasir Pembayaran Tunai
+                </a>
+                <a href="?menu=siswa" class="nav-link-btn petugas-only" id="navSiswa" data-menu="siswa" onclick="handleNavClick(event, 'viewManajemenSiswa', 'siswa')" style="display:none;">
+                    <span>👥</span> Data Siswa & SPP
+                </a>
+                <a href="?menu=siswa-kelas" class="nav-link-btn petugas-only" id="navSiswaKelas" data-menu="siswa-kelas" onclick="handleNavClick(event, 'viewSiswaKelas', 'siswa-kelas')" style="display:none;">
+                    <span>🏫</span> Siswa per Kelas (29)
+                </a>
+                <a href="?menu=petugas" class="nav-link-btn petugas-only" id="navStaff" data-menu="petugas" onclick="handleNavClick(event, 'viewAkunStaff', 'petugas')" style="display:none;">
+                    <span>👔</span> Akun Petugas & Guru
+                </a>
+                <a href="?menu=akun-siswa" class="nav-link-btn petugas-only" id="navAkunSiswa" data-menu="akun-siswa" onclick="handleNavClick(event, 'viewAkunSiswa', 'akun-siswa')" style="display:none;">
+                    <span>🔑</span> Akun Siswa & Wali Kelas
+                </a>
+                <a href="?menu=qris" class="nav-link-btn petugas-only" id="navQris" data-menu="qris" onclick="handleNavClick(event, 'viewQrisSettings', 'qris')" style="display:none;">
+                    <span>🏷️</span> Ubah Nama QRIS
+                </a>
+                <a href="?menu=midtrans" class="nav-link-btn petugas-only" id="navMidtrans" data-menu="midtrans" onclick="handleNavClick(event, 'viewMidtransSettings', 'midtrans')" style="display:none;">
+                    <span>⚙️</span> Pengaturan Midtrans
+                </a>
+                <a href="?menu=publikasi" class="nav-link-btn petugas-only" id="navPublikasi" data-menu="publikasi" onclick="handleNavClick(event, 'viewPublikasi', 'publikasi')" style="display:none;">
+                    <span>🌐</span> Publikasi Online
+                </a>
+                <a href="?menu=laporan" class="nav-link-btn petugas-only" id="navLaporan" data-menu="laporan" onclick="handleNavClick(event, 'viewLaporan', 'laporan')" style="display:none;">
+                    <span>📊</span> Laporan Rekapitulasi
+                </a>
+                <a href="?menu=terbitkan-tagihan" class="nav-link-btn petugas-only" id="navCreateInvoice" data-menu="terbitkan-tagihan" onclick="handleNavClick(event, 'viewCreateInvoice', 'terbitkan-tagihan')" style="display:none;">
+                    <span>📄</span> Buat Tagihan SPP
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Body Content Views -->
+        <main class="page-body">
+
+            <!-- ================= VIEW 1: BERANDA / HOME ================= -->
+            <section id="viewHome" class="view-section active">
+                <!-- Welcome Hero -->
+                <div class="welcome-hero">
+                    <div>
+                        <h2>Selamat Datang, <span id="heroUserName">Ahmad Dahlan Putra</span>!</h2>
+                        <p id="heroUserDesc">
+                            Tahun Ajaran Aktif 2024/2025 Semester Genap. Kelola kewajiban pembayaran SPP sekolah dengan mudah, cepat, dan transparan.
+                        </p>
+                    </div>
+                    <div class="welcome-hero-action">
+                        <button class="btn-hero siswa-only" onclick="navigateTo('viewBayar')">
+                            <span>💳</span> Bayar SPP Sekarang
+                        </button>
+                        <button class="btn-hero petugas-only" onclick="navigateTo('viewKasir')" style="display:none;">
+                            <span>➕</span> Input Bayar Tunai
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Grid (Changes based on Role) -->
+                <div class="stats-grid" id="statsGrid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+
+                <!-- 6 Menu Action Cards (SIAKAD Style) -->
+                <div class="dashboard-menu-title">
+                    <span>📋</span> Menu Layanan Pembayaran SPP
+                </div>
+                <div class="menu-action-grid" id="menuActionGrid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+
+                <!-- Kelas SMP Muhammadiyah 3 Metro (7A, 7B, 8A, 8B, 9A, 9B) -->
+                <div class="kelas-section-box">
+                    <div class="kelas-header">
+                        <div>
+                            <h3>🏫 Tingkat & Kelas Siswa SMP Muhammadiyah 3 Metro</h3>
+                            <p style="font-size:13px;color:var(--text-muted);margin-top:2px;">
+                                Klik salah satu kelas untuk memfilter daftar siswa dan besaran tarif SPP bulanan.
+                            </p>
+                        </div>
+                        <span class="badge-status badge-lunas" id="activeKelasIndicator">Kelas Terpilih: 7A</span>
+                    </div>
+                    <div class="kelas-pills-grid">
+                        <div class="kelas-pill-btn active-kelas" onclick="selectKelasBtn(this, '7A', 'Tingkat VII • Rp 250.000/bln')">
+                            <div class="kelas-pill-title">7A</div>
+                            <div class="kelas-pill-desc">Tingkat VII</div>
+                        </div>
+                        <div class="kelas-pill-btn" onclick="selectKelasBtn(this, '7B', 'Tingkat VII • Rp 250.000/bln')">
+                            <div class="kelas-pill-title">7B</div>
+                            <div class="kelas-pill-desc">Tingkat VII</div>
+                        </div>
+                        <div class="kelas-pill-btn" onclick="selectKelasBtn(this, '8A', 'Tingkat VIII • Rp 250.000/bln')">
+                            <div class="kelas-pill-title">8A</div>
+                            <div class="kelas-pill-desc">Tingkat VIII</div>
+                        </div>
+                        <div class="kelas-pill-btn" onclick="selectKelasBtn(this, '8B', 'Tingkat VIII • Rp 250.000/bln')">
+                            <div class="kelas-pill-title">8B</div>
+                            <div class="kelas-pill-desc">Tingkat VIII</div>
+                        </div>
+                        <div class="kelas-pill-btn" onclick="selectKelasBtn(this, '9A', 'Tingkat IX • Rp 250.000/bln')">
+                            <div class="kelas-pill-title">9A</div>
+                            <div class="kelas-pill-desc">Tingkat IX</div>
+                        </div>
+                        <div class="kelas-pill-btn" onclick="selectKelasBtn(this, '9B', 'Tingkat IX • Rp 250.000/bln')">
+                            <div class="kelas-pill-title">9B</div>
+                            <div class="kelas-pill-desc">Tingkat IX</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= VIEW 2: TAGIHAN SPP SISWA ================= -->
+            <section id="viewTagihan" class="view-section">
+                <div class="content-card">
+                    <div class="content-card-head">
+                        <div>
+                            <div class="content-card-title">Rincian Tagihan SPP Siswa</div>
+                            <div class="content-card-sub">Informasi kewajiban pembayaran SPP bulanan Tahun Pelajaran 2024/2025</div>
+                        </div>
+                        <button class="btn-action-primary" onclick="navigateTo('viewBayar')">
+                            <span>💳</span> Lanjut ke Pembayaran Online
+                        </button>
+                    </div>
+
+                    <!-- Authentic Student Info Bar (SMP Muhammadiyah 3 Metro) -->
+                    <div class="bill-profile-bar">
+                        <div class="bill-col">
+                            <h5>Identitas Siswa</h5>
+                            <div class="bill-data-row">
+                                <span class="bill-data-label">Nama Lengkap:</span>
+                                <span class="bill-data-val" id="billNama">Ahmad Dahlan Putra</span>
+                            </div>
+                            <div class="bill-data-row">
+                                <span class="bill-data-label">NISN / NIS:</span>
+                                <span class="bill-data-val" id="billNisn">0081234567 / 2024001</span>
+                            </div>
+                            <div class="bill-data-row">
+                                <span class="bill-data-label">Kelas & Tingkat:</span>
+                                <span class="bill-data-val" id="billKelas">Kelas 7A (Tingkat VII)</span>
+                            </div>
+                            <div class="bill-data-row">
+                                <span class="bill-data-label">Satuan Pendidikan:</span>
+                                <span class="bill-data-val">SMP Muhammadiyah 3 Metro</span>
+                            </div>
+                        </div>
+                        <div class="bill-col">
+                            <h5>Kontak & Wali</h5>
+                            <div class="bill-data-row">
+                                <span class="bill-data-label">Nama Orang Tua:</span>
+                                <span class="bill-data-val" id="billOrtu">Budi Santoso</span>
+                            </div>
+                            <div class="bill-data-row">
+                                <span class="bill-data-label">No. Telepon / WA:</span>
+                                <span class="bill-data-val" id="billTelp">081234567890</span>
+                            </div>
+                            <div class="bill-data-row">
+                                <span class="bill-data-label">Status Siswa:</span>
+                                <span class="bill-data-val" style="color:var(--success);">Aktif Terdaftar</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bills Table -->
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width:50px;">NO</th>
+                                <th>BULAN / PERIODE TAGIHAN</th>
+                                <th>JATUH TEMPO</th>
+                                <th>NOMINAL</th>
+                                <th>STATUS</th>
+                                <th style="text-align:right;">AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tagihanTableBody">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                        <tfoot>
+                            <tr style="background:#f8fafc;font-weight:800;">
+                                <td colspan="3" style="text-align:right;padding:16px;">TOTAL TAGIHAN BELUM DIBAYAR:</td>
+                                <td colspan="3" style="font-size:18px;color:var(--primary-blue);padding:16px;" id="totalUnpaidTagihan">Rp 250.000</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <!-- List Tagihan yang Dibuat oleh Petugas -->
+                    <div id="tagihanDariPetugas" style="margin-top:24px;background:#f8fafc;border:1px solid var(--border-color);border-radius:12px;padding:20px;">
+                        <h4 style="font-size:16px;font-weight:800;margin-bottom:12px;color:var(--text-dark);">📄 Tagihan SPP (Dibuat oleh Petugas)</h4>
+                        <div id="createdInvoicesInTagihan" style="margin-top:12px;">
+                            <p style="color:var(--text-muted);">Belum ada tagihan yang dibuat oleh petugas.</p>
+                        </div>
+                    </div>
+
+                    <!-- Official Payment Channels -->
+                    <h4 style="font-size:15px;font-weight:800;margin-top:32px;margin-bottom:12px;">
+                        🏦 Saluran Pembayaran Resmi Sekolah
+                    </h4>
+                    <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">
+                        Pembayaran dapat dilakukan melalui Midtrans Payment Gateway (QRIS, Semua Bank), transfer ke rekening virtual account resmi, atau datang langsung ke Kasir SMP Muhammadiyah 3 Metro.
+                    </p>
+
+                    <div class="bank-accounts-grid">
+                        <div class="bank-box">
+                            <div class="bank-logo-icon">🏛️</div>
+                            <div class="bank-name">Bank Syariah Indonesia (BSI)</div>
+                            <div class="bank-va">VA: 7268 0100 8123 4567</div>
+                            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">A.n. E-SPP SMP Muh 3 Metro</div>
+                        </div>
+                        <div class="bank-box">
+                            <div class="bank-logo-icon">🏦</div>
+                            <div class="bank-name">Bank Muamalat</div>
+                            <div class="bank-va">VA: 1020 0081 2345 6700</div>
+                            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">A.n. Siswa SMP Muhammadiyah 3</div>
+                        </div>
+                        <div class="bank-box">
+                            <div class="bank-logo-icon">📊</div>
+                            <div class="bank-name">QRIS Midtrans Gateway</div>
+                            <div class="bank-va">Semua E-Wallet & Mobile Banking</div>
+                            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Scan langsung via GoPay, OVO, ShopeePay</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= VIEW 3: BAYAR SPP ONLINE (MIDTRANS) ================= -->
+            <section id="viewBayar" class="view-section">
+                <div class="content-card" style="max-width:820px;margin:0 auto;">
+                    <div class="content-card-head">
+                        <div>
+                            <div class="content-card-title">PEMBAYARAN SPP SMP MUHAMMADIYAH 3 METRO</div>
+                            <div class="content-card-sub">Centang tagihan yang ingin dibayar (boleh sebagian atau tidak sama sekali), lalu klik BAYAR.</div>
+                        </div>
+                        <span class="badge-status badge-lunas">🧾 Pilih Tagihan Sendiri</span>
+                    </div>
+
+<!-- Empty State (shown when no unpaid bills) -->
+                    <div id="emptyStateBayar" style="display:none;background:#ecfdf5;border:1.5px solid #a7f3d0;border-radius:12px;padding:40px 24px;text-align:center;margin-bottom:24px;">
+                        <div style="font-size:48px;margin-bottom:16px;">✅</div>
+                        <h3 style="font-size:18px;font-weight:800;color:#065f46;margin-bottom:8px;">Tidak Ada Tagihan Aktif</h3>
+                        <p style="font-size:14px;color:#047857;">Semua tagihan SPP Anda telah lunas atau belum ada tagihan baru yang diterbitkan.</p>
+                    </div>
+
+                    <!-- Selected Months List -->
+                    <div style="margin-bottom:24px;" id="paymentMonthSection">
+                        <h4 style="font-size:14px;font-weight:800;margin-bottom:12px;color:var(--text-dark);">Centang Tagihan yang Ingin Dibayar (boleh pilih sebagian atau tidak sama sekali):</h4>
+                        <div id="paymentMonthList" style="display:flex;flex-direction:column;gap:10px;">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Total Summary Box -->
+                    <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:22px;margin-bottom:24px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <div>
+                                <div style="font-size:13px;color:#1e40af;font-weight:700;">TOTAL PEMBAYARAN:</div>
+                                <div style="font-size:28px;font-weight:900;color:#1e3a8a;" id="paySubtotal">Rp 0
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-size:12px;color:#64748b;">Biaya Layanan Gateway:</div>
+                                <div style="font-size:13px;font-weight:800;color:#15803d;">GRATIS (Ditanggung Sekolah)</div>
+                            </div>
+                        </div>
+                        <div class="summary-row" style="margin-top:12px;padding-top:12px;border-top:1px solid #bfdbfe;display:flex;justify-content:space-between;align-items:center;">
+                            <div style="font-size:13px;color:#1e40af;font-weight:700;">Jumlah Tagihan Dipilih:</div>
+                            <div style="font-size:14px;font-weight:800;color:#1e3a8a;" id="selectedBillCount">0 Tagihan</div>
+                        </div>
+                    </div>
+
+                    <!-- Direct Payment Action Button -->
+                    <button type="button" id="btnBayarSPP" onclick="triggerMidtransPayment()" disabled style="width:100%;padding:16px;font-size:16px;font-weight:800;justify-content:center;background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;border:none;border-radius:12px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all 0.2s;opacity:0.5;">
+                        <span>💳</span> BAYAR
+                    </button>
+                    <p style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:14px;">
+                        Metode pembayaran bebas dipilih sendiri di halaman pembayaran (QRIS, e-wallet, Virtual Account, atau kartu). Bukti kuitansi resmi langsung terbit setelah pembayaran berhasil.
+                    </p>
+                </div>
+            </section>
+
+            <!-- ================= VIEW 4: RIWAYAT & KUITANSI ================= -->
+            <section id="viewRiwayat" class="view-section">
+                <div class="content-card">
+                    <div class="content-card-head">
+                        <div>
+                            <div class="content-card-title">Riwayat Pembayaran & Kuitansi</div>
+                            <div class="content-card-sub">Daftar transaksi pembayaran SPP yang telah tercatat di sistem</div>
+                        </div>
+                        <button class="btn-action-secondary" onclick="printReceiptList()">
+                            <span>🖨️</span> Cetak Rekap Transaksi
+                        </button>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>NO. TRANSAKSI</th>
+                                <th>TANGGAL & WAKTU</th>
+                                <th>SISWA / KELAS</th>
+                                <th>URAIAN SPP</th>
+                                <th>NOMINAL</th>
+                                <th>METODE</th>
+                                <th>STATUS</th>
+                                <th style="text-align:right;">AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody id="riwayatTableBody">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ================= VIEW 5: PROFIL SISWA ================= -->
+            <section id="viewProfil" class="view-section">
+                <div class="content-card" style="max-width:850px;margin:0 auto;">
+                    <div class="content-card-head">
+                        <div>
+                            <div class="content-card-title">Biodata & Profil Siswa</div>
+                            <div class="content-card-sub">Data pokok siswa terdaftar di SMP Muhammadiyah 3 Metro</div>
+                        </div>
+                        <span class="badge-status badge-lunas">Siswa Terdaftar Aktif</span>
+                    </div>
+
+                    <div class="profile-identity-row" style="display:flex;gap:32px;align-items:flex-start;margin-bottom:32px;">
+                        <div style="text-align:center;">
+                            <div style="width:110px;height:110px;border-radius:20px;background:var(--primary-blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:46px;font-weight:800;margin-bottom:12px;box-shadow:var(--shadow);" id="profileLargeAvatar">
+                                A
+                            </div>
+                            <button class="btn-action-secondary" style="font-size:12px;padding:6px 12px;" onclick="changeAvatarPhoto()">
+                                📸 Ubah Foto
+                            </button>
+                        </div>
+
+                        <div style="flex:1;">
+                            <div class="form-grid-2">
+                                <div>
+                                    <label class="form-label">Nama Lengkap Siswa</label>
+                                    <input type="text" class="form-control" id="profNama" value="Ahmad Dahlan Putra" readonly>
+                                </div>
+                                <div>
+                                    <label class="form-label">NISN</label>
+                                    <input type="text" class="form-control" id="profNisn" value="0081234567" readonly>
+                                </div>
+                                <div>
+                                    <label class="form-label">Nomor Induk Siswa (NIS)</label>
+                                    <input type="text" class="form-control" id="profNis" value="2024001" readonly>
+                                </div>
+                                <div>
+                                    <label class="form-label">Kelas / Tingkat</label>
+                                    <input type="text" class="form-control" id="profKelas" value="7A (Tingkat VII)" readonly>
+                                </div>
+                                <div>
+                                    <label class="form-label">Nama Orang Tua / Wali</label>
+                                    <input type="text" class="form-control" id="profOrtu" value="Budi Santoso">
+                                </div>
+                                <div>
+                                    <label class="form-label">Nomor WhatsApp Wali</label>
+                                    <input type="text" class="form-control" id="profTelp" value="081234567890">
+                                </div>
+                                <div style="grid-column:1/-1;">
+                                    <label class="form-label">Alamat Tinggal</label>
+                                    <input type="text" class="form-control" id="profAlamat" value="Jl. Hadimulyo Barat No. 15, Metro Pusat, Kota Metro, Lampung">
+                                </div>
+                            </div>
+                            <div style="margin-top:20px;text-align:right;">
+                                <button class="btn-action-primary" onclick="showToast('Data profil berhasil diperbarui!')">
+                                    💾 Simpan Perubahan Profil
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= VIEW 6: KASIR PEMBAYARAN TUNAI (PETUGAS ONLY) ================= -->
+            <section id="viewKasir" class="view-section">
+                <div class="content-card" style="max-width:850px;margin:0 auto;">
+                    <div class="content-card-head">
+                        <div>
+                            <div class="content-card-title">💵 Kasir Entri Pembayaran SPP Tunai</div>
+                            <div class="content-card-sub">Input pembayaran langsung di loket tata usaha sekolah</div>
+                        </div>
+                        <span class="badge-status badge-lunas">Loket Aktif</span>
+                    </div>
+
+                    <form onsubmit="handleKasirSubmit(event)">
+                        <div class="form-grid-2" style="margin-bottom:20px;">
+                            <div>
+                                <label class="form-label">Pilih Siswa</label>
+                                <select class="form-control" id="kasirSiswaSelect" onchange="updateKasirSiswaInfo()" required>
+                                    <option value="0081234567">0081234567 - Ahmad Dahlan Putra (Kelas 7A)</option>
+                                    <option value="0087654321">0087654321 - Siti Walidah Putri (Kelas 8A)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="form-label">Bulan Tagihan</label>
+                                <select class="form-control" id="kasirBulanSelect" required>
+                                    <option value="Januari 2025">Januari 2025</option>
+                                    <option value="Februari 2025">Februari 2025</option>
+                                    <option value="Maret 2025">Maret 2025</option>
+                                    <option value="April 2025">April 2025</option>
+                                    <option value="Mei 2025">Mei 2025</option>
+                                    <option value="Juni 2025">Juni 2025</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="form-label">Nominal Pembayaran (Rp)</label>
+                                <input type="number" class="form-control" id="kasirNominal" value="250000" step="1" required>
+                            </div>
+
+                            <div>
+                                <label class="form-label">Metode Pembayaran</label>
+                                <select class="form-control" id="kasirMetode">
+                                    <option value="Tunai / Kasir Loket">Tunai / Kasir Loket</option>
+                                    <option value="Transfer Bank BSI">Transfer Bank BSI</option>
+                                    <option value="Transfer Bank Muamalat">Transfer Bank Muamalat</option>
+                                </select>
+                            </div>
+
+                            <div style="grid-column:1/-1;">
+                                <label class="form-label">Catatan Transaksi</label>
+                                <input type="text" class="form-control" id="kasirCatatan" placeholder="Keterangan tambahan (opsional)">
+                            </div>
+                        </div>
+
+                        <div style="display:flex;justify-content:flex-end;gap:12px;">
+                            <button type="reset" class="btn-action-secondary">Reset Form</button>
+                            <button type="submit" class="btn-action-success">
+                                <span>💾</span> Simpan & Terbitkan Kuitansi
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- ================= VIEW 7: MANAJEMEN SISWA & SPP (PETUGAS ONLY) ================= -->
+            <section id="viewManajemenSiswa" class="view-section">
+                <div class="content-card">
+                    <div class="content-card-head">
+                        <div>
+                            <div class="content-card-title">👥 Data Siswa & Status Tagihan SPP</div>
+                            <div class="content-card-sub">Data master peserta didik SMP Muhammadiyah 3 Metro</div>
+                        </div>
+                        <div class="toolbar-actions">
+                            <select class="form-control" id="filterKelasManajemen" onchange="renderManajemenSiswa()" style="width:150px;">
+                                <option value="ALL">Semua Kelas</option>
+                                <option value="7A">Kelas 7A</option>
+                                <option value="7B">Kelas 7B</option>
+                                <option value="7C">Kelas 7C</option>
+                                <option value="8A">Kelas 8A</option>
+                                <option value="8B">Kelas 8B</option>
+                                <option value="8C">Kelas 8C</option>
+                                <option value="9A">Kelas 9A</option>
+                                <option value="9B">Kelas 9B</option>
+                                <option value="9C">Kelas 9C</option>
+                            </select>
+                            <input type="text" class="form-control toolbar-search" id="searchSiswaManajemen" placeholder="Cari nama / NISN..." oninput="filterSiswaTable(this.value)">
+                            <button class="btn-action-primary" onclick="showToast('Form Tambah Siswa baru siap!')">+ Tambah Siswa</button>
+                        </div>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>NISN</th>
+                                <th>NAMA SISWA</th>
+                                <th>KELAS</th>
+                                <th>TARIF SPP</th>
+                                <th>STATUS SISWA</th>
+                                <th>STATUS SPP BULAN INI</th>
+                                <th style="text-align:right;">AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody id="manajemenSiswaBody">
+                            <tr>
+                                <td colspan="7" style="text-align:center;padding:24px;color:var(--text-muted);">Memuat data siswa...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pencarian Tagihan SPP Real-time (AJAX / Fetch API) -->
+                <div class="content-card" style="margin-top:18px;">
+                    <div class="content-card-head">
+                        <div>
+                            <div class="content-card-title">🔎 Pencarian Tagihan Real-time (AJAX)</div>
+                            <div class="content-card-sub">Ketik nama siswa, NISN, kelas, atau bulan. Tabel diperbarui tanpa reload halaman.</div>
+                        </div>
+                        <div class="toolbar-actions">
+                            <select class="form-control" id="ajaxFilterStatus" onchange="runTagihanAjaxSearch()" style="width:160px;">
+                                <option value="">Semua Status</option>
+                                <option value="belum_lunas">Belum Lunas</option>
+                                <option value="lunas">Lunas</option>
+                            </select>
+                            <input type="text" class="form-control toolbar-search" id="ajaxTagihanSearch" placeholder="Cari nama / NISN / kelas / bulan..." oninput="onTagihanSearchInput(this.value)">
+                        </div>
+                    </div>
+
+                    <div id="ajaxTagihanStatus" style="font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:12px;">
+                        Ketik kata kunci untuk mencari tagihan.
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width:50px;">NO</th>
+                                <th>NISN</th>
+                                <th>NAMA SISWA</th>
+                                <th>KELAS</th>
+                                <th>BULAN</th>
+                                <th>NOMINAL</th>
+                                <th>JATUH TEMPO</th>
+                                <th>STATUS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ajaxTagihanBody">
+                            <tr>
+                                <td colspan="8" style="text-align:center;padding:24px;color:var(--text-muted);">
+                                    Belum ada pencarian. Ketik nama siswa atau NISN di atas.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ================= VIEW: SISWA PER KELAS (29 SISWA / KELAS) ================= -->
+            <section id="viewSiswaKelas" class="view-section">
+                <div class="content-card">
+                    <div class="content-card-head">
+                        <div>
+                            <div class="content-card-title">🏫 Siswa per Kelas — 29 Siswa Setiap Kelas</div>
+                            <div class="content-card-sub">Data diurutkan berdasarkan kelas agar petugas lebih mudah mencari dan memverifikasi siswa.</div>
+                        </div>
+                        <div class="toolbar-actions">
+                            <select class="form-control" id="filterKelasSiswa" onchange="renderSiswaPerKelas()" style="width:160px;">
+                                <option value="7A">Kelas 7A</option>
+                                <option value="7B">Kelas 7B</option>
+                                <option value="7C">Kelas 7C</option>
+                                <option value="8A">Kelas 8A</option>
+                                <option value="8B">Kelas 8B</option>
+                                <option value="8C">Kelas 8C</option>
+                                <option value="9A">Kelas 9A</option>
+                                <option value="9B">Kelas 9B</option>
+                                <option value="9C">Kelas 9C</option>
+                                <option value="ALL">Semua Kelas (261 Siswa)</option>
+                            </select>
+                            <input type="text" class="form-control toolbar-search" id="searchSiswaKelas" placeholder="Cari nama / NISN..." oninput="renderSiswaPerKelas()">
+                        </div>
+                    </div>
+
+                    <div id="siswaKelasSummary" class="form-grid-2" style="gap:12px;margin-bottom:18px;"></div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width:50px;">NO</th>
+                                <th>NISN</th>
+                                <th>NAMA SISWA</th>
+                                <th>KELAS</th>
+                                <th>JENIS KELAMIN</th>
+                                <th>WALI MURID</th>
+                                <th>STATUS SPP</th>
+                                <th style="text-align:right;">AKSI</th>
+                            </tr>
+                        </thead>
+                        <tbody id="siswaPerKelasBody">
+                            <tr><td colspan="8" style="text-align:center;padding:24px;color:var(--text-muted);">Memuat data siswa...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ================= VIEW: AKUN LOGIN PETUGAS, GURU & KEPALA SEKOLAH ================= -->
+            <section id="viewAkunStaff" class="view-section">
+                <div class="content-card">
+                    <div class="content-card-head">
+                        <div>
+                            <div class="content-card-title">👔 Akun Login Petugas, Guru & Kepala Sekolah</div>
+                            <div class="content-card-sub">Daftar username dan password untuk masuk ke aplikasi E-SPP. Pisahkan sesuai jabatan.</div>
+                        </div>
+                        <div class="toolbar-actions">
+                            <input type="text" class="form-control toolbar-search" id="searchAkunStaff" placeholder="Cari nama / username..." oninput="filterAkunStaff(this.value)">
+                            <button class="btn-action-secondary" onclick="navigateTo('staff-db')">🗄️ Database Petugas (CRUD)</button>
+                        </div>
+                    </div>
+
+                    <div class="akun-grid">
+                        <div class="akun-card">
+                            <h4>🧑‍💼 Akun Petugas Sekolah <span class="akun-count" id="countPetugas">3 akun</span></h4>
+                            <div class="akun-table-wrap">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr><th>NO</th><th>NAMA</th><th>JABATAN</th><th>USERNAME</th><th>PASSWORD</th><th>STATUS</th></tr>
+                                    </thead>
+                                    <tbody id="akunPetugasBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="akun-card">
+                            <h4>👨‍🏫 Akun Guru <span class="akun-count" id="countGuru">30 akun</span></h4>
+                            <div class="akun-table-wrap">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr><th>NO</th><th>NAMA GURU</th><th>MATA PELAJARAN</th><th>USERNAME</th><th>PASSWORD</th><th>STATUS</th></tr>
+                                    </thead>
+                                    <tbody id="akunGuruBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="akun-card">
+                            <h4>🏫 Akun Kepala Sekolah <span class="akun-count" id="countKepala">1 akun</span></h4>
+                            <div class="akun-table-wrap">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr><th>NO</th><th>NAMA</th><th>JABATAN</th><th>USERNAME</th><th>PASSWORD</th><th>STATUS</th></tr>
+                                    </thead>
+                                    <tbody id="akunKepalaBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= VIEW: AKUN SISWA & WALI KELAS ================= -->
+            <section id="viewAkunSiswa" class="view-section">
+                <div class="content-card">
+                    <div class="content-card-head">
+                        <div>
+                            <div class="content-card-title">🔑 Akun Siswa & Wali Kelas</div>
+                            <div class="content-card-sub">Username dan password siswa dipisah dari akun wali kelas. Password siswa default: password123.</div>
+                        </div>
+                        <div class="toolbar-actions">
+                            <select class="form-control" id="filterKelasAkunSiswa" onchange="renderAkunSiswa()" style="width:160px;">
+                                <option value="7A">Kelas 7A</option>
+                                <option value="7B">Kelas 7B</option>
+                                <option value="7C">Kelas 7C</option>
+                                <option value="8A">Kelas 8A</option>
+                                <option value="8B">Kelas 8B</option>
+                                <option value="8C">Kelas 8C</option>
+                                <option value="9A">Kelas 9A</option>
+                                <option value="9B">Kelas 9B</option>
+                                <option value="9C">Kelas 9C</option>
+                            </select>
+                            <input type="text" class="form-control toolbar-search" id="searchAkunSiswa" placeholder="Cari nama / NISN..." oninput="renderAkunSiswa()">
+                        </div>
+                    </div>
+
+                    <div class="akun-card" style="margin-bottom:18px;">
+                        <h4>🎒 Akun Siswa <span class="akun-count" id="countAkunSiswa">29 akun</span></h4>
+                        <div class="akun-table-wrap">
+                            <table class="data-table">
+                                <thead>
+                                    <tr><th>NO</th><th>NISN (USERNAME)</th><th>NAMA SISWA</th><th>KELAS</th><th>PASSWORD</th><th>STATUS</th></tr>
+                                </thead>
+                                <tbody id="akunSiswaBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="akun-card">
+                        <h4>🧑‍🏫 Akun Wali Kelas <span class="akun-count" id="countWaliKelas">9 akun</span></h4>
+                        <div class="akun-table-wrap">
+                            <table class="data-table">
+                                <thead>
+                                    <tr><th>NO</th><th>KELAS</th><th>NAMA WALI KELAS</th><th>USERNAME</th><th>PASSWORD</th><th>JUMLAH SISWA</th></tr>
+                                </thead>
+                                <tbody id="akunWaliKelasBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= VIEW 8: PENGATURAN MIDTRANS GATEWAY (PETUGAS ONLY) ================= -->
+            <section id="viewMidtransSettings" class="view-section">
+                <div class="content-card" style="max-width:850px;margin:0 auto;">
+                    <div class="content-card-head">
+                        <div>
+                            <div class="content-card-title">⚙️ Konfigurasi Midtrans Payment Gateway</div>
+                            <div class="content-card-sub">Atur kunci API Midtrans untuk integrasi QRIS, Virtual Account, & Kartu</div>
+                        </div>
+                        <span class="badge-status badge-lunas" id="midtransStatusBadge">Terhubung (Sandbox)</span>
+                    </div>
+
+                    <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:12px 16px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+                        <div style="font-size:13px;color:#166534;font-weight:600;">
+                            🏷️ Ingin mengubah nama merchant/sekolah pada QRIS tanpa coding?
+                        </div>
+                        <button type="button" class="btn-action-primary" onclick="navigateTo('viewQrisSettings')" style="padding:6px 14px;font-size:12px;background:#16a34a;border-color:#15803d;">
+                            Buka Menu Ubah Nama QRIS &rarr;
+                        </button>
+                    </div>
+
+                    <form onsubmit="handleMidtransSave(event)">
+                        <div class="form-grid-2" style="margin-bottom:20px;">
+                            <div>
+                                <label class="form-label">Server Key</label>
+                                <input type="password" class="form-control" id="cfgServerKey" autocomplete="new-password" placeholder="Kunci tersimpan tidak ditampilkan; isi hanya jika ingin mengganti">
+                            </div>
+                            <div>
+                                <label class="form-label">Client Key</label>
+                                <input type="text" class="form-control" id="cfgClientKey" autocomplete="off" placeholder="Client Key dari dashboard Midtrans" required>
+                            </div>
+                            <div>
+                                <label class="form-label">Merchant ID</label>
+                                <input type="text" class="form-control" id="cfgMerchantId" autocomplete="off" placeholder="Merchant ID dari dashboard Midtrans" required>
+                            </div>
+                            <div>
+                                <label class="form-label">Status Gateway</label>
+                                <select class="form-control" id="cfgEnabled">
+                                    <option value="true">Aktif (Menerima Pembayaran)</option>
+                                    <option value="false">Nonaktif (Pemeliharaan)</option>
+                                </select>
+                            </div>
+                            <div style="grid-column:1/-1;">
+                                <label class="form-label">Mode Lingkungan</label>
+                                <div class="radio-row" style="display:flex;gap:16px;margin-top:6px;">
+                                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                                        <input type="radio" name="cfgMode" value="sandbox" checked> Mode Sandbox (Uji Coba Pembayaran)
+                                    </label>
+                                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                                        <input type="radio" name="cfgMode" value="production"> Mode Production (Transaksi Riil)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Method Customization -->
+                        <div style="background:#f8fafc;border:1.5px solid var(--border-color);border-radius:12px;padding:20px;margin-bottom:20px;">
+                            <h4 style="font-size:14px;font-weight:800;margin-bottom:16px;color:var(--text-dark);">🎨 Kustomisasi Nama Metode Pembayaran (Real-time)</h4>
+                            <div class="form-grid-2">
+                                <div>
+                                    <label class="form-label">Nama QRIS / Merchant</label>
+                                    <input type="text" class="form-control" id="cfgQrisName" value="SMP MUHAMMADIYAH 3 METRO" placeholder="Nama yang tampil di popup QRIS">
+                                    <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Nama yang tampil di popup Midtrans Snap</div>
+                                </div>
+                                <div>
+                                    <label class="form-label">Nama Virtual Account Bank</label>
+                                    <input type="text" class="form-control" id="cfgVaName" value="Bank Syariah Indonesia / Mandiri" placeholder="Nama bank VA">
+                                    <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Nama bank yang tampil di opsi VA</div>
+                                </div>
+                                <div>
+                                    <label class="form-label">Nama Kartu Kredit/Debit</label>
+                                    <input type="text" class="form-control" id="cfgCardName" value="Kartu Kredit / Debit Online" placeholder="Nama kartu">
+                                    <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Nama yang tampil di opsi kartu</div>
+                                </div>
+                                <div>
+                                    <label class="form-label">Nama GoPay QRIS</label>
+                                    <input type="text" class="form-control" id="cfgGopayName" value="GoPay QRIS" placeholder="Nama GoPay">
+                                    <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Nama yang tampil di opsi GoPay</div>
+                                </div>
+                            </div>
+                            <div style="margin-top:16px;">
+                                <button type="button" class="btn-action-secondary" onclick="savePaymentMethodNames()" style="width:100%;">💾 Simpan Nama Metode Pembayaran</button>
+                            </div>
+                        </div>
+
+                        <div class="form-actions-split" style="display:flex;justify-content:space-between;align-items:center;">
+                            <button type="button" class="btn-action-secondary" onclick="testMidtransConnection()">
+                                🔌 Tes Koneksi Gateway
+                            </button>
+                            <div style="display:flex;gap:12px;">
+                                <button type="button" class="btn-action-secondary" onclick="resetMidtransDefaults()">Reset Default</button>
+                                <button type="submit" class="btn-action-primary">💾 Simpan Konfigurasi</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- ================= VIEW: UBAH NAMA QRIS & METODE PEMBAYARAN (PETUGAS ONLY) ================= -->
+            <section id="viewQrisSettings" class="view-section">
+                <div class="content-card" style="max-width:980px;margin:0 auto;">
+                    <div class="content-card-head" style="border-bottom:1.5px solid var(--border-color);padding-bottom:16px;margin-bottom:20px;">
+                        <div>
+                            <div class="content-card-title" style="display:flex;align-items:center;gap:10px;">
+                                <span style="font-size:24px;">🏷️</span>
+                                <span>Ubah Nama QRIS & Metode Pembayaran (Tanpa Coding)</span>
+                            </div>
+                            <div class="content-card-sub" style="margin-top:4px;">
+                                Ganti nama sekolah/merchant yang muncul di pop-up pembayaran QRIS Midtrans secara instan tanpa perlu coding.
+                            </div>
+                        </div>
+                        <span class="badge-status badge-lunas" id="qrisStatusBadge">Aktif & Tersinkron</span>
+                    </div>
+
+                    <!-- Alert Info -->
+                    <div style="background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:14px 18px;margin-bottom:24px;display:flex;align-items:center;gap:12px;">
+                        <span style="font-size:22px;">💡</span>
+                        <div style="font-size:13px;color:#1e40af;line-height:1.5;">
+                            <strong>Ubah nama tanpa menyentuh baris kode:</strong> Cukup ketik nama baru pada formulir di bawah ini lalu klik <strong>"Simpan Perubahan Nama"</strong>. Nama baru akan langsung aktif dan muncul di pop-up pembayaran siswa, transaksi Midtrans Snap, serta struk pembayaran secara real-time!
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;" class="qris-settings-grid">
+                        <!-- Left Column: Form Edit -->
+                        <div style="background:#f8fafc;border:1.5px solid var(--border-color);border-radius:14px;padding:22px;">
+                            <h4 style="font-size:15px;font-weight:800;color:var(--text-dark);margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+                                <span>✏️</span> Formulir Nama Pembayaran
+                            </h4>
+
+                            <div style="margin-bottom:16px;">
+                                <label class="form-label" style="font-weight:700;color:#0f172a;">
+                                    Nama QRIS / Merchant Sekolah <span style="color:#ef4444;">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="qrisSettingName" 
+                                    placeholder="Contoh: SMP MUHAMMADIYAH 3 METRO"
+                                    oninput="updateQrisLivePreview()" 
+                                    style="font-size:14px;font-weight:700;padding:11px 14px;color:#0f172a;border:2px solid #cbd5e1;">
+                                <div style="font-size:11px;color:var(--text-muted);margin-top:5px;">
+                                    Nama ini yang tampil pada header pop-up & dicetak di dalam kotak QRIS.
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom:16px;">
+                                <label class="form-label" style="font-weight:700;color:#0f172a;">
+                                    Nama GoPay QRIS
+                                </label>
+                                <input type="text" class="form-control" id="qrisSettingGopay" 
+                                    placeholder="Contoh: GoPay QRIS"
+                                    oninput="updateQrisLivePreview()"
+                                    style="font-size:14px;padding:10px 14px;">
+                                <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">
+                                    Label opsi GoPay pada daftar metode pembayaran.
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom:16px;">
+                                <label class="form-label" style="font-weight:700;color:#0f172a;">
+                                    Nama Bank Virtual Account
+                                </label>
+                                <input type="text" class="form-control" id="qrisSettingVa" 
+                                    placeholder="Contoh: Bank Syariah Indonesia / Mandiri"
+                                    style="font-size:14px;padding:10px 14px;">
+                                <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">
+                                    Nama rekening bank pada opsi transfer Virtual Account.
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom:20px;">
+                                <label class="form-label" style="font-weight:700;color:#0f172a;">
+                                    Nama Kartu Kredit / Debit Online
+                                </label>
+                                <input type="text" class="form-control" id="qrisSettingCard" 
+                                    placeholder="Contoh: Kartu Kredit / Debit Online"
+                                    style="font-size:14px;padding:10px 14px;">
+                            </div>
+
+                            <div style="display:flex;flex-direction:column;gap:10px;">
+                                <button type="button" class="btn-action-primary" onclick="saveQrisSettingsCustom()" style="width:100%;justify-content:center;padding:13px;font-size:14px;font-weight:800;background:#2563eb;">
+                                    💾 Simpan Perubahan Nama (Tanpa Coding)
+                                </button>
+                                <button type="button" class="btn-action-secondary" onclick="resetQrisSettingsToDefault()" style="width:100%;justify-content:center;padding:10px;font-size:13px;">
+                                    🔄 Kembalikan ke Nama Standar Sekolah
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Live Preview of QRIS Card -->
+                        <div>
+                            <div style="background:#ffffff;border:2px dashed #cbd5e1;border-radius:14px;padding:20px;text-align:center;">
+                                <div style="display:inline-block;padding:4px 12px;background:#e0f2fe;color:#0369a1;border-radius:20px;font-size:11px;font-weight:800;margin-bottom:14px;letter-spacing:0.5px;">
+                                    👁️ PRATINJAU LANGSUNG (LIVE PREVIEW)
+                                </div>
+
+                                <!-- Card Simulation -->
+                                <div style="background:#ffffff;border:1.5px solid #e2e8f0;border-radius:16px;box-shadow:0 10px 25px rgba(0,0,0,0.08);max-width:320px;margin:0 auto;overflow:hidden;text-align:left;">
+                                    <!-- Header -->
+                                    <div style="background:#f8fafc;padding:12px 16px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">
+                                        <div id="previewSnapHeader" style="font-size:13px;font-weight:800;color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:230px;">
+                                            SMP MUHAMMADIYAH 3 METRO
+                                        </div>
+                                        <span style="font-size:16px;color:#94a3b8;">&times;</span>
+                                    </div>
+                                    <div style="padding:14px 16px 8px;border-bottom:1px solid #f1f5f9;">
+                                        <div style="font-size:18px;font-weight:800;color:#0f172a;">Rp250.000</div>
+                                        <div style="font-size:10px;color:#64748b;margin-top:2px;">Order ID #SPP-0081234567-20261106-99</div>
+                                    </div>
+
+                                    <!-- QRIS Box Inside -->
+                                    <div style="padding:16px;text-align:center;">
+                                        <div style="background:#ffffff;border:1.5px solid #fca5a5;border-radius:12px;padding:14px;box-shadow:0 2px 8px rgba(239,68,68,0.08);">
+                                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                                                <span style="font-weight:900;font-size:13px;color:#ef4444;letter-spacing:1px;">QRIS</span>
+                                                <span style="font-weight:800;font-size:11px;color:#dc2626;">GPN</span>
+                                            </div>
+                                            <!-- THE DYNAMIC MERCHANT NAME -->
+                                            <div id="previewQrisName" style="font-size:14px;font-weight:800;color:#0f172a;margin:8px 0;letter-spacing:0.3px;min-height:20px;word-break:break-word;">
+                                                SMP MUHAMMADIYAH 3 METRO
+                                            </div>
+
+                                            <!-- SVG QR -->
+                                            <svg width="140" height="140" viewBox="0 0 100 100" style="display:block;margin:6px auto;">
+                                                <rect width="100" height="100" fill="#ffffff"/>
+                                                <rect x="5" y="5" width="28" height="28" fill="#000000"/>
+                                                <rect x="9" y="9" width="20" height="20" fill="#ffffff"/>
+                                                <rect x="13" y="13" width="12" height="12" fill="#000000"/>
+                                                <rect x="67" y="5" width="28" height="28" fill="#000000"/>
+                                                <rect x="71" y="9" width="20" height="20" fill="#ffffff"/>
+                                                <rect x="75" y="13" width="12" height="12" fill="#000000"/>
+                                                <rect x="5" y="67" width="28" height="28" fill="#000000"/>
+                                                <rect x="9" y="71" width="20" height="20" fill="#ffffff"/>
+                                                <rect x="13" y="75" width="12" height="12" fill="#000000"/>
+                                                <rect x="40" y="8" width="6" height="6" fill="#000000"/>
+                                                <rect x="50" y="8" width="10" height="6" fill="#000000"/>
+                                                <rect x="40" y="20" width="8" height="6" fill="#000000"/>
+                                                <rect x="54" y="20" width="6" height="12" fill="#000000"/>
+                                                <rect x="8" y="40" width="6" height="10" fill="#000000"/>
+                                                <rect x="20" y="40" width="14" height="6" fill="#000000"/>
+                                                <rect x="40" y="40" width="20" height="20" fill="#000000"/>
+                                                <rect x="68" y="40" width="10" height="14" fill="#000000"/>
+                                                <rect x="84" y="40" width="8" height="8" fill="#000000"/>
+                                                <rect x="40" y="68" width="14" height="8" fill="#000000"/>
+                                                <rect x="60" y="68" width="8" height="18" fill="#000000"/>
+                                                <rect x="74" y="68" width="18" height="6" fill="#000000"/>
+                                                <rect x="40" y="84" width="8" height="8" fill="#000000"/>
+                                                <rect x="76" y="82" width="16" height="10" fill="#000000"/>
+                                            </svg>
+
+                                            <div style="font-size:10px;color:#64748b;margin-top:6px;">Dicetak oleh: GoPay</div>
+                                            <div style="font-size:10px;font-weight:700;color:#0f172a;margin-top:2px;">NMID: ID1020261024070</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="font-size:12px;color:#64748b;margin-top:14px;line-height:1.4;">
+                                    💡 <em>Tampilan di atas langsung berubah saat Anda mengetik nama di kolom sebelah kiri.</em>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panduan Dashboard Midtrans -->
+                    <div style="margin-top:24px;background:#fef3c7;border:1.5px solid #fde68a;border-radius:12px;padding:18px 20px;">
+                        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;">
+                            <div>
+                                <h4 style="font-size:14px;font-weight:800;color:#92400e;margin-bottom:6px;display:flex;align-items:center;gap:6px;">
+                                    <span>🌐</span> Info Tambahan Akun Midtrans Sandbox (Merchant ID: YOUR_MERCHANT_ID)
+                                </h4>
+                                <div style="font-size:12px;color:#78350f;line-height:1.6;max-width:680px;">
+                                    Pada akun Midtrans Sandbox Anda, nama terdaftar bawaan saat awal registrasi akun adalah <em>"kopma mart"</em>. Nama di aplikasi ini sudah otomatis menggantikannya di seluruh sistem aplikasi. Jika Anda memiliki akses ke portal web Midtrans dan ingin memperbarui profil akun di sisi server Midtrans:
+                                    <ol style="margin:6px 0 0 16px;padding:0;">
+                                        <li>Buka <strong>Midtrans Merchant Administration Portal (MAP)</strong> via tombol di kanan.</li>
+                                        <li>Pilih menu <strong>Settings &gt; General Settings &gt; Business Settings</strong>.</li>
+                                        <li>Ubah <strong>Business Name</strong> menjadi <strong>SMP Muhammadiyah 3 Metro</strong> lalu klik <strong>Save</strong>.</li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <a href="https://dashboard.sandbox.midtrans.com/settings/general" target="_blank" rel="noopener noreferrer" class="btn-action-primary" style="background:#d97706;border-color:#b45309;white-space:nowrap;padding:10px 16px;font-size:13px;text-decoration:none;">
+                                🌐 Buka Dashboard Midtrans ↗
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= VIEW: PUBLIKASI ONLINE (PETUGAS ONLY) ================= -->
+            <section id="viewPublikasi" class="view-section">
+                <div class="content-card" style="max-width:900px;margin:0 auto;">
+                    <div class="content-card-head">
+                        <div>
+                            <div class="content-card-title">🌐 Publikasi Online & Akses dari HP</div>
+                            <div class="content-card-sub">Pantau status server, simpan URL publik, dan buka aplikasi lewat QR</div>
+                        </div>
+                        <span class="badge-status badge-lunas" id="publishStatusBadge">Memeriksa...</span>
+                    </div>
+
+                    <div id="publishInfoGrid" class="form-grid-2" style="gap:12px;margin-bottom:18px;"></div>
+
+                    <div style="background:#f8fafc;border:1.5px solid var(--border-color);border-radius:12px;padding:18px;margin-bottom:18px;">
+                        <label class="form-label">URL Publikasi (alamat website online)</label>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                            <input type="url" class="form-control publish-url-input" id="publishUrlInput" placeholder="https://spp.smpm3metro.sch.id">
+                            <button type="button" class="btn-action-primary" onclick="savePublicUrl()">💾 Simpan URL</button>
+                            <button type="button" class="btn-action-secondary" onclick="checkSystemStatus(true)">🔄 Cek Status</button>
+                        </div>
+                        <div style="font-size:12px;color:var(--text-muted);margin-top:8px;">Isi setelah aplikasi di-upload ke hosting. URL ini dipakai untuk tombol buka & QR code.</div>
+                    </div>
+
+                    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:center;background:#fff;border:1.5px solid var(--border-color);border-radius:12px;padding:18px;margin-bottom:18px;">
+                        <div id="publishQrBox" style="width:180px;height:180px;display:flex;align-items:center;justify-content:center;background:#f1f5f9;border-radius:12px;border:1px dashed #cbd5e1;text-align:center;font-size:12px;color:#64748b;padding:10px;">QR muncul setelah URL diisi</div>
+                        <div class="publish-info-item" style="flex:1;min-width:220px;">
+                            <div style="font-weight:800;margin-bottom:6px;">Buka di HP</div>
+                            <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Scan QR atau salin link di bawah. Pastikan server hosting sudah online.</div>
+                            <div id="publishUrlText" style="font-size:13px;font-weight:700;word-break:break-all;margin-bottom:12px;color:#1e40af;">Belum ada URL publik.</div>
+                            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                                <button type="button" class="btn-action-secondary" onclick="copyPublicUrl()">📋 Salin Link</button>
+                                <button type="button" class="btn-action-primary" onclick="openPublicUrl()">🔗 Buka Website</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:12px;padding:18px;">
+                        <div style="font-weight:800;margin-bottom:8px;">📌 Agar bisa diakses tanpa laptop menyala</div>
+                        <ol style="margin:0;padding-left:20px;font-size:13px;line-height:1.8;color:#334155;">
+                            <li>Aplikasi harus di-upload ke hosting/VPS yang menyala 24 jam (Railway, Render, Hostinger, VPS, dll.).</li>
+                            <li>Siapkan database MySQL di hosting, lalu isi variabel <code>DB_*</code>.</li>
+                            <li>Set <code>APP_ENV=production</code>, <code>APP_DEBUG=false</code>, dan <code>APP_URL=https://domain-anda</code>.</li>
+                            <li>Jalankan migrasi database dan <code>storage:link</code> di server.</li>
+                            <li>Setelah dapat domain, simpan URL-nya di kolom di atas agar QR bisa dipakai.</li>
+                            <li>Ubah Webhook Midtrans ke <code>https://domain-anda/api/midtrans/notification</code>.</li>
+                        </ol>
+                        <div style="margin-top:12px;font-size:12px;color:#92400e;">⚠️ Login aplikasi saat ini memakai akun demo di browser. Sebelum dipublikasikan, sebaiknya ganti dengan autentikasi server agar menu petugas tidak bisa dibuka sembarang orang.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= VIEW 9: LAPORAN REKAPITULASI (PETUGAS ONLY) ================= -->
+            <section id="viewLaporan" class="view-section">
+                <div class="content-card">
+                    <div class="content-card-head">
+                        <div>
+                            <div class="content-card-title">📊 Laporan & Rekapitulasi Kas SPP</div>
+                            <div class="content-card-sub">Laporan keuangan pembayaran SPP SMP Muhammadiyah 3 Metro</div>
+                        </div>
+                        <div class="toolbar-actions">
+                            <button class="btn-action-secondary" onclick="window.print()">🖨️ Cetak Dokumen</button>
+                            <button class="btn-action-primary" onclick="showToast('Rekap Excel sedang diunduh!')">📥 Unduh Excel (.xlsx)</button>
+                        </div>
+                    </div>
+
+                    <div class="laporan-stats">
+                        <div style="background:#f8fafc;border:1px solid var(--border-color);border-radius:12px;padding:18px;">
+                            <div style="font-size:12px;color:var(--text-muted);font-weight:700;">TOTAL KAS MASUK (TP 2024/2025)</div>
+                            <div style="font-size:24px;font-weight:900;color:#065f46;margin-top:4px;">Rp 42.850.000</div>
+                        </div>
+                        <div style="background:#f8fafc;border:1px solid var(--border-color);border-radius:12px;padding:18px;">
+                            <div style="font-size:12px;color:var(--text-muted);font-weight:700;">TRANSAKSI VIA MIDTRANS ONLINE</div>
+                            <div style="font-size:24px;font-weight:900;color:#1e40af;margin-top:4px;">Rp 31.500.000 (73.5%)</div>
+                        </div>
+                        <div style="background:#f8fafc;border:1px solid var(--border-color);border-radius:12px;padding:18px;">
+                            <div style="font-size:12px;color:var(--text-muted);font-weight:700;">TRANSAKSI TUNAI KASIR SEKOLAH</div>
+                            <div style="font-size:24px;font-weight:900;color:#92400e;margin-top:4px;">Rp 11.350.000 (26.5%)</div>
+                        </div>
+                    </div>
+
+                    <h4 style="font-size:15px;font-weight:800;margin-bottom:12px;">Rekapitulasi Penerimaan per Kelas</h4>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>KELAS</th>
+                                <th>WALI KELAS</th>
+                                <th>JUMLAH SISWA</th>
+                                <th>TARIF BULANAN</th>
+                                <th>PERSENTASE KELUNASAN</th>
+                                <th>TOTAL DITERIMA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>7A</strong></td>
+                                <td>Nur Aini, S.Pd.</td>
+                                <td>32 Siswa</td>
+                                <td>Rp 250.000</td>
+                                <td><span class="badge-status badge-lunas">93.7%</span></td>
+                                <td><strong>Rp 5.250.000</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>7B</strong></td>
+                                <td>Bambang Irawan, M.Pd.</td>
+                                <td>30 Siswa</td>
+                                <td>Rp 250.000</td>
+                                <td><span class="badge-status badge-lunas">90.0%</span></td>
+                                <td><strong>Rp 4.725.000</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>8A</strong></td>
+                                <td>Dra. Hj. Maryati</td>
+                                <td>32 Siswa</td>
+                                <td>Rp 250.000</td>
+                                <td><span class="badge-status badge-lunas">96.8%</span></td>
+                                <td><strong>Rp 5.735.000</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>8B</strong></td>
+                                <td>Fathur Rahman, S.Si.</td>
+                                <td>31 Siswa</td>
+                                <td>Rp 250.000</td>
+                                <td><span class="badge-status badge-pending">87.1%</span></td>
+                                <td><strong>Rp 4.995.000</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>9A</strong></td>
+                                <td>Siti Rohmah, S.Pd.</td>
+                                <td>30 Siswa</td>
+                                <td>Rp 250.000</td>
+                                <td><span class="badge-status badge-lunas">96.6%</span></td>
+                                <td><strong>Rp 5.655.000</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>9B</strong></td>
+                                <td>Agus Setiawan, S.Kom.</td>
+                                <td>29 Siswa</td>
+                                <td>Rp 250.000</td>
+                                <td><span class="badge-status badge-lunas">93.1%</span></td>
+                                <td><strong>Rp 5.265.000</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ================= VIEW 10: BUAT TAGIHAN SPP (PETUGAS ONLY) ================= -->
+            <section id="viewCreateInvoice" class="view-section">
+                <!-- Header Banner -->
+                <div class="invoice-dashboard-hero">
+                    <div class="inv-hero-left">
+                        <div class="inv-badge-role" id="invRoleBadge">Akses Kontrol: ADMINISTRATOR</div>
+                        <h2>PEMBAYARAN SPP SMP MUHAMMADIYAH 3 METRO</h2>
+                        <p>Buat dan kelola tagihan SPP online siswa. Tagihan otomatis tersinkronisasi ke akun <strong>Siswa</strong> dan <strong>Wali Murid</strong>, serta langsung terhubung ke payment gateway <strong>Midtrans Online</strong>.</p>
+                    </div>
+                    <div class="inv-hero-right">
+                        <div class="inv-status-pill">
+                            <span class="status-dot"></span> Midtrans Gateway: <strong id="invMidtransStatus">ONLINE (Sandbox)</strong>
+                        </div>
+                        <button class="btn-refresh-inv" onclick="renderCreatedInvoices()">🔄 Refresh Data</button>
+                    </div>
+                </div>
+
+                <!-- 4 Metrics Summary Cards -->
+                <div class="inv-stats-row">
+                    <div class="inv-stat-card">
+                        <div class="inv-stat-icon icon-blue">📄</div>
+                        <div class="inv-stat-info">
+                            <span class="inv-stat-label">TOTAL TAGIHAN DITERBITKAN</span>
+                            <div class="inv-stat-value" id="statTotalInvoices">0 Tagihan</div>
+                            <span class="inv-stat-desc">Tahun Ajaran 2024/2025</span>
+                        </div>
+                    </div>
+                    <div class="inv-stat-card">
+                        <div class="inv-stat-icon icon-red">⏳</div>
+                        <div class="inv-stat-info">
+                            <span class="inv-stat-label">BELUM LUNAS (PIUTANG)</span>
+                            <div class="inv-stat-value" id="statTotalUnpaid" style="color:#dc2626;">0 Tagihan</div>
+                            <span class="inv-stat-desc" id="statNominalUnpaid">Rp 0</span>
+                        </div>
+                    </div>
+                    <div class="inv-stat-card">
+                        <div class="inv-stat-icon icon-green">✅</div>
+                        <div class="inv-stat-info">
+                            <span class="inv-stat-label">TAGIHAN SUDAH LUNAS</span>
+                            <div class="inv-stat-value" id="statTotalPaid" style="color:#16a34a;">0 Tagihan</div>
+                            <span class="inv-stat-desc" id="statNominalPaid">Rp 0</span>
+                        </div>
+                    </div>
+                    <div class="inv-stat-card">
+                        <div class="inv-stat-icon icon-purple">💳</div>
+                        <div class="inv-stat-info">
+                            <span class="inv-stat-label">METODE TRANSAKSI</span>
+                            <div class="inv-stat-value" style="color:#7c3aed;">100% Midtrans</div>
+                            <span class="inv-stat-desc">QRIS, Virtual Account & Card</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Dual Panel (1920x1080 Layout: Form 36% & Table 64%) -->
+                <div class="inv-workspace-grid">
+                    
+                    <!-- LEFT PANEL: Modern Invoice Creation Form -->
+                    <div class="inv-form-card">
+                        <div class="inv-card-header">
+                            <div>
+                                <h3>📄 Terbitkan Tagihan Baru</h3>
+                                <p>Pilih siswa tunggal atau generate massal per kelas</p>
+                            </div>
+                        </div>
+
+                        <!-- Mode Switcher -->
+                        <div class="inv-mode-tabs">
+                            <button type="button" class="inv-mode-btn active" id="btnModeSingle" onclick="switchInvoiceMode('single')">
+                                👤 Per Siswa
+                            </button>
+                            <button type="button" class="inv-mode-btn" id="btnModeBulk" onclick="switchInvoiceMode('bulk')">
+                                👥 Massal Per Kelas
+                            </button>
+                        </div>
+
+                        <form id="formCreateInvoice" onsubmit="event.preventDefault(); submitCreateInvoice();">
+                            <!-- Single Student Target -->
+                            <div class="form-group" id="groupTargetSiswa">
+                                <label class="form-label">Pilih Siswa Target <span style="color:#ef4444;">*</span></label>
+                                <select class="form-control" id="invoiceSiswaSelect" onchange="autoFillTarifByStudent()">
+                                    <!-- Populated via JS -->
+                                </select>
+                            </div>
+
+                            <!-- Bulk Class Target -->
+                            <div class="form-group" id="groupTargetKelas" style="display:none;">
+                                <label class="form-label">Pilih Target Kelas <span style="color:#ef4444;">*</span></label>
+                                <select class="form-control" id="invoiceKelasSelect" onchange="autoFillTarifByClass()">
+                                    <option value="ALL">Semua Kelas (Kelas 7, 8, dan 9)</option>
+                                    <option value="7A">Kelas 7A (Tingkat VII)</option>
+                                    <option value="7B">Kelas 7B (Tingkat VII)</option>
+                                    <option value="8A">Kelas 8A (Tingkat VIII)</option>
+                                    <option value="8B">Kelas 8B (Tingkat VIII)</option>
+                                    <option value="9A">Kelas 9A (Tingkat IX)</option>
+                                    <option value="9B">Kelas 9B (Tingkat IX)</option>
+                                </select>
+                                <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">
+                                    💰 Tagihan akan diterbitkan serentak ke semua siswa di kelas yang dipilih.
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Bulan SPP <span style="color:#ef4444;">*</span></label>
+                                <div id="invoiceBulanChecklist" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;background:#f8fafc;border:1.5px solid var(--border-color);border-radius:10px;padding:10px;">
+                                    <!-- Pilihan bulan (checkbox) diisi otomatis via JavaScript -->
+                                </div>
+                                <div style="font-size:12px;color:var(--text-muted);margin-top:6px;">
+                                    ✔ Centang satu atau lebih bulan. Setiap bulan yang dicentang diterbitkan sebagai satu tagihan.
+                                    Kosongkan jika tagihan bukan SPP.
+                                </div>
+                            </div>
+
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                                <div class="form-group">
+                                    <label class="form-label">Tahun Ajaran <span style="color:#ef4444;">*</span></label>
+                                    <select class="form-control" id="invoiceTahunAjaran" onchange="tahunAjaranUserPicked = true; autoCalcDueDate()">
+                                        <!-- Diisi otomatis dari tabel tbl_tahun_ajaran -->
+                                    </select>
+                                    <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">
+                                        📚 Daftar diambil dari tabel tahun ajaran sekolah.
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Tanggal Jatuh Tempo</label>
+                                    <input type="date" class="form-control" id="invoiceJatuhTempo" onchange="autoCalcDueDate()">
+                                    <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">
+                                        📅 Otomatis tanggal dan tahun hari ini.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                                <div class="form-group">
+                                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                                        <label class="form-label" style="margin-bottom:0;">Nominal SPP (Rp) <span style="color:#ef4444;">*</span></label>
+                                        <button type="button" class="btn-pos-selector" onclick="openJenisSppModal()">
+                                            🏷️ Pilih Jenis Pos SPP
+                                        </button>
+                                    </div>
+                                    <input type="number" class="form-control" id="invoiceNominalInput" value="250000" min="1" step="1" oninput="invoiceNominalManual = true" required>
+                                    <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">
+                                        💰 Bisa diisi nominal berapa pun. Nilai ini yang tampil dan ditagihkan ke akun siswa &amp; wali murid.
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Status Awal</label>
+                                    <select class="form-control" id="invoiceStatusSelect">
+                                        <option value="Belum Lunas">Belum Lunas</option>
+                                        <option value="Lunas">Lunas</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Keterangan Tagihan</label>
+                                <input type="text" class="form-control" id="invoiceKeteranganInput" placeholder="Contoh: SPP Reguler + Kegiatan Ekstrakurikuler" value="SPP Reguler Siswa Semester Genap">
+                            </div>
+
+                            <!-- Info Box Sync -->
+                            <div class="inv-sync-notice">
+                                <div style="font-size:18px;">⚡</div>
+                                <div>
+                                    <strong>Otomatis Tersambung ke Siswa & Wali Murid:</strong>
+                                    <p>Tagihan yang diterbitkan akan langsung tampil di menu Siswa dan Orang Tua, serta terintegrasi langsung dengan tombol pembayaran Midtrans Snap.</p>
+                                </div>
+                            </div>
+
+                            <div class="inv-actions-row" style="display:flex;gap:10px;margin-top:20px;">
+                                <button type="submit" class="btn-pay-modern" id="btnSubmitInvoice">
+                                    <span>💳</span> BAYAR (PAY)
+                                </button>
+                                <button type="button" class="btn-action-secondary" onclick="resetInvoiceForm()">
+                                    Batal
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- RIGHT PANEL: Real-time Invoice Control Table -->
+                    <div class="inv-table-card">
+                        <div class="inv-table-header">
+                            <div>
+                                <h3>📄 Daftar Kontrol Tagihan Siswa</h3>
+                                <p>Admin, Kepala Sekolah, dan Bendahara dapat memantau status pembayaran serta mengontrol tagihan di sini.</p>
+                            </div>
+                            <div class="inv-filter-group">
+                                <select class="inv-filter-select" id="filterStatusInv" onchange="renderCreatedInvoices()">
+                                    <option value="ALL">Semua Status</option>
+                                    <option value="Belum Lunas">Hanya Belum Lunas</option>
+                                    <option value="Lunas">Hanya Lunas</option>
+                                </select>
+                                <select class="inv-filter-select" id="filterKelasInv" onchange="renderCreatedInvoices()">
+                                    <option value="ALL">Semua Kelas</option>
+                                    <option value="7A">Kelas 7A</option>
+                                    <option value="7B">Kelas 7B</option>
+                                    <option value="8A">Kelas 8A</option>
+                                    <option value="8B">Kelas 8B</option>
+                                    <option value="9A">Kelas 9A</option>
+                                </select>
+                                <input type="text" class="inv-search-input" id="searchInvQuery" placeholder="🔍 Cari Siswa / NISN..." oninput="renderCreatedInvoices()">
+                            </div>
+                        </div>
+
+                        <div class="inv-table-container">
+                            <table class="inv-table-modern">
+                                <thead>
+                                    <tr>
+                                        <th style="width:50px;">NO</th>
+                                        <th>NO TAGIHAN</th>
+                                        <th>SISWA & KELAS</th>
+                                        <th>BULAN</th>
+                                        <th>NOMINAL</th>
+                                        <th>JATUH TEMPO</th>
+                                        <th>STATUS</th>
+                                        <th style="text-align:right;">AKSI KONTROL</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="createdInvoiceListBody">
+                                    <!-- Rendered dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+<!-- ============ STAFF MANAGEMENT VIEWS ============ -->
+<!-- viewStaff -->
+<section id="viewStaff" class="view-section" style="display:none;">
+    <div class="page-header">
+        <div class="header-left">
+            <h2>Database Petugas</h2>
+            <p class="subtitle">Kelola data petugas, admin, bendahara, dan kepala sekolah</p>
+        </div>
+        <div class="header-right">
+            <button class="btn btn-primary" onclick="showCreateStaff()">
+                <span class="btn-icon">&#9998;</span> Tambah Petugas
+            </button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Daftar Petugas Sekolah</h3>
+        </div>
+        <div class="card-body p-0">
+            <div id="petugasTableContainer">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Petugas</th>
+                            <th>Jabatan</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="petugasTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align:center;padding:24px;color:var(--text-muted);">
+                                Memuat data petugas...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End viewStaff -->
+
+<!-- viewStaffCreate -->
+<section id="viewStaffCreate" class="view-section" style="display:none;">
+    <div class="page-header">
+        <div class="header-left">
+            <h2>Tambah Petugas Baru</h2>
+            <p class="subtitle">Isi form berikut untuk menambah data petugas ke database</p>
+        </div>
+        <div class="header-right">
+            <button class="btn btn-secondary" onclick="hideCreateStaff()">&larr; Kembali</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Form Data Petugas</h3>
+        </div>
+        <div class="card-body">
+            <form id="createStaffForm" onsubmit="event.preventDefault(); storeStaff();">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Username Siswa (dari daftar user)</label>
+                        <select id="staffUserId" class="form-input" required>
+                            <option value="">-- Pilih Username --</option>
+                            <option value="">-- Loading... --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Jabatan</label>
+                        <select id="staffJabatan" class="form-input" required>
+                            <option value="">-- Pilih Jabatan --</option>
+                            <option value="petugas">Petugas</option>
+                            <option value="admin">Admin</option>
+                            <option value="bendahara">Bendahara</option>
+                            <option value="kepala_sekolah">Kepala Sekolah</option>
+                            <option value="guru">Guru Wali Kelas</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">No. Telepon</label>
+                        <input type="text" id="staffNoTelp" class="form-input" placeholder="Contoh: 081234567890">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="staffEmail" class="form-input" placeholder="nama@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Status Aktif</label>
+                        <select id="staffStatus" class="form-input">
+                            <option value="aktif">Aktif</option>
+                            <option value="tidak_aktif">Tidak Aktif</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        &#10003; Simpan Petugas
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="resetStaffForm()">
+                        Reset
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- End viewStaffCreate -->
+<!-- viewStaffEdit -->
+<section id="viewStaffEdit" class="view-section" style="display:none;">
+    <div class="page-header">
+        <div class="header-left">
+            <h2>Edit Data Petugas</h2>
+            <p class="subtitle">Perbarui data petugas di database</p>
+        </div>
+        <div class="header-right">
+            <button class="btn btn-secondary" onclick="hideEditStaff()">&larr; Kembali</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Form Update Petugas</h3>
+        </div>
+        <div class="card-body">
+            <form id="editStaffForm" onsubmit="event.preventDefault(); updateStaff();">
+                <div class="form-grid">
+                    <input type="hidden" id="editStaffId">
+                    <div class="form-group">
+                        <label class="form-label">Nama Petugas</label>
+                        <input type="text" id="editStaffNama" class="form-input" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Jabatan</label>
+                        <select id="editStaffJabatan" class="form-input" required>
+                            <option value="">-- Pilih Jabatan --</option>
+                            <option value="petugas">Petugas</option>
+                            <option value="admin">Admin</option>
+                            <option value="bendahara">Bendahara</option>
+                            <option value="kepala_sekolah">Kepala Sekolah</option>
+                            <option value="guru">Guru Wali Kelas</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">No. Telepon</label>
+                        <input type="text" id="editStaffNoTelp" class="form-input" placeholder="Contoh: 081234567890">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" id="editStaffEmail" class="form-input" placeholder="nama@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Status Aktif</label>
+                        <select id="editStaffStatus" class="form-input">
+                            <option value="aktif">Aktif</option>
+                            <option value="tidak_aktif">Tidak Aktif</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        &#10003; Update Petugas
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="deleteStaff()">
+                        &#10005; Hapus Petugas
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- End viewStaffEdit -->
+
+<!-- viewStaffShow -->
+<section id="viewStaffShow" class="view-section" style="display:none;">
+    <div class="page-header">
+        <div class="header-left">
+            <h2>Detail Petugas</h2>
+            <p class="subtitle">Rincian data petugas</p>
+        </div>
+        <div class="header-right">
+            <button class="btn btn-secondary" onclick="hideShowStaff()">&larr; Kembali</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body p-4">
+            <div class="staff-detail-card">
+                <div class="staff-avatar" id="staffAvatar">
+                    <span id="staffAvatarLetter">-</span>
+                </div>
+                <div class="staff-info">
+                    <h2><span id="staffName">-</span></h2>
+                    <p id="staffJabatan" class="text-muted">-</p>
+                </div>
+            </div>
+
+            <div class="staff-detail-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Username</span>
+                    <span class="detail-value" id="staffUsername">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Role</span>
+                    <span class="detail-value" id="staffRole">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">No. Telepon</span>
+                    <span class="detail-value" id="staffNoTelp">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Email</span>
+                    <span class="detail-value" id="staffEmail">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Status</span>
+                    <span class="detail-value status-badge" id="staffStatus">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Dibuat</span>
+                    <span class="detail-value" id="staffCreated">-</span>
+                </div>
+            </div>
+
+            <div class="form-actions mt-3">
+                <button class="btn btn-primary" onclick="hideShowStaff(); showEditStaff();">
+                    &#9998; Edit Data
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End viewStaffShow -->
+</main>
+        </div><!-- /.app-layout -->
+
+        <!-- Footer -->
+        <footer style="background:#fff;border-top:1px solid var(--border-color);padding:24px;text-align:center;font-size:13px;color:var(--text-muted);margin-top:auto;">
+            © 2026 SMP Muhammadiyah 3 Metro • Sistem Pembayaran SPP Online Terintegrasi Midtrans
+        </footer>
+
+    </div>
+
+    <!-- ==========================================
+         MODAL: KUITANSI RESMI CETAK (RECEIPT)
+         ========================================== -->
+    <div id="modalReceipt" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title">Bukti Pembayaran SPP Resmi</div>
+                <button class="modal-close-btn" onclick="closeModal('modalReceipt')">✖</button>
+            </div>
+            <div class="modal-body">
+                <div class="receipt-box" id="printableReceiptContent">
+                    <div class="receipt-head">
+                        <h3>SMP MUHAMMADIYAH 3 METRO</h3>
+                        <p>Jl. Kh. Ahmad Dahlan No. 1, Kota Metro, Lampung • Telp: (0725) 41234</p>
+                        <p style="font-weight:700;margin-top:4px;">KUITANSI RESMI PEMBAYARAN SPP</p>
+                        <div class="receipt-stamp">LUNAS</div>
+                    </div>
+
+                    <div style="font-size:13px;line-height:1.7;margin-bottom:16px;">
+                        <div style="display:flex;justify-content:space-between;">
+                            <span>No. Transaksi / Kuitansi:</span>
+                            <strong id="rcptNo">SPP-202501-0081</strong>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                            <span>Waktu Pembayaran:</span>
+                            <span id="rcptTanggal">24 Oktober 2026, 13:40 WIB</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                            <span>Nama Siswa:</span>
+                            <strong id="rcptNama">Ahmad Dahlan Putra</strong>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                            <span>NISN / Kelas:</span>
+                            <span id="rcptNisn">0081234567 / Kelas 7A</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                            <span>Untuk Pembayaran:</span>
+                            <span id="rcptUraian">SPP Bulan Januari 2025</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;">
+                            <span>Kanal Pembayaran:</span>
+                            <span id="rcptMetode">Midtrans (QRIS / BSI VA)</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;border-top:1px solid #e2e8f0;margin-top:8px;padding-top:8px;font-size:15px;">
+                            <strong>JUMLAH DIBAYAR:</strong>
+                            <strong style="color:var(--primary-blue);" id="rcptNominal">Rp 250.000</strong>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:24px;font-size:12px;">
+                        <div style="text-align:center;">
+                            <div>Siswa / Penyetor</div>
+                            <div style="margin-top:40px;font-weight:700;" id="rcptPenyetor">Ahmad Dahlan Putra</div>
+                        </div>
+                        <div style="text-align:center;">
+                            <div>Metro, <span id="rcptDateOnly">24 Oktober 2026</span></div>
+                            <div>Bendahara SMP Muhammadiyah 3</div>
+                            <div style="margin-top:40px;font-weight:700;">Hj. Siti Aminah, S.E.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-action-secondary" onclick="closeModal('modalReceipt')">Tutup</button>
+                <button class="btn-action-primary" onclick="printReceiptDirect()">🖨️ Cetak Kuitansi</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- ==========================================
+         MODAL SELECTOR 10 JENIS POS SPP (AUTO-FILL)
+         ========================================== -->
+    <div id="modalJenisSpp" class="custom-modal-backdrop" style="display:none;" onclick="if(event.target === this) closeModal('modalJenisSpp')">
+        <div class="custom-modal-box" style="max-width:760px;width:95%;">
+            <div class="custom-modal-header" style="background:linear-gradient(135deg, #1e40af, #2563eb);color:#fff;">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <div style="width:42px;height:42px;background:rgba(255,255,255,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;">🏷️</div>
+                    <div>
+                        <h3 style="font-size:18px;font-weight:800;color:#fff;margin:0;">Pilih Jenis Pos SPP & Biaya Sekolah</h3>
+                        <p style="font-size:12.5px;color:#bfdbfe;margin-top:3px;margin-bottom:0;">Klik salah satu pos untuk mengisi nominal dan keterangan tagihan secara otomatis</p>
+                    </div>
+                </div>
+                <button type="button" class="modal-close-cross" onclick="closeModal('modalJenisSpp')">&times;</button>
+            </div>
+            <div class="custom-modal-body" style="background:#f8fafc;padding:22px;max-height:65vh;overflow-y:auto;">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:14px;">
+                    
+                    <!-- 1. SPP Bulanan Reguler -->
+                    <div class="pos-preset-card" onclick="selectJenisSpp('SPP Bulanan Reguler', 250000, 'SPP Bulanan Reguler Siswa SMP Muhammadiyah 3 Metro', 'Januari')">
+                        <div class="pos-card-icon" style="background:#dbeafe;color:#1e40af;">📚</div>
+                        <div style="flex:1;">
+                            <div class="pos-card-title">1. SPP Bulanan Reguler</div>
+                            <div class="pos-card-desc">Kewajiban bulanan operasional pendidikan & pembelajaran reguler</div>
+                            <div class="pos-card-price">Rp 250.000</div>
+                        </div>
+                        <div class="pos-card-badge">Pilih &rarr;</div>
+                    </div>
+
+                    <!-- 2. SPP Kelas Unggulan / ICT -->
+                    <div class="pos-preset-card" onclick="selectJenisSpp('SPP Kelas Unggulan / ICT', 350000, 'SPP Kelas Unggulan / Program ICT & Digital Class', 'Januari')">
+                        <div class="pos-card-icon" style="background:#e0e7ff;color:#4338ca;">💻</div>
+                        <div style="flex:1;">
+                            <div class="pos-card-title">2. SPP Kelas Unggulan / ICT</div>
+                            <div class="pos-card-desc">Program intensif teknologi digital, coding, & multimedia kelas ICT</div>
+                            <div class="pos-card-price">Rp 350.000</div>
+                        </div>
+                        <div class="pos-card-badge">Pilih &rarr;</div>
+                    </div>
+
+                    <!-- 3. Infaq Pembangunan & Sarpras -->
+                    <div class="pos-preset-card" onclick="selectJenisSpp('Infaq Pembangunan & Sarpras', 150000, 'Infaq Pembangunan Sarana & Prasarana Gedung Sekolah', '')">
+                        <div class="pos-card-icon" style="background:#fef3c7;color:#b45309;">🏛️</div>
+                        <div style="flex:1;">
+                            <div class="pos-card-title">3. Infaq Pembangunan & Sarpras</div>
+                            <div class="pos-card-desc">Pemeliharaan & peningkatan fasilitas sarana prasarana sekolah</div>
+                            <div class="pos-card-price">Rp 150.000</div>
+                        </div>
+                        <div class="pos-card-badge">Pilih &rarr;</div>
+                    </div>
+
+                    <!-- 4. SPP Kegiatan Extrakurikuler -->
+                    <div class="pos-preset-card" onclick="selectJenisSpp('SPP Kegiatan Extrakurikuler', 50000, 'Iuran Kegiatan Pengembangan Bakat Ekstrakurikuler', '')">
+                        <div class="pos-card-icon" style="background:#dcfce7;color:#15803d;">⚽</div>
+                        <div style="flex:1;">
+                            <div class="pos-card-title">4. SPP Kegiatan Extrakurikuler</div>
+                            <div class="pos-card-desc">Hizbul Wathan (HW), Tapak Suci, Futsal, Robotik, & Marching Band</div>
+                            <div class="pos-card-price">Rp 50.000</div>
+                        </div>
+                        <div class="pos-card-badge">Pilih &rarr;</div>
+                    </div>
+
+                    <!-- 5. Biaya Ujian & Asesmen (CBT) -->
+                    <div class="pos-preset-card" onclick="selectJenisSpp('Biaya Ujian & Asesmen (CBT)', 100000, 'Biaya Ujian Semester & Asesmen Komputer CBT', '')">
+                        <div class="pos-card-icon" style="background:#fee2e2;color:#b91c1c;">📝</div>
+                        <div style="flex:1;">
+                            <div class="pos-card-title">5. Biaya Ujian & Asesmen (CBT)</div>
+                            <div class="pos-card-desc">Pelaksanaan Asesmen Sumatif Akhir Jenjang & CBT Online</div>
+                            <div class="pos-card-price">Rp 100.000</div>
+                        </div>
+                        <div class="pos-card-badge">Pilih &rarr;</div>
+                    </div>
+
+                    <!-- 6. Praktikum Komputer & Lab -->
+                    <div class="pos-preset-card" onclick="selectJenisSpp('Praktikum Komputer & Lab', 75000, 'Biaya Praktikum Komputer & Laboratorium Sains', '')">
+                        <div class="pos-card-icon" style="background:#f3e8ff;color:#7e22ce;">🔬</div>
+                        <div style="flex:1;">
+                            <div class="pos-card-title">6. Praktikum Komputer & Lab</div>
+                            <div class="pos-card-desc">Bahan praktek lab IPA, mikroskop, jaringan internet, & software PC</div>
+                            <div class="pos-card-price">Rp 75.000</div>
+                        </div>
+                        <div class="pos-card-badge">Pilih &rarr;</div>
+                    </div>
+
+                    <!-- 7. Literasi & Perpustakaan Digital -->
+                    <div class="pos-preset-card" onclick="selectJenisSpp('Literasi & Perpustakaan Digital', 50000, 'Biaya Langganan Literasi & E-Library Digital', '')">
+                        <div class="pos-card-icon" style="background:#cffafe;color:#0e7490;">📖</div>
+                        <div style="flex:1;">
+                            <div class="pos-card-title">7. Literasi & Perpustakaan Digital</div>
+                            <div class="pos-card-desc">Akses ribuan e-book, majalah dinding digital, & modul belajar online</div>
+                            <div class="pos-card-price">Rp 50.000</div>
+                        </div>
+                        <div class="pos-card-badge">Pilih &rarr;</div>
+                    </div>
+
+                    <!-- 8. Pengembangan Karakter & Al-Islam -->
+                    <div class="pos-preset-card" onclick="selectJenisSpp('Pengembangan Karakter & Al-Islam', 100000, 'Program Pembinaan Karakter, Tahfidz & Al-Islam', '')">
+                        <div class="pos-card-icon" style="background:#ecfdf5;color:#047857;">🕌</div>
+                        <div style="flex:1;">
+                            <div class="pos-card-title">8. Pengembangan Karakter & Al-Islam</div>
+                            <div class="pos-card-desc">Baitul Arqam, Tahfidz Al-Qur'an, Shalat Dhuha, & Kemuhammadiyahan</div>
+                            <div class="pos-card-price">Rp 100.000</div>
+                        </div>
+                        <div class="pos-card-badge">Pilih &rarr;</div>
+                    </div>
+
+                    <!-- 9. Daftar Ulang / Herregistrasi -->
+                    <div class="pos-preset-card" onclick="selectJenisSpp('Daftar Ulang / Herregistrasi', 500000, 'Biaya Daftar Ulang Herregistrasi Siswa Tahun Ajaran Baru', '')">
+                        <div class="pos-card-icon" style="background:#ffedd5;color:#c2410c;">📋</div>
+                        <div style="flex:1;">
+                            <div class="pos-card-title">9. Daftar Ulang / Herregistrasi</div>
+                            <div class="pos-card-desc">Herregistrasi kenaikan kelas & pembaruan administrasi siswa</div>
+                            <div class="pos-card-price">Rp 500.000</div>
+                        </div>
+                        <div class="pos-card-badge">Pilih &rarr;</div>
+                    </div>
+
+                    <!-- 10. Tabungan Wisuda & Pelepasan -->
+                    <div class="pos-preset-card" onclick="selectJenisSpp('Tabungan Wisuda & Pelepasan', 125000, 'Iuran Tabungan Wisuda & Pelepasan Siswa Tingkat Akhir', '')">
+                        <div class="pos-card-icon" style="background:#fce7f3;color:#be185d;">🎓</div>
+                        <div style="flex:1;">
+                            <div class="pos-card-title">10. Tabungan Wisuda & Pelepasan</div>
+                            <div class="pos-card-desc">Tabungan tahunan untuk toga wisuda, ijazah, & resepsi pelepasan</div>
+                            <div class="pos-card-price">Rp 125.000</div>
+                        </div>
+                        <div class="pos-card-badge">Pilih &rarr;</div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="custom-modal-footer" style="padding:16px 24px;background:#ffffff;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:12.5px;color:#64748b;">💡 Nominal & keterangan di atas dapat disesuaikan kembali setelah dipilih.</span>
+                <button type="button" class="btn-action-secondary" onclick="closeModal('modalJenisSpp')">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL SUKSES PENERBITAN TAGIHAN (CENTER SCREEN MODAL)
+         ========================================== -->
+    <div id="modalInvoiceSuccess" class="custom-modal-backdrop" style="display:none;" onclick="if(event.target === this) closeModal('modalInvoiceSuccess')">
+        <div class="custom-modal-box" style="max-width:540px;width:92%;padding:32px 28px;text-align:center;">
+            
+            <!-- Animated Green Checkmark SVG -->
+            <div class="success-icon-wrap" style="width:78px;height:78px;background:#ecfdf5;border:3px solid #10b981;border-radius:50%;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(16, 185, 129, 0.25);">
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+
+            <h2 style="font-size:22px;font-weight:900;color:#0f172a;margin-bottom:6px;">Tagihan Berhasil Diterbitkan!</h2>
+            <p style="font-size:13px;color:#64748b;margin-bottom:22px;line-height:1.5;">Data tagihan telah tersimpan ke sistem dan siap dibayarkan secara online.</p>
+
+            <!-- Card Informasi Rincian -->
+            <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:14px;padding:18px 20px;text-align:left;margin-bottom:24px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed #cbd5e1;">
+                    <span style="font-size:12.5px;color:#64748b;">No. Tagihan / Invoice:</span>
+                    <strong id="succInvNo" style="font-size:13.5px;color:#1e40af;font-family:monospace;letter-spacing:0.5px;background:#eff6ff;padding:2px 8px;border-radius:6px;border:1px solid #bfdbfe;">INV-202610-001</strong>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed #cbd5e1;">
+                    <span style="font-size:12.5px;color:#64748b;">Nama Siswa / Target:</span>
+                    <strong id="succInvStudent" style="font-size:13px;color:#0f172a;max-width:280px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Ahmad Dahlan Putra (7A)</strong>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed #cbd5e1;">
+                    <span style="font-size:12.5px;color:#64748b;">Jenis / Bulan SPP:</span>
+                    <strong id="succInvMonth" style="font-size:13px;color:#0f172a;">SPP Bulanan Reguler (Januari 2025)</strong>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:12px;border-bottom:1.5px solid #e2e8f0;">
+                    <span style="font-size:13px;font-weight:700;color:#334155;">Total Tagihan:</span>
+                    <span id="succInvAmount" style="font-size:24px;font-weight:900;color:#16a34a;">Rp 250.000</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 14px;">
+                    <span style="font-size:16px;">⚡</span>
+                    <div style="font-size:12px;font-weight:700;color:#1d4ed8;">Tersambung ke Midtrans Snap (Ready for Online Payment)</div>
+                </div>
+            </div>
+
+            <!-- Modal Action Buttons -->
+            <div style="display:flex;gap:12px;justify-content:center;">
+                <button type="button" class="btn-action-primary" style="padding:12px 22px;font-size:14px;font-weight:700;border-radius:10px;" onclick="printSuccessInvoice()">
+                    🖨️ Cetak Nota / Invoice
+                </button>
+                <button type="button" class="btn-action-secondary" style="padding:12px 22px;font-size:14px;font-weight:700;border-radius:10px;" onclick="closeModal('modalInvoiceSuccess')">
+                    Selesai / Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ==========================================
+         JAVASCRIPT LOGIC
+         ========================================== -->
+    <script>
+        // Database of demo accounts
+        const DEMO_USERS = {
+            siswa: [
+                {
+                    username: '0081234567',
+                    password: 'password123',
+                    nama: 'Ahmad Dahlan Putra',
+                    nisn: '0081234567',
+                    nis: '2024001',
+                    kelas: '7A',
+                    tingkat: 'VII',
+                    tarif: 250000,
+                    namaOrtu: 'Budi Santoso',
+                    noTelp: '081234567890',
+                    alamat: 'Jl. Hadimulyo Barat No. 15, Metro Pusat, Kota Metro',
+                    role: 'siswa',
+                    tagihanUnpaid: ['Januari 2025']
+                },
+                {
+                    username: '0087654321',
+                    password: 'password123',
+                    nama: 'Siti Walidah Putri',
+                    nisn: '0087654321',
+                    nis: '2024002',
+                    kelas: '8A',
+                    tingkat: 'VIII',
+                    tarif: 250000,
+                    namaOrtu: 'Supriyanto',
+                    noTelp: '081298765432',
+                    alamat: 'Jl. Imam Bonjol No. 24, Metro',
+                    role: 'siswa',
+                    tagihanUnpaid: ['Januari 2025']
+                },
+                {
+                    username: '0082345678',
+                    password: 'password123',
+                    nama: 'Muhammad Fauzan',
+                    nisn: '0082345678',
+                    nis: '2024003',
+                    kelas: '7B',
+                    tingkat: 'VII',
+                    tarif: 250000,
+                    namaOrtu: 'Hendra Gunawan',
+                    noTelp: '081377889900',
+                    alamat: 'Jl. Teuku Umar No. 10, Metro Pusat',
+                    role: 'siswa',
+                    tagihanUnpaid: ['Januari 2025']
+                },
+                {
+                    username: '0083456789',
+                    password: 'password123',
+                    nama: 'Aisyah Rahmawati',
+                    nisn: '0083456789',
+                    nis: '2024004',
+                    kelas: '8B',
+                    tingkat: 'VIII',
+                    tarif: 250000,
+                    namaOrtu: 'Joko Widodo',
+                    noTelp: '081255667788',
+                    alamat: 'Jl. Ki Hajar Dewantara No. 5, Metro',
+                    role: 'siswa',
+                    tagihanUnpaid: ['Januari 2025']
+                },
+                {
+                    username: '0084567890',
+                    password: 'password123',
+                    nama: 'Fikri Pratama',
+                    nisn: '0084567890',
+                    nis: '2024005',
+                    kelas: '9A',
+                    tingkat: 'IX',
+                    tarif: 250000,
+                    namaOrtu: 'Agus Salim',
+                    noTelp: '081399001122',
+                    alamat: 'Jl. Jend. Sudirman No. 88, Metro',
+                    role: 'siswa',
+                    tagihanUnpaid: []
+                }
+            ],
+            ortu: [
+                {
+                    username: 'ortu001',
+                    password: 'password123',
+                    nama: 'Budi Santoso (Wali Ahmad Dahlan)',
+                    nisn: '0081234567',
+                    nis: '2024001',
+                    kelas: '7A',
+                    tingkat: 'VII',
+                    tarif: 250000,
+                    namaOrtu: 'Budi Santoso',
+                    noTelp: '081234567890',
+                    alamat: 'Jl. Hadimulyo Barat No. 15, Metro Pusat, Kota Metro',
+                    role: 'ortu',
+                    tagihanUnpaid: ['Januari 2025']
+                },
+                {
+                    username: 'ortu002',
+                    password: 'password123',
+                    nama: 'Supriyanto (Wali Siti Walidah)',
+                    nisn: '0087654321',
+                    nis: '2024002',
+                    kelas: '8A',
+                    tingkat: 'VIII',
+                    tarif: 250000,
+                    namaOrtu: 'Supriyanto',
+                    noTelp: '081298765432',
+                    alamat: 'Jl. Imam Bonjol No. 24, Metro',
+                    role: 'ortu',
+                    tagihanUnpaid: ['Januari 2025']
+                }
+            ],
+            petugas: [
+                {
+                    username: 'admin',
+                    password: 'admin123',
+                    nama: 'Administrator SMP',
+                    role: 'petugas',
+                    subRole: 'Admin SPP',
+                    petugasTitle: 'ADMINISTRATOR'
+                },
+                {
+                    username: 'bendahara',
+                    password: 'bendahara123',
+                    nama: 'Hj. Siti Aminah, S.E.',
+                    role: 'petugas',
+                    subRole: 'Bendahara Sekolah',
+                    petugasTitle: 'BENDAHARA'
+                },
+                {
+                    username: 'kepsek',
+                    password: 'kepsek123',
+                    nama: 'Drs. H. M. Fauzi, M.Pd.',
+                    role: 'petugas',
+                    subRole: 'Kepala Sekolah',
+                    petugasTitle: 'KEPALA SEKOLAH'
+                }
+            ]
+        };
+
+        // ============================================================
+        // DATA DEMO BESAR: 261 SISWA (9 KELAS x 29) + 30 GURU + 9 WALI
+        // Semua data dibangkitkan deterministik agar tampilan selalu sama
+        // setiap kali halaman dibuka (tidak berubah-ubah).
+        // ============================================================
+        const KELAS_DEMO = ['7A', '7B', '7C', '8A', '8B', '8C', '9A', '9B', '9C'];
+        const TINGKAT_BY_KELAS = { '7': 'VII', '8': 'VIII', '9': 'IX' };
+        const WILAYAH_METRO = ['Metro Pusat', 'Metro Timur', 'Metro Barat', 'Metro Utara', 'Metro Selatan'];
+
+        const NAMA_DEPAN_SISWA = [
+            'Ahmad', 'Muhammad', 'Fikri', 'Rizky', 'Dimas', 'Bagas', 'Fajar', 'Ilham',
+            'Reza', 'Andika', 'Siti', 'Aisyah', 'Nabila', 'Zahra', 'Putri', 'Dewi',
+            'Rani', 'Salma', 'Intan', 'Laila', 'Bima', 'Yoga', 'Arif', 'Hendra',
+            'Salsabila', 'Kirana', 'Nadia', 'Farhan', 'Alif'
+        ];
+
+        const NAMA_BELAKANG_SISWA = [
+            'Pratama', 'Saputra', 'Nugroho', 'Hidayat', 'Ramadhan', 'Setiawan',
+            'Wibowo', 'Kurniawan', 'Maulana', 'Firmansyah', 'Anggraini', 'Lestari',
+            'Pertiwi', 'Wulandari', 'Sari', 'Handayani', 'Rahmawati', 'Oktaviani',
+            'Safitri', 'Puspita', 'Utami', 'Damayanti', 'Nugraheni', 'Kusuma',
+            'Wijaya', 'Santoso', 'Gunawan', 'Siregar', 'Nasution'
+        ];
+
+        const NAMA_GURU_DEMO = [
+            'Drs. Bambang Sutrisno', 'Dra. Endang Wahyuni', 'Ahmad Fauzi, S.Pd.',
+            'Siti Nurhaliza, S.Pd.', 'Joko Purnomo, M.Pd.', 'Retno Palupi, S.Pd.',
+            'Agus Setiawan, S.Kom.', 'Dewi Kartika, S.Pd.', 'Hendra Wijaya, M.Pd.',
+            'Lina Marlina, S.Pd.', 'Rudi Hartono, S.Pd.', 'Wulan Sari, M.Pd.',
+            'Eko Prasetyo, S.Pd.', 'Fitri Handayani, S.Pd.', 'Dedi Kurniawan, S.Kom.',
+            'Yuni Astuti, S.Pd.', 'Slamet Riyadi, M.Pd.', 'Ratna Dewi, S.Pd.',
+            'Arif Budiman, S.Pd.', 'Maya Puspita, S.Pd.', 'Taufik Hidayat, S.Pd.',
+            'Rina Wulandari, M.Pd.', 'Sigit Nugroho, S.Pd.', 'Nur Aini, S.Pd.',
+            'Bayu Saputra, S.Kom.', 'Indah Permata, S.Pd.', 'Fajar Ramadhan, S.Pd.',
+            'Lestari Ningsih, M.Pd.', 'Yudi Hermawan, S.Pd.', 'Sri Wahyuni, S.Pd.'
+        ];
+
+        const MAPEL_DEMO = [
+            'Matematika', 'Bahasa Indonesia', 'Bahasa Inggris', 'IPA', 'IPS', 'PPKn',
+            'PAI', 'Seni Budaya', 'PJOK', 'Informatika', 'Prakarya', 'Bahasa Lampung'
+        ];
+
+        const NAMA_WALI_KELAS = [
+            'Hj. Siti Aminah, S.E.', 'Drs. M. Yusuf, M.Pd.', 'Nurhayati, S.Pd.',
+            'Agus Salim, S.Pd.', 'Endang Susilowati, S.Pd.', 'Bambang Irawan, M.Pd.',
+            'Rini Handayani, S.Pd.', 'Dedi Supriyadi, S.Pd.', 'Tri Wulandari, M.Pd.'
+        ];
+
+        // Lima akun demo lama dipertahankan agar username/password yang sudah
+        // dibagikan tetap bisa dipakai, tetapi jumlah siswa tetap 261.
+        const SISWA_DEMO_KHUSUS = [
+            {
+                kelas: '7A', index: 0, data: {
+                    username: '0081234567', nisn: '0081234567', nis: '2024001',
+                    nama: 'Ahmad Dahlan Putra', jenisKelamin: 'L',
+                    namaOrtu: 'Budi Santoso', noTelp: '081234567890',
+                    alamat: 'Jl. Hadimulyo Barat No. 15, Metro Pusat, Kota Metro',
+                    tagihanUnpaid: ['Januari 2025']
+                }
+            },
+            {
+                kelas: '7B', index: 0, data: {
+                    username: '0082345678', nisn: '0082345678', nis: '2024003',
+                    nama: 'Muhammad Fauzan', jenisKelamin: 'L',
+                    namaOrtu: 'Hendra Gunawan', noTelp: '081377889900',
+                    alamat: 'Jl. Teuku Umar No. 10, Metro Pusat',
+                    tagihanUnpaid: ['Januari 2025']
+                }
+            },
+            {
+                kelas: '8A', index: 0, data: {
+                    username: '0087654321', nisn: '0087654321', nis: '2024002',
+                    nama: 'Siti Walidah Putri', jenisKelamin: 'P',
+                    namaOrtu: 'Supriyanto', noTelp: '081298765432',
+                    alamat: 'Jl. Imam Bonjol No. 24, Metro',
+                    tagihanUnpaid: ['Januari 2025']
+                }
+            },
+            {
+                kelas: '8B', index: 0, data: {
+                    username: '0083456789', nisn: '0083456789', nis: '2024004',
+                    nama: 'Aisyah Rahmawati', jenisKelamin: 'P',
+                    namaOrtu: 'Joko Widodo', noTelp: '081255667788',
+                    alamat: 'Jl. Ki Hajar Dewantara No. 5, Metro',
+                    tagihanUnpaid: ['Januari 2025']
+                }
+            },
+            {
+                kelas: '9A', index: 0, data: {
+                    username: '0084567890', nisn: '0084567890', nis: '2024005',
+                    nama: 'Fikri Pratama', jenisKelamin: 'L',
+                    namaOrtu: 'Agus Salim', noTelp: '081399001122',
+                    alamat: 'Jl. Jend. Sudirman No. 88, Metro',
+                    tagihanUnpaid: []
+                }
+            }
+        ];
+
+        function buildSiswaDemo() {
+            const list = [];
+
+            KELAS_DEMO.forEach((kelas, kelasIndex) => {
+                const tingkat = TINGKAT_BY_KELAS[kelas.charAt(0)] || 'VII';
+                for (let i = 0; i < 29; i++) {
+                    const seq = (kelasIndex + 1) * 100 + (i + 1);
+                    const nisn = '0081' + String(seq).padStart(6, '0');
+
+                    list.push({
+                        username: nisn,
+                        password: 'password123',
+                        nama: NAMA_DEPAN_SISWA[i] + ' ' + NAMA_BELAKANG_SISWA[(i + kelasIndex) % NAMA_BELAKANG_SISWA.length],
+                        nisn: nisn,
+                        nis: '2025' + String(seq).padStart(3, '0'),
+                        kelas: kelas,
+                        tingkat: tingkat,
+                        tarif: 250000,
+                        namaOrtu: 'Bapak ' + NAMA_BELAKANG_SISWA[(i + kelasIndex + 5) % NAMA_BELAKANG_SISWA.length],
+                        noTelp: '0812' + String(10000000 + kelasIndex * 1000000 + i * 137).slice(-8),
+                        alamat: 'Jl. ' + NAMA_BELAKANG_SISWA[(i + kelasIndex) % NAMA_BELAKANG_SISWA.length] +
+                            ' No. ' + (i + 1) + ', ' + WILAYAH_METRO[kelasIndex % WILAYAH_METRO.length] + ', Kota Metro',
+                        jenisKelamin: i % 2 === 0 ? 'L' : 'P',
+                        role: 'siswa',
+                        tagihanUnpaid: ((kelasIndex * 29 + i) % 7 === 0 || i === 0) ? ['Januari 2025'] : []
+                    });
+                }
+            });
+
+            SISWA_DEMO_KHUSUS.forEach(item => {
+                const pos = KELAS_DEMO.indexOf(item.kelas) * 29 + item.index;
+                if (pos >= 0 && list[pos]) {
+                    Object.assign(list[pos], item.data);
+                }
+            });
+
+            return list;
+        }
+
+        function buildGuruDemo() {
+            return NAMA_GURU_DEMO.map((nama, i) => ({
+                username: 'guru' + String(i + 1).padStart(3, '0'),
+                password: 'guru123',
+                nama: nama,
+                role: 'petugas',
+                subRole: 'Guru ' + MAPEL_DEMO[i % MAPEL_DEMO.length],
+                petugasTitle: 'GURU',
+                kategori: 'guru',
+                mapel: MAPEL_DEMO[i % MAPEL_DEMO.length],
+                noTelp: '0813' + String(20000000 + i * 317).slice(-8)
+            }));
+        }
+
+        function buildWaliKelasDemo() {
+            return KELAS_DEMO.map((kelas, i) => ({
+                username: 'wali' + kelas.toLowerCase(),
+                password: 'wali123',
+                nama: NAMA_WALI_KELAS[i],
+                role: 'petugas',
+                subRole: 'Wali Kelas ' + kelas,
+                petugasTitle: 'WALI KELAS',
+                kategori: 'wali',
+                kelas: kelas
+            }));
+        }
+
+        // Ganti daftar siswa lama dengan 261 siswa baru.
+        DEMO_USERS.siswa = buildSiswaDemo();
+
+        // Tandai 3 akun petugas inti, lalu tambahkan 30 guru + 9 wali kelas
+        // agar username/password-nya juga bisa dipakai login pada mode demo.
+        DEMO_USERS.petugas.forEach(u => {
+            if (!u.kategori) {
+                u.kategori = (u.subRole === 'Kepala Sekolah') ? 'kepala' : 'petugas';
+            }
+        });
+
+        const DEMO_GURU = buildGuruDemo();
+        const DEMO_WALI_KELAS = buildWaliKelasDemo();
+        DEMO_USERS.petugas = DEMO_USERS.petugas.concat(DEMO_GURU, DEMO_WALI_KELAS);
+
+        // Database tagihan SPP tersinkronisasi
+        let createdInvoices = [
+            {
+                id: 'INV-202501-001',
+                siswaNisn: '0081234567',
+                siswaNama: 'Ahmad Dahlan Putra',
+                kelas: '7A',
+                bulan: 'Januari 2025',
+                tahun: '2024/2025 Genap',
+                nominal: 250000,
+                tempo: '10 Januari 2025',
+                status: 'Belum Lunas',
+                keterangan: 'SPP Reguler Bulan Berjalan',
+                tanggal: '2025-01-02'
+            },
+            {
+                id: 'INV-202412-002',
+                siswaNisn: '0081234567',
+                siswaNama: 'Ahmad Dahlan Putra',
+                kelas: '7A',
+                bulan: 'Desember 2024',
+                tahun: '2024/2025 Ganjil',
+                nominal: 250000,
+                tempo: '10 Desember 2024',
+                status: 'Lunas',
+                keterangan: 'SPP Semester Ganjil - Lunas via Midtrans',
+                tanggal: '2024-12-10'
+            },
+            {
+                id: 'INV-202501-003',
+                siswaNisn: '0087654321',
+                siswaNama: 'Siti Walidah Putri',
+                kelas: '8A',
+                bulan: 'Januari 2025',
+                tahun: '2024/2025 Genap',
+                nominal: 250000,
+                tempo: '10 Januari 2025',
+                status: 'Belum Lunas',
+                keterangan: 'SPP Reguler Kelas 8',
+                tanggal: '2025-01-02'
+            },
+            {
+                id: 'INV-202412-004',
+                siswaNisn: '0087654321',
+                siswaNama: 'Siti Walidah Putri',
+                kelas: '8A',
+                bulan: 'Desember 2024',
+                tahun: '2024/2025 Ganjil',
+                nominal: 250000,
+                tempo: '10 Desember 2024',
+                status: 'Lunas',
+                keterangan: 'SPP Semester Ganjil',
+                tanggal: '2024-12-11'
+            },
+            {
+                id: 'INV-202501-005',
+                siswaNisn: '0082345678',
+                siswaNama: 'Muhammad Fauzan',
+                kelas: '7B',
+                bulan: 'Januari 2025',
+                tahun: '2024/2025 Genap',
+                nominal: 250000,
+                tempo: '10 Januari 2025',
+                status: 'Belum Lunas',
+                keterangan: 'SPP Reguler Kelas 7B',
+                tanggal: '2025-01-02'
+            },
+            {
+                id: 'INV-202501-006',
+                siswaNisn: '0083456789',
+                siswaNama: 'Aisyah Rahmawati',
+                kelas: '8B',
+                bulan: 'Januari 2025',
+                tahun: '2024/2025 Genap',
+                nominal: 250000,
+                tempo: '10 Januari 2025',
+                status: 'Belum Lunas',
+                keterangan: 'SPP Reguler Kelas 8B',
+                tanggal: '2025-01-02'
+            },
+            {
+                id: 'INV-202501-007',
+                siswaNisn: '0084567890',
+                siswaNama: 'Fikri Pratama',
+                kelas: '9A',
+                bulan: 'Januari 2025',
+                tahun: '2024/2025 Genap',
+                nominal: 250000,
+                tempo: '10 Januari 2025',
+                status: 'Lunas',
+                keterangan: 'Lunas Prestasi',
+                tanggal: '2025-01-03'
+            }
+        ];
+
+        let currentRole = 'siswa';
+        let currentUser = null;
+        let selectedLoginRole = 'siswa';
+        // Tagihan yang dipilih siswa. Kosong secara default agar siswa bebas
+        // memilih sendiri, termasuk memilih tidak ada tagihan sama sekali.
+        let selectedPayKeys = [];
+
+        // Initial Transactions Store
+        let transactions = [
+            {
+                no: 'SPP-202412-0012',
+                waktu: '2024-12-10 09:15',
+                nisn: '0081234567',
+                siswa: 'Ahmad Dahlan Putra (7A)',
+                uraian: 'SPP Desember 2024',
+                nominal: 250000,
+                metode: 'Midtrans QRIS',
+                status: 'Lunas'
+            },
+            {
+                no: 'SPP-202411-0089',
+                waktu: '2024-11-08 11:30',
+                nisn: '0081234567',
+                siswa: 'Ahmad Dahlan Putra (7A)',
+                uraian: 'SPP November 2024',
+                nominal: 250000,
+                metode: 'BSI Virtual Account',
+                status: 'Lunas'
+            },
+            {
+                no: 'SPP-202412-0044',
+                waktu: '2024-12-11 14:20',
+                nisn: '0087654321',
+                siswa: 'Siti Walidah Putri (8A)',
+                uraian: 'SPP Desember 2024',
+                nominal: 250000,
+                metode: 'Kasir Loket Sekolah',
+                status: 'Lunas'
+            }
+        ];
+
+        // ================= PERSISTENSI DATA DEMO =================
+        // Tagihan yang dibuat petugas, status pembayaran, dan riwayat transaksi
+        // disimpan ke localStorage supaya tidak hilang saat halaman di-refresh.
+        const SPP_DATA_STORAGE_KEY = 'spp_demo_data_v1';
+
+        function collectUnpaidSnapshot() {
+            const siswa = {};
+            const ortu = {};
+            (DEMO_USERS.siswa || []).forEach(s => {
+                if (s.nisn) siswa[s.nisn] = Array.isArray(s.tagihanUnpaid) ? s.tagihanUnpaid.slice() : [];
+            });
+            (DEMO_USERS.ortu || []).forEach(o => {
+                if (o.nisn) ortu[o.nisn] = Array.isArray(o.tagihanUnpaid) ? o.tagihanUnpaid.slice() : [];
+            });
+            return { siswa: siswa, ortu: ortu };
+        }
+
+        function saveSppData() {
+            try {
+                const payload = {
+                    version: 1,
+                    savedAt: new Date().toISOString(),
+                    invoices: createdInvoices,
+                    transactions: transactions,
+                    unpaid: collectUnpaidSnapshot()
+                };
+                localStorage.setItem(SPP_DATA_STORAGE_KEY, JSON.stringify(payload));
+            } catch (e) {
+                console.warn('Gagal menyimpan data SPP demo:', e);
+            }
+        }
+
+        function loadSppData() {
+            try {
+                const raw = localStorage.getItem(SPP_DATA_STORAGE_KEY);
+                if (!raw) return false;
+
+                const data = JSON.parse(raw);
+                if (!data || typeof data !== 'object') return false;
+
+                if (Array.isArray(data.invoices)) {
+                    createdInvoices = data.invoices.filter(inv => inv && inv.id && inv.siswaNisn);
+                }
+                if (Array.isArray(data.transactions)) {
+                    transactions = data.transactions;
+                }
+                if (data.unpaid && typeof data.unpaid === 'object') {
+                    const applyUnpaid = (users, map) => {
+                        if (!map || typeof map !== 'object') return;
+                        (users || []).forEach(u => {
+                            if (u.nisn && Array.isArray(map[u.nisn])) {
+                                u.tagihanUnpaid = map[u.nisn].slice();
+                            }
+                        });
+                    };
+                    applyUnpaid(DEMO_USERS.siswa, data.unpaid.siswa);
+                    applyUnpaid(DEMO_USERS.ortu, data.unpaid.ortu);
+                }
+                return true;
+            } catch (e) {
+                console.warn('Gagal memuat data SPP demo tersimpan:', e);
+                return false;
+            }
+        }
+
+        // Muat data tersimpan sebelum halaman dirender.
+        loadSppData();
+
+        // Simpan sebagai pengaman terakhir saat halaman ditutup/di-refresh.
+        window.addEventListener('beforeunload', saveSppData);
+        document.addEventListener('visibilitychange', function () {
+            if (document.visibilityState === 'hidden') saveSppData();
+        });
+
+        // 1. Role Selection in Login
+        function selectLoginRole(role) {
+            selectedLoginRole = role;
+            document.querySelectorAll('.role-tab').forEach(b => b.classList.remove('active'));
+            
+            if (role === 'siswa') {
+                document.getElementById('tabSiswa').classList.add('active');
+                document.getElementById('labelUsername').innerText = 'NISN Siswa';
+                document.getElementById('loginUsername').placeholder = 'Masukkan 10 digit NISN';
+            } else if (role === 'ortu') {
+                document.getElementById('tabOrtu').classList.add('active');
+                document.getElementById('labelUsername').innerText = 'Username / NISN Anak';
+                document.getElementById('loginUsername').placeholder = 'Contoh: ortu001 atau NISN Siswa';
+            } else {
+                document.getElementById('tabPetugas').classList.add('active');
+                document.getElementById('labelUsername').innerText = 'Username Petugas';
+                document.getElementById('loginUsername').placeholder = 'Contoh: admin / bendahara / kepsek';
+            }
+        }
+
+        // 2. Quick One-Click Demo Login
+        function quickLogin(user, pass, role) {
+            selectLoginRole(role);
+            document.getElementById('loginUsername').value = user;
+            document.getElementById('loginPassword').value = pass;
+            processLogin(user, pass, role);
+        }
+
+        // 3. Form Submit Login Handler
+        function executeLogin(e) {
+            e.preventDefault();
+            const user = document.getElementById('loginUsername').value.trim();
+            const pass = document.getElementById('loginPassword').value.trim();
+            processLogin(user, pass, selectedLoginRole);
+        }
+
+        // 4. Authentication Logic
+        function processLogin(user, pass, role) {
+            if (!user || !pass) {
+                showToast('Harap masukkan username dan password!');
+                return;
+            }
+
+            let found = null;
+            // Search in specified role
+            if (DEMO_USERS[role]) {
+                found = DEMO_USERS[role].find(u => u.username === user && u.password === pass);
+            }
+
+            // Fallback search across all roles if not found in current tab
+            if (!found) {
+                for (const r of ['siswa', 'ortu', 'petugas']) {
+                    const candidate = DEMO_USERS[r].find(u => u.username === user && u.password === pass);
+                    if (candidate) {
+                        found = candidate;
+                        role = r;
+                        break;
+                    }
+                }
+            }
+
+            if (!found) {
+                showToast('Username atau password tidak ditemukan. Silakan gunakan tombol demo di bawah form!');
+                return;
+            }
+
+            currentUser = found;
+            currentRole = role;
+
+            // Persist auth state to localStorage for session persistence on refresh
+            localStorage.setItem('spp_auth_user', JSON.stringify(found));
+            localStorage.setItem('spp_auth_role', role);
+
+            // Hide Login Page, Show App Shell
+            document.getElementById('pageLogin').style.display = 'none';
+            document.getElementById('appShell').style.display = 'flex';
+
+            renderUserInterface();
+            navigateTo('home');
+            showToast('Selamat datang, ' + currentUser.nama + '!');
+            window.scrollTo(0, 0);
+        }
+
+        // 5. Render UI According to User Role
+        function renderUserInterface() {
+            const isPetugas = currentRole === 'petugas';
+            const isOrtu = currentRole === 'ortu';
+
+            // Topbar
+            document.getElementById('topUserName').innerText = currentUser.nama;
+            document.getElementById('topAvatar').innerText = currentUser.nama.charAt(0);
+            
+            const badgeEl = document.getElementById('topUserRole');
+            badgeEl.className = 'user-role-badge ' + (isPetugas ? 'role-badge-petugas' : (isOrtu ? 'role-badge-ortu' : 'role-badge-siswa'));
+            badgeEl.innerText = isPetugas ? (currentUser.petugasTitle || 'PETUGAS') : (isOrtu ? 'ORANG TUA' : 'SISWA KELAS ' + (currentUser.kelas || '7A'));
+
+            syncSidebarOffset();
+
+            // Toggle visibility for Petugas vs Siswa/Ortu
+            document.querySelectorAll('.petugas-only').forEach(el => {
+                el.style.display = isPetugas ? (el.tagName === 'BUTTON' || el.tagName === 'A' ? 'inline-flex' : 'block') : 'none';
+            });
+            document.querySelectorAll('.siswa-only').forEach(el => {
+                el.style.display = !isPetugas ? (el.tagName === 'BUTTON' || el.tagName === 'A' ? 'inline-flex' : 'block') : 'none';
+            });
+
+            // Hero section
+            document.getElementById('heroUserName').innerText = currentUser.nama;
+            document.getElementById('heroUserDesc').innerText = isPetugas
+                ? 'Portal Manajemen Keuangan & SPP SMP Muhammadiyah 3 Metro. Pantau arus kas masuk, entri kasir pembayaran tunai, dan status integrasi Midtrans.'
+                : 'Tahun Ajaran 2024/2025 Semester Genap. Kelola kewajiban pembayaran SPP sekolah dengan mudah, cepat, dan transparan.';
+
+            // Render Specific Sub-Components
+            renderStatsGrid();
+            renderMenuActionGrid();
+            renderTagihanView();
+            renderRiwayatView();
+            renderProfileView();
+        }
+
+                // SVG Icon Library (Immune to font/encoding errors, sharp on all displays)
+        const SVG_ICONS = {
+            school: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>`,
+            card: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>`,
+            receipt: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M8 7h8M8 11h8M8 15h5"/></svg>`,
+            document: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>`,
+            user: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+            bank: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="21" x2="21" y2="21"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="5 10 5 21 19 21 19 10"/><polygon points="12 2 2 7 22 7"/></svg>`,
+            help: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="9" y1="10" x2="15" y2="10"/></svg>`,
+            cash: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/></svg>`,
+            users: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+            settings: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
+            chart: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+            broadcast: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>`,
+            warning: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+            check: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+            zap: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+            clock: `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`
+        };
+
+        // 6. Render Stats Grid by Role (with crisp SVG icons)
+        function renderStatsGrid() {
+            const container = document.getElementById('statsGrid');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const totalSiswaDemo = DEMO_USERS.siswa.length;
+            const totalTunggakanDemo = DEMO_USERS.siswa.filter(s => s.tagihanUnpaid && s.tagihanUnpaid.length > 0).length;
+
+            if (currentRole === 'petugas') {
+                container.innerHTML = `
+                    <div class="stat-card stat-green">
+                        <div class="stat-icon">${SVG_ICONS.cash}</div>
+                        <div class="stat-info">
+                            <h5>KAS SPP MASUK</h5>
+                            <div class="stat-val">Rp 42.850.000</div>
+                            <div class="stat-desc">Bulan Berjalan (Jan 2025)</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-blue">
+                        <div class="stat-icon">${SVG_ICONS.users}</div>
+                        <div class="stat-info">
+                            <h5>TOTAL SISWA AKTIF</h5>
+                            <div class="stat-val">${totalSiswaDemo} Siswa</div>
+                            <div class="stat-desc">9 Kelas • 29 Siswa per Kelas</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-orange">
+                        <div class="stat-icon">${SVG_ICONS.clock}</div>
+                        <div class="stat-info">
+                            <h5>TUNGGAKAN SPP</h5>
+                            <div class="stat-val">${totalTunggakanDemo} Siswa</div>
+                            <div class="stat-desc">Perlu Konfirmasi Tagihan</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-blue">
+                        <div class="stat-icon">${SVG_ICONS.zap}</div>
+                        <div class="stat-info">
+                            <h5>MIDTRANS GATEWAY</h5>
+                            <div class="stat-val" style="color:var(--success);">ONLINE</div>
+                            <div class="stat-desc">Mode Sandbox Aktif</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const unpaidMonths = currentUser.tagihanUnpaid || [];
+                const hasUnpaid = unpaidMonths.length > 0;
+                const totalUnpaidNominal = getTotalForMonths(unpaidMonths);
+                container.innerHTML = `
+                    <div class="stat-card ${hasUnpaid ? 'stat-red' : 'stat-green'}">
+                        <div class="stat-icon">${hasUnpaid ? SVG_ICONS.warning : SVG_ICONS.check}</div>
+                        <div class="stat-info">
+                            <h5>TAGIHAN SPP SAAT INI</h5>
+                            <div class="stat-val">${hasUnpaid ? 'Rp ' + totalUnpaidNominal.toLocaleString('id-ID') : 'Rp 0 (LUNAS)'}</div>
+                            <div class="stat-desc">${hasUnpaid ? 'Bulan ' + unpaidMonths[0] : 'Semua Tagihan Sudah Lunas'}</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-blue">
+                        <div class="stat-icon">${SVG_ICONS.school}</div>
+                        <div class="stat-info">
+                            <h5>KELAS & TINGKAT</h5>
+                            <div class="stat-val">Kelas ${currentUser.kelas}</div>
+                            <div class="stat-desc">Tingkat ${currentUser.tingkat} • SMP Muh 3</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-green">
+                        <div class="stat-icon">${SVG_ICONS.receipt}</div>
+                        <div class="stat-info">
+                            <h5>TOTAL SPP LUNAS</h5>
+                            <div class="stat-val">6 Bulan</div>
+                            <div class="stat-desc">Semester Ganjil 2024/2025</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-blue">
+                        <div class="stat-icon">${SVG_ICONS.card}</div>
+                        <div class="stat-info">
+                            <h5>METODE PEMBAYARAN</h5>
+                            <div class="stat-val">QRIS & VA</div>
+                            <div class="stat-desc">Terhubung Midtrans Gateway</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // 7. Render 6 Menu Action Cards (Clean & Distinct)
+        function renderMenuActionGrid() {
+            const grid = document.getElementById('menuActionGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            if (currentRole === 'petugas') {
+                grid.innerHTML = `
+                    <div class="menu-feature-card theme-emerald" onclick="navigateTo('viewKasir')">
+                        <div class="card-icon-wrap">${SVG_ICONS.cash}</div>
+                        <div>
+                            <h4>Kasir Pembayaran Tunai</h4>
+                            <p>Input transaksi penerimaan SPP secara tunai di loket dan cetak kuitansi resmi sekolah.</p>
+                        </div>
+                        <div class="card-footer-link">Buka Kasir Loket &rarr;</div>
+                    </div>
+                    <div class="menu-feature-card theme-blue" onclick="navigateTo('viewManajemenSiswa')">
+                        <div class="card-icon-wrap">${SVG_ICONS.users}</div>
+                        <div>
+                            <h4>Data Siswa & SPP</h4>
+                            <p>Kelola data seluruh siswa kelas 7A, 7B, 8A, 8B, 9A, 9B dan pantau kelunasan SPP.</p>
+                        </div>
+                        <div class="card-footer-link">Kelola Siswa &rarr;</div>
+                    </div>
+                    <div class="menu-feature-card theme-purple" onclick="navigateTo('viewRiwayat')">
+                        <div class="card-icon-wrap">${SVG_ICONS.receipt}</div>
+                        <div>
+                            <h4>Riwayat Seluruh Transaksi</h4>
+                            <p>Pantau semua log transaksi masuk dari Midtrans Gateway maupun kasir tunai sekolah.</p>
+                        </div>
+                        <div class="card-footer-link">Lihat Riwayat &rarr;</div>
+                    </div>
+                    <div class="menu-feature-card theme-rose" onclick="navigateTo('viewQrisSettings')">
+                        <div class="card-icon-wrap">${SVG_ICONS.card}</div>
+                        <div>
+                            <h4>Ubah Nama QRIS (Tanpa Coding)</h4>
+                            <p>Ganti nama sekolah/merchant di pop-up pembayaran QRIS Midtrans secara instan.</p>
+                        </div>
+                        <div class="card-footer-link">Ubah Nama QRIS &rarr;</div>
+                    </div>
+                    <div class="menu-feature-card theme-amber" onclick="navigateTo('viewMidtransSettings')">
+                        <div class="card-icon-wrap">${SVG_ICONS.settings}</div>
+                        <div>
+                            <h4>Pengaturan Midtrans</h4>
+                            <p>Konfigurasi Server Key, Client Key, Merchant ID, dan ganti mode Sandbox/Production.</p>
+                        </div>
+                        <div class="card-footer-link">Atur Midtrans &rarr;</div>
+                    </div>
+                    <div class="menu-feature-card theme-cyan" onclick="navigateTo('viewLaporan')">
+                        <div class="card-icon-wrap">${SVG_ICONS.chart}</div>
+                        <div>
+                            <h4>Laporan & Rekapitulasi</h4>
+                            <p>Cetak rekapitulasi bulanan dan laporan penerimaan SPP untuk Kepala Sekolah.</p>
+                        </div>
+                        <div class="card-footer-link">Buka Laporan &rarr;</div>
+                    </div>
+                    <div class="menu-feature-card theme-rose" onclick="showToast('Notifikasi pengingat SPP terkirim ke WhatsApp wali murid!')">
+                        <div class="card-icon-wrap">${SVG_ICONS.broadcast}</div>
+                        <div>
+                            <h4>Broadcast Tagihan SPP</h4>
+                            <p>Kirim pemberitahuan tagihan SPP jatuh tempo otomatis ke WhatsApp wali murid.</p>
+                        </div>
+                        <div class="card-footer-link">Kirim Pengingat &rarr;</div>
+                    </div>
+                    <div class="menu-feature-card theme-emerald" onclick="navigateTo('viewPublikasi')">
+                        <div class="card-icon-wrap">${SVG_ICONS.zap}</div>
+                        <div>
+                            <h4>Publikasi Online</h4>
+                            <p>Pantau status server, simpan URL publik, dan buka aplikasi dari HP lewat QR code.</p>
+                        </div>
+                        <div class="card-footer-link">Buka Publikasi &rarr;</div>
+                    </div>
+                    <div class="menu-feature-card theme-blue" onclick="navigateTo('siswa-kelas')">
+                        <div class="card-icon-wrap">${SVG_ICONS.school}</div>
+                        <div>
+                            <h4>Siswa per Kelas (29)</h4>
+                            <p>Lihat 29 siswa pada setiap kelas (7A–9C) dengan urutan kelas yang rapi.</p>
+                        </div>
+                        <div class="card-footer-link">Buka Data Kelas &rarr;</div>
+                    </div>
+                    <div class="menu-feature-card theme-purple" onclick="navigateTo('petugas')">
+                        <div class="card-icon-wrap">${SVG_ICONS.user}</div>
+                        <div>
+                            <h4>Akun Petugas, Guru & Siswa</h4>
+                            <p>Daftar username dan password petugas, 30 guru, kepala sekolah, siswa, dan wali kelas.</p>
+                        </div>
+                        <div class="card-footer-link">Lihat Akun &rarr;</div>
+                    </div>
+                `;
+            } else {
+                grid.innerHTML = `
+                    <div class="menu-feature-card theme-purple" onclick="navigateTo('viewTagihan')">
+                        <div class="card-icon-wrap">${SVG_ICONS.document}</div>
+                        <div>
+                            <h4>Tagihan SPP</h4>
+                            <p>Lihat rincian tagihan SPP bulanan, besaran nominal, dan status kelunasan Anda.</p>
+                        </div>
+                        <div class="card-footer-link">Lihat Tagihan &rarr;</div>
+                    </div>
+                    <div class="menu-feature-card theme-emerald" onclick="navigateTo('viewBayar')">
+                        <div class="card-icon-wrap">${SVG_ICONS.card}</div>
+                        <div>
+                            <h4>Bayar SPP Online</h4>
+                            <p>Bayar SPP instan melalui QRIS Midtrans, Virtual Account BSI, Muamalat, atau Mandiri.</p>
+                        </div>
+                        <div class="card-footer-link">Bayar Sekarang &rarr;</div>
+                    </div>
+                    <div class="menu-feature-card theme-blue" onclick="navigateTo('viewRiwayat')">
+                        <div class="card-icon-wrap">${SVG_ICONS.receipt}</div>
+                        <div>
+                            <h4>Riwayat & Kuitansi</h4>
+                            <p>Histori pembayaran SPP yang telah lunas disertai bukti kuitansi resmi siap cetak.</p>
+                        </div>
+                        <div class="card-footer-link">Buka Kuitansi &rarr;</div>
+                    </div>
+                    <div class="menu-feature-card theme-amber" onclick="navigateTo('viewProfil')">
+                        <div class="card-icon-wrap">${SVG_ICONS.user}</div>
+                        <div>
+                            <h4>Profil Siswa</h4>
+                            <p>Data pribadi siswa, NISN, NIS, kelas, nama orang tua, dan kontak terdaftar.</p>
+                        </div>
+                        <div class="card-footer-link">Lihat Profil &rarr;</div>
+                    </div>
+                    <div class="menu-feature-card theme-cyan" onclick="navigateTo('viewTagihan')">
+                        <div class="card-icon-wrap">${SVG_ICONS.bank}</div>
+                        <div>
+                            <h4>Rekening Virtual Account</h4>
+                            <p>Daftar nomor Virtual Account bank resmi SMP Muhammadiyah 3 Metro.</p>
+                        </div>
+                        <div class="card-footer-link">Cek Rekening &rarr;</div>
+                    </div>
+                    <div class="menu-feature-card theme-rose" onclick="showToast('Tata Usaha: (0725) 41234 • WhatsApp: 0812-3456-7890')">
+                        <div class="card-icon-wrap">${SVG_ICONS.help}</div>
+                        <div>
+                            <h4>Bantuan & Kontak TU</h4>
+                            <p>Butuh bantuan pembayaran atau informasi administrasi? Hubungi tim Tata Usaha.</p>
+                        </div>
+                        <div class="card-footer-link">Hubungi Kami &rarr;</div>
+                    </div>
+                `;
+            }
+        }
+
+        // 8. Render Tagihan View (Accurate Student Info)
+        // Nominal tagihan mengikuti nilai yang diinput petugas saat menerbitkan
+        // tagihan. Jika bulan tersebut tidak punya tagihan (data demo lama),
+        // barulah memakai tarif siswa sebagai cadangan.
+        function getInvoiceForMonth(namaBulan, nisn) {
+            const targetNisn = nisn || (currentUser ? currentUser.nisn : '');
+            return createdInvoices.find(i => i.siswaNisn === targetNisn && i.bulan === namaBulan) || null;
+        }
+
+        function getNominalForMonth(namaBulan, nisn) {
+            const inv = getInvoiceForMonth(namaBulan, nisn);
+            if (inv && Number(inv.nominal) > 0) return Number(inv.nominal);
+
+            const targetNisn = nisn || (currentUser ? currentUser.nisn : '');
+            const siswa = DEMO_USERS.siswa.find(s => s.nisn === targetNisn);
+            const fallback = siswa ? siswa.tarif : (currentUser ? currentUser.tarif : 0);
+            return Number(fallback) || 0;
+        }
+
+        function getTotalForMonths(months, nisn) {
+            return (months || []).reduce((total, bulan) => total + getNominalForMonth(bulan, nisn), 0);
+        }
+
+        // Bulan demo lama. Bulan ini hanya ditampilkan bila siswa belum punya
+        // tagihan dari petugas untuk bulan yang sama.
+        const DEMO_BASE_MONTHS = [
+            { nama: 'Januari 2025', tempo: '10 Januari 2025' },
+            { nama: 'Februari 2025', tempo: '10 Februari 2025' },
+            { nama: 'Maret 2025', tempo: '10 Maret 2025' },
+            { nama: 'April 2025', tempo: '10 April 2025' },
+            { nama: 'Mei 2025', tempo: '10 Mei 2025' },
+            { nama: 'Juni 2025', tempo: '10 Juni 2025' }
+        ];
+
+        // Daftar SEMUA tagihan siswa. Setiap tagihan punya key unik, sehingga
+        // tagihan lama tidak tertimpa atau hilang saat petugas menerbitkan
+        // tagihan baru (termasuk bila bulannya sama).
+        function getStudentBills() {
+            const nisn = currentUser ? currentUser.nisn : '';
+            const invoices = createdInvoices.filter(inv => inv.siswaNisn === nisn);
+            const invoiceMonths = new Set(invoices.map(inv => inv.bulan).filter(Boolean));
+            const bills = [];
+
+            DEMO_BASE_MONTHS.forEach(m => {
+                if (invoiceMonths.has(m.nama)) return;
+                const isUnpaid = !!(currentUser.tagihanUnpaid && currentUser.tagihanUnpaid.includes(m.nama));
+                bills.push({
+                    key: 'demo:' + m.nama,
+                    invoiceId: null,
+                    bulan: m.nama,
+                    label: 'SPP ' + m.nama,
+                    tempo: m.tempo,
+                    nominal: getNominalForMonth(m.nama),
+                    status: isUnpaid ? 'Belum Lunas' : 'Lunas',
+                    sumber: 'demo'
+                });
+            });
+
+            invoices.forEach(inv => {
+                const bulan = inv.bulan || '';
+                bills.push({
+                    key: 'inv:' + inv.id,
+                    invoiceId: inv.id,
+                    bulan: bulan,
+                    label: bulan ? 'SPP ' + bulan : (inv.keterangan || 'Tagihan Non-SPP'),
+                    tempo: inv.tempo || '-',
+                    nominal: Number(inv.nominal) || 0,
+                    status: inv.status === 'Lunas' ? 'Lunas' : 'Belum Lunas',
+                    sumber: 'petugas'
+                });
+            });
+
+            return bills;
+        }
+
+        // Tagihan yang dicentang siswa. Hanya tagihan belum lunas yang bisa dipilih.
+        function getSelectedPayBills() {
+            return getStudentBills().filter(b => b.status !== 'Lunas' && selectedPayKeys.indexOf(b.key) !== -1);
+        }
+
+        function getSelectedPayTotal() {
+            return getSelectedPayBills().reduce((total, b) => total + (Number(b.nominal) || 0), 0);
+        }
+
+        function getSelectedPayMonths() {
+            return getSelectedPayBills().map(b => b.bulan || b.label).filter(Boolean);
+        }
+
+        function updatePaySummary() {
+            const selected = getSelectedPayBills();
+            const subtotal = selected.reduce((total, b) => total + (Number(b.nominal) || 0), 0);
+
+            const paySubtotal = document.getElementById('paySubtotal');
+            if (paySubtotal) paySubtotal.innerText = 'Rp ' + subtotal.toLocaleString('id-ID');
+
+            const count = document.getElementById('selectedBillCount');
+            if (count) count.innerText = selected.length + ' Tagihan Dipilih';
+
+            const btnBayar = document.getElementById('btnBayarSPP');
+            if (btnBayar) {
+                const enabled = selected.length > 0;
+                btnBayar.disabled = !enabled;
+                btnBayar.style.opacity = enabled ? '1' : '0.5';
+                btnBayar.style.cursor = enabled ? 'pointer' : 'not-allowed';
+            }
+        }
+
+        function renderTagihanView() {
+            if (currentRole === 'petugas') return;
+
+            document.getElementById('billNama').innerText = currentUser.nama;
+            document.getElementById('billNisn').innerText = currentUser.nisn + ' / ' + currentUser.nis;
+            document.getElementById('billKelas').innerText = 'Kelas ' + currentUser.kelas + ' (Tingkat ' + currentUser.tingkat + ')';
+            document.getElementById('billOrtu').innerText = currentUser.namaOrtu;
+            document.getElementById('billTelp').innerText = currentUser.noTelp;
+
+            // Daftar semua tagihan siswa (tagihan lama + tagihan baru dari
+            // petugas). Tidak ada yang dihapus saat tagihan baru diterbitkan.
+            const bills = getStudentBills();
+
+            // Pertahankan pilihan yang masih valid dan belum lunas. Tidak ada
+            // pemilihan otomatis: siswa bebas memilih sendiri, termasuk
+            // memilih tidak ada tagihan sama sekali.
+            selectedPayKeys = selectedPayKeys.filter(key =>
+                bills.some(b => b.key === key && b.status !== 'Lunas')
+            );
+
+            const tbody = document.getElementById('tagihanTableBody');
+            tbody.innerHTML = '';
+            let totalUnpaid = 0;
+
+            const paymentMonthList = document.getElementById('paymentMonthList');
+            paymentMonthList.innerHTML = '';
+
+            bills.forEach((b, idx) => {
+                const isUnpaid = b.status !== 'Lunas';
+                const nominal = Number(b.nominal) || 0;
+
+                if (isUnpaid) totalUnpaid += nominal;
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${idx + 1}</strong></td>
+                        <td><strong>${b.label}</strong></td>
+                        <td>${b.tempo}</td>
+                        <td style="font-weight:700;">Rp ${nominal.toLocaleString('id-ID')}</td>
+                        <td>
+                            <span class="badge-status ${isUnpaid ? 'badge-belum' : 'badge-lunas'}">
+                                ${isUnpaid ? 'Belum Lunas' : 'Lunas'}
+                            </span>
+                        </td>
+                        <td style="text-align:right;">
+                            ${isUnpaid
+                                ? `<button class="btn-action-primary" style="padding:6px 14px;font-size:12px;" onclick="paySingleBill('${b.key}')">Pilih Tagihan Ini</button>`
+                                : `<span style="font-size:12px;color:var(--text-muted);font-weight:700;">✔ Selesai</span>`
+                            }
+                        </td>
+                    </tr>
+                `;
+
+                if (isUnpaid) {
+                    const isChecked = selectedPayKeys.includes(b.key);
+                    paymentMonthList.innerHTML += `
+                        <label style="display:flex;align-items:center;justify-content:space-between;border:2px solid ${isChecked ? '#1e40af' : 'var(--border-color)'};border-radius:12px;padding:16px 20px;cursor:pointer;background:${isChecked ? '#eff6ff' : '#fff'};transition:all 0.2s;box-shadow:${isChecked ? '0 0 0 3px rgba(30,64,175,0.15)' : 'none'};">
+                            <div style="display:flex;align-items:center;gap:14px;">
+                                <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleMonthSelection('${b.key}', this.checked)" style="width:20px;height:20px;accent-color:var(--primary-blue);">
+                                <div>
+                                    <div style="font-weight:800;color:var(--text-dark);font-size:15px;">${b.label}</div>
+                                    <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">Jatuh Tempo: ${b.tempo}</div>
+                                </div>
+                            </div>
+                            <div style="font-size:18px;font-weight:900;color:var(--primary-blue);">
+                                Rp ${nominal.toLocaleString('id-ID')}
+                            </div>
+                        </label>
+                    `;
+                }
+            });
+
+            if (totalUnpaid === 0) {
+                paymentMonthList.innerHTML = `
+                    <div style="background:#ecfdf5;border:1.5px solid #a7f3d0;border-radius:10px;padding:24px;text-align:center;color:#065f46;font-weight:700;">
+                        🎉 Luar biasa! Seluruh tagihan SPP Anda untuk periode ini telah LUNAS.
+                    </div>
+                `;
+                // Show empty state, hide payment section
+                document.getElementById('emptyStateBayar').style.display = 'block';
+                document.getElementById('paymentMonthSection').style.display = 'none';
+            } else {
+                // Hide empty state, show payment section
+                document.getElementById('emptyStateBayar').style.display = 'none';
+                document.getElementById('paymentMonthSection').style.display = 'block';
+            }
+
+            document.getElementById('totalUnpaidTagihan').innerText = 'Rp ' + totalUnpaid.toLocaleString('id-ID');
+            updatePaySummary();
+
+            refreshCreatedInvoicesView();
+        }
+
+        function renderRiwayatView() {
+            const tbody = document.getElementById('riwayatTableBody');
+            tbody.innerHTML = '';
+
+            let list = transactions;
+            if (currentRole === 'siswa') {
+                list = transactions.filter(t => t.nisn === currentUser.nisn);
+            }
+
+            if (list.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align:center;padding:24px;color:var(--text-muted);">
+                            Belum ada riwayat transaksi pembayaran.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            list.forEach(item => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong style="color:var(--primary-blue);">${item.no}</strong></td>
+                        <td>${item.waktu}</td>
+                        <td>${item.siswa}</td>
+                        <td><strong>${item.uraian}</strong></td>
+                        <td style="font-weight:700;">Rp ${item.nominal.toLocaleString('id-ID')}</td>
+                        <td>${item.metode}</td>
+                        <td><span class="badge-status badge-lunas">${item.status}</span></td>
+                        <td style="text-align:right;">
+                            <button class="btn-action-secondary" style="padding:4px 10px;font-size:12px;" onclick="openReceiptModal('${item.no}')">
+                                🖨️ Kuitansi
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // 10. Render Profile View
+        function renderProfileView() {
+            if (currentRole === 'petugas') return;
+
+            document.getElementById('profileLargeAvatar').innerText = currentUser.nama.charAt(0);
+            document.getElementById('profNama').value = currentUser.nama;
+            document.getElementById('profNisn').value = currentUser.nisn;
+            document.getElementById('profNis').value = currentUser.nis;
+            document.getElementById('profKelas').value = 'Kelas ' + currentUser.kelas + ' (Tingkat ' + currentUser.tingkat + ')';
+            document.getElementById('profOrtu').value = currentUser.namaOrtu;
+            document.getElementById('profTelp').value = currentUser.noTelp;
+            document.getElementById('profAlamat').value = currentUser.alamat;
+        }
+
+        // Mapping config for URL routing, view switching, and automatic data initialization
+        const ROUTE_CONFIG = {
+            'home': { viewId: 'viewHome', navId: 'navHome', init: () => { renderStatsGrid(); renderMenuActionGrid(); } },
+            'tagihan': { viewId: 'viewTagihan', navId: 'navTagihan', init: () => { renderTagihanView(); } },
+            'bayar': { viewId: 'viewBayar', navId: 'navBayar', init: () => { renderTagihanView(); } },
+            'riwayat': { viewId: 'viewRiwayat', navId: 'navRiwayat', init: () => { renderRiwayatView(); } },
+            'profil': { viewId: 'viewProfil', navId: 'navProfil', init: () => { renderProfileView(); } },
+            'kasir': { viewId: 'viewKasir', navId: 'navKasir', init: () => { if (typeof updateKasirSiswaInfo === 'function') updateKasirSiswaInfo(); } },
+            'siswa': { viewId: 'viewManajemenSiswa', navId: 'navSiswa', init: () => { if (typeof renderManajemenSiswa === 'function') renderManajemenSiswa(); } },
+            'siswa-kelas': { viewId: 'viewSiswaKelas', navId: 'navSiswaKelas', init: () => { if (typeof renderSiswaPerKelas === 'function') renderSiswaPerKelas(); } },
+            'petugas': { viewId: 'viewAkunStaff', navId: 'navStaff', init: () => { if (typeof renderAkunStaff === 'function') renderAkunStaff(); } },
+            'akun-siswa': { viewId: 'viewAkunSiswa', navId: 'navAkunSiswa', init: () => { if (typeof renderAkunSiswa === 'function') { renderAkunSiswa(); renderAkunWaliKelas(); } } },
+            'staff': { viewId: 'viewStaff', navId: 'navStaff', init: () => { if (typeof loadPetugas === 'function') loadPetugas(); } },
+            'staff-db': { viewId: 'viewStaff', navId: 'navStaff', init: () => { if (typeof loadPetugas === 'function') loadPetugas(); } },
+            'qris': { viewId: 'viewQrisSettings', navId: 'navQris', init: () => { if (typeof initQrisSettingsView === 'function') initQrisSettingsView(); } },
+            'midtrans': { viewId: 'viewMidtransSettings', navId: 'navMidtrans', init: () => {} },
+            'publikasi': { viewId: 'viewPublikasi', navId: 'navPublikasi', init: () => { if (typeof initPublikasi === 'function') initPublikasi(); } },
+            'laporan': { viewId: 'viewLaporan', navId: 'navLaporan', init: () => {} },
+            'terbitkan-tagihan': { viewId: 'viewCreateInvoice', navId: 'navCreateInvoice', init: () => { if (typeof initInvoiceDashboard === 'function') initInvoiceDashboard(); } },
+            'buat-tagihan': { viewId: 'viewCreateInvoice', navId: 'navCreateInvoice', init: () => { if (typeof initInvoiceDashboard === 'function') initInvoiceDashboard(); } },
+            'tagihan-create': { viewId: 'viewCreateInvoice', navId: 'navCreateInvoice', init: () => { if (typeof initInvoiceDashboard === 'function') initInvoiceDashboard(); } }
+        };
+
+        const VIEW_TO_SLUG = {
+            viewHome: 'home',
+            viewTagihan: 'tagihan',
+            viewBayar: 'bayar',
+            viewRiwayat: 'riwayat',
+            viewProfil: 'profil',
+            viewKasir: 'kasir',
+            viewManajemenSiswa: 'siswa',
+            viewSiswaKelas: 'siswa-kelas',
+            viewAkunStaff: 'petugas',
+            viewAkunSiswa: 'akun-siswa',
+            viewStaff: 'staff',
+            viewQrisSettings: 'qris',
+            viewMidtransSettings: 'midtrans',
+            viewPublikasi: 'publikasi',
+            viewLaporan: 'laporan',
+            viewCreateInvoice: 'terbitkan-tagihan'
+        };
+
+        // 11. Navigation Switcher with URL & State Persistence
+        function navigateTo(target, updateHistory = true) {
+            if (!currentUser) return;
+
+            // Resolve slug vs viewId
+            let viewId = target;
+            let slug = VIEW_TO_SLUG[target];
+            if (ROUTE_CONFIG[target]) {
+                viewId = ROUTE_CONFIG[target].viewId;
+                slug = target;
+            } else if (!slug) {
+                for (const [k, v] of Object.entries(ROUTE_CONFIG)) {
+                    if (v.viewId === target) {
+                        slug = k;
+                        break;
+                    }
+                }
+            }
+            if (!slug) slug = 'home';
+            if (!viewId) viewId = 'viewHome';
+
+            // 1. Hide all view-sections & synchronize inline style
+            document.querySelectorAll('.view-section').forEach(s => {
+                s.classList.remove('active');
+                s.style.display = 'none';
+            });
+            document.querySelectorAll('.nav-link-btn').forEach(b => b.classList.remove('active'));
+
+            // 2. Activate target section
+            const targetSection = document.getElementById(viewId);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+                targetSection.classList.add('active');
+            }
+
+            // 3. Highlight corresponding sidebar nav link
+            const cfg = ROUTE_CONFIG[slug] || {};
+            const navId = cfg.navId;
+            if (navId && document.getElementById(navId)) {
+                document.getElementById(navId).classList.add('active');
+            }
+
+            // 4. Update browser URL (Query Param ?menu=... & Hash #...) via history.pushState
+            const newUrl = (slug && slug !== 'home') ? `?menu=${encodeURIComponent(slug)}#${encodeURIComponent(slug)}` : window.location.pathname;
+            if (updateHistory) {
+                try {
+                    window.history.pushState({ menu: slug, viewId: viewId }, '', newUrl);
+                } catch (e) {
+                    window.location.hash = slug !== 'home' ? slug : '';
+                }
+            }
+
+            // 5. Persist to LocalStorage for fallback
+            localStorage.setItem('active_spp_menu', slug);
+            localStorage.setItem('spp_current_view', viewId);
+
+            // 6. RUN CORRESPONDING VIEW DATA INITIALIZATION (Fixes empty state on reload!)
+            if (cfg.init && typeof cfg.init === 'function') {
+                try {
+                    cfg.init();
+                } catch (err) {
+                    console.warn('Error initializing data for ' + viewId, err);
+                }
+            }
+
+            window.scrollTo(0, 0);
+        }
+
+        // Sidebar link click handler preventing default page reload while keeping semantic href
+        function handleNavClick(e, viewId, slug) {
+            if (e && e.preventDefault) {
+                e.preventDefault();
+            }
+            navigateTo(slug || viewId);
+        }
+
+        // 12. Kelas Filter Button Action
+        function selectKelasBtn(el, kelas, desc) {
+            document.querySelectorAll('.kelas-pill-btn').forEach(p => p.classList.remove('active-kelas'));
+            el.classList.add('active-kelas');
+            document.getElementById('activeKelasIndicator').innerText = 'Kelas Terpilih: ' + kelas;
+            showToast('Filter aktif: Kelas ' + kelas + ' (' + desc + ')');
+        }
+
+        // 13. Pilih tagihan untuk dibayar (bebas, tidak otomatis)
+        function paySingleBill(key) {
+            selectedPayKeys = [key];
+            navigateTo('viewBayar');
+        }
+
+        function toggleMonthSelection(key, checked) {
+            if (checked) {
+                if (!selectedPayKeys.includes(key)) selectedPayKeys.push(key);
+            } else {
+                selectedPayKeys = selectedPayKeys.filter(k => k !== key);
+            }
+
+            updatePaySummary();
+
+            // Re-render to update card styling
+            renderTagihanView();
+        }
+
+        // 14. Midtrans Payment Trigger
+        let snapActivePayment = null;
+        let snapCountdownInterval = null;
+        let pollingStatusInterval = null;
+        let pollingStatusTimeout = null;
+        let snapPopupSettled = false;
+        let snapExpiresAt = 0;
+        let snapTokenRetryCount = 0;
+        const SNAP_TOKEN_MAX_RETRY = 2;
+
+        function isSnapSessionExpiredMessage(message) {
+            const text = String(message || '');
+            return /expired|kadaluarsa|does(n't| not) exist|not found|invalid token|token (tidak|sudah)/i.test(text);
+        }
+
+        // Polling status real-time langsung ke API Midtrans (Polling setiap 3 detik)
+        function startPollingCekStatus(orderId, total, bulanStr) {
+            if (pollingStatusInterval) clearInterval(pollingStatusInterval);
+            if (pollingStatusTimeout) clearTimeout(pollingStatusTimeout);
+
+            pollingStatusInterval = setInterval(() => {
+                if (snapExpiresAt && Date.now() > snapExpiresAt) {
+                    clearInterval(pollingStatusInterval);
+                    pollingStatusInterval = null;
+                    showToast('Sesi pembayaran Midtrans sudah kedaluwarsa. Silakan klik BAYAR lagi untuk membuat token baru.');
+                    return;
+                }
+                fetch('/api/midtrans/cek-status/' + encodeURIComponent(orderId))
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success && data.paid) {
+                            clearInterval(pollingStatusInterval);
+                            pollingStatusInterval = null;
+                            closeMidtransSnapModal();
+                            processSuccessfulPayment(orderId, total, bulanStr, 'Midtrans ' + (data.payment_type || 'Settlement'));
+                            showToast('🎉 Pembayaran ' + orderId + ' berhasil terverifikasi LUNAS di Midtrans!');
+                        }
+                    })
+                    .catch(err => {
+                        console.warn('Polling status error:', err);
+                    });
+            }, 3000);
+
+            // Timeout polling setelah 15 menit
+            pollingStatusTimeout = setTimeout(() => {
+                if (pollingStatusInterval) {
+                    clearInterval(pollingStatusInterval);
+                    pollingStatusInterval = null;
+                }
+                pollingStatusTimeout = null;
+            }, 15 * 60 * 1000);
+        }
+
+        // ==========================================
+        // DYNAMIC MIDTRANS SNAP SDK LOADER
+        // Memuat snap.js sesuai mode (sandbox/production) & client key aktif
+        // ==========================================
+        const DEFAULT_MERCHANT_NAME = 'SMP MUHAMMADIYAH 3 METRO';
+
+        function sanitizeQrisName(name) {
+            const clean = (name || '').trim();
+            if (!clean || /kopma/i.test(clean)) {
+                return DEFAULT_MERCHANT_NAME;
+            }
+            return clean;
+        }
+
+        let midtransConfigCache = null;
+        let snapScriptPromise = null;
+        const initialSnapScript = document.getElementById('midtransSnapScript');
+        const initialSnapSrc = initialSnapScript ? initialSnapScript.src : '';
+        const initialSnapClientKey = initialSnapScript ? (initialSnapScript.getAttribute('data-client-key') || '') : '';
+        let snapLoadedSrc = initialSnapSrc;
+        let snapLoadedClientKey = initialSnapClientKey;
+
+        function loadMidtransConfig(force) {
+            if (midtransConfigCache && !force) {
+                return Promise.resolve(midtransConfigCache);
+            }
+            return fetch('/api/midtrans/config', {
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(res => res.json())
+            .then(cfg => {
+                midtransConfigCache = cfg;
+                return cfg;
+            })
+            .catch(err => {
+                console.warn('Gagal memuat konfigurasi Midtrans:', err);
+                return midtransConfigCache;
+            });
+        }
+
+        function loadSnapSdk(cfg) {
+            // Jika /api/midtrans/config gagal dimuat, JANGAN menghapus script Snap
+            // yang sudah ada. Script awal di <head> sudah membawa client key yang
+            // benar; menghapusnya lalu memuat ulang tanpa client key membuat
+            // popup Snap muncul kosong tanpa metode pembayaran.
+            const src = (cfg && cfg.snap_js)
+                ? cfg.snap_js
+                : (initialSnapSrc || 'https://app.sandbox.midtrans.com/snap/snap.js');
+            const clientKey = (cfg && cfg.client_key)
+                ? cfg.client_key
+                : initialSnapClientKey;
+
+            if (!clientKey) {
+                return Promise.reject(new Error('Client Key Midtrans belum dikonfigurasi.'));
+            }
+
+            if (window.snap && typeof window.snap.pay === 'function'
+                && snapLoadedSrc === src && snapLoadedClientKey === clientKey) {
+                return Promise.resolve(true);
+            }
+            if (snapScriptPromise && snapLoadedSrc === src && snapLoadedClientKey === clientKey) {
+                return snapScriptPromise;
+            }
+
+            snapLoadedSrc = src;
+            snapLoadedClientKey = clientKey;
+
+            // Hapus script lama sebelum memuat konfigurasi baru
+            const oldScript = document.getElementById('midtransSnapScript');
+            if (oldScript) oldScript.remove();
+            try { window.snap = undefined; } catch (e) {}
+
+            snapScriptPromise = new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.id = 'midtransSnapScript';
+                script.src = src;
+                script.setAttribute('data-client-key', clientKey);
+                script.onload = function() {
+                    let tries = 0;
+                    const timer = setInterval(() => {
+                        tries++;
+                        if (window.snap && typeof window.snap.pay === 'function') {
+                            clearInterval(timer);
+                            resolve(true);
+                        } else if (tries >= 50) {
+                            clearInterval(timer);
+                            reject(new Error('Snap SDK tidak tersedia setelah dimuat.'));
+                        }
+                    }, 100);
+                };
+                script.onerror = function() {
+                    reject(new Error('Gagal memuat script Snap Midtrans.'));
+                };
+                document.head.appendChild(script);
+            });
+
+            // Jika pemuatan gagal (jaringan/CDN), reset cache supaya klik
+            // BAYAR berikutnya mencoba memuat ulang, bukan memakai promise
+            // yang sudah ditolak selamanya.
+            snapScriptPromise.catch(function () {
+                snapScriptPromise = null;
+                snapLoadedSrc = '';
+                snapLoadedClientKey = '';
+            });
+
+            return snapScriptPromise;
+        }
+
+        function ensureSnapReady(overrideConfig) {
+            if (overrideConfig) {
+                return loadSnapSdk(overrideConfig);
+            }
+            return loadMidtransConfig().then(cfg => loadSnapSdk(cfg));
+        }
+
+        // 14. MIDTRANS SNAP PAYMENT TRIGGER (100% Payment Gateway Real & Otentik)
+        function triggerMidtransPayment(isRetry) {
+            if (!isRetry) {
+                snapTokenRetryCount = 0;
+            }
+            snapExpiresAt = 0;
+
+            const selectedBills = getSelectedPayBills();
+            if (!selectedBills.length) {
+                showToast('Silakan centang tagihan yang ingin dibayar terlebih dahulu.');
+                return;
+            }
+
+            const total = selectedBills.reduce((sum, b) => sum + (Number(b.nominal) || 0), 0);
+            const bulanStr = selectedBills.map(b => b.bulan || b.label).join(', ');
+            const selectedBillKeys = selectedBills.map(b => b.key);
+            const localOrderId = 'SPP-' + currentUser.nisn + '-' + Date.now().toString().slice(-6);
+
+            showToast('⚡ Menghubungkan ke Midtrans Payment Gateway...');
+
+            // Fetch Snap Token Resmi dari backend MidtransController Laravel
+            fetch('/api/midtrans/snap-token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    amount: total,
+                    student_name: currentUser.nama,
+                    nisn: currentUser.nisn,
+                    bulan: bulanStr,
+                    qris_name: sanitizeQrisName(localStorage.getItem('payment_qris_name'))
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.snap_token) {
+                    const activeOrderId = data.order_id || localOrderId;
+                    snapExpiresAt = data.expires_at ? Date.parse(data.expires_at) : (Date.now() + 24 * 3600 * 1000);
+                    // Update snap popup merchant title with custom name from backend
+                    const snapTitle = document.getElementById('snapMerchantTitle');
+                    if (snapTitle && data.qris_name) snapTitle.innerText = data.qris_name;
+                    snapActivePayment = {
+                        orderId: activeOrderId,
+                        total: total,
+                        bulanStr: bulanStr,
+                        billKeys: selectedBillKeys,
+                        nisn: currentUser.nisn,
+                        nama: currentUser.nama,
+                        kelas: currentUser.kelas,
+                        snapToken: data.snap_token,
+                        redirectUrl: data.redirect_url
+                    };
+
+                    // Mulai polling cek status transaksi ke Midtrans secara otomatis
+                    startPollingCekStatus(activeOrderId, total, bulanStr);
+
+                    // Muat Snap SDK sesuai mode token yang benar-benar dipakai
+                    // backend (sandbox/production). Ini mencegah token sandbox
+                    // dibuka oleh snap.js production yang membuat token dianggap
+                    // tidak valid / kedaluwarsa.
+                    ensureSnapReady({
+                        snap_js: data.snap_js,
+                        client_key: data.client_key
+                    })
+                    .then(() => {
+                        snapPopupSettled = false;
+                        // Tampilkan Pop-up Resmi Snap Midtrans
+                        window.snap.pay(data.snap_token, {
+                            onSuccess: function(result) {
+                                snapPopupSettled = true;
+                                if (pollingStatusInterval) clearInterval(pollingStatusInterval);
+                                closeMidtransSnapModal();
+                                showToast('✅ Transaksi berhasil di Midtrans. Menunggu verifikasi pembayaran...');
+                                // Jangan langsung proses pembayaran - tunggu verifikasi melalui polling/webhook
+                                startPollingCekStatus(activeOrderId, total, bulanStr);
+                            },
+                            onPending: function(result) {
+                                snapPopupSettled = true;
+                                showToast('Pembayaran dibuat. Silakan selesaikan pembayaran melalui QRIS / Virtual Account.');
+                            },
+                            onError: function(result) {
+                                snapPopupSettled = true;
+                                const message = (result && (result.status_message || result.message)) || 'Error';
+                                // Token Snap bisa kedaluwarsa / tidak ditemukan
+                                // (mis. karena popup dibuka dari mode yang salah).
+                                // Buat token baru otomatis, maksimal 2 kali.
+                                if (isSnapSessionExpiredMessage(message) && snapTokenRetryCount < SNAP_TOKEN_MAX_RETRY) {
+                                    snapTokenRetryCount++;
+                                    if (pollingStatusInterval) clearInterval(pollingStatusInterval);
+                                    showToast('Sesi pembayaran kedaluwarsa. Membuat token Midtrans baru...');
+                                    setTimeout(function () { triggerMidtransPayment(true); }, 700);
+                                    return;
+                                }
+                                showToast('Gagal memproses pembayaran Midtrans: ' + message);
+                            },
+                            onClose: function() {
+                                snapPopupSettled = true;
+                                // Jangan tampilkan toast saat popup ditutup.
+                                // Polling status tetap berjalan di background untuk mengecek pembayaran.
+                            }
+                        });
+
+                        // Jaga-jaga bila popup Snap tertahan tersembunyi (mis. iframe
+                        // diblokir browser HP). Setelah ±10 detik, tawarkan halaman
+                        // pembayaran Midtrans resmi yang selalu menampilkan metode.
+                        watchSnapPopup(data.redirect_url);
+                    })
+                    .catch(err => {
+                        console.warn('Snap SDK gagal dimuat:', err);
+                        showToast('❌ Gagal memuat popup Midtrans Snap: ' + err.message);
+                        if (data.redirect_url) {
+                            showToast('Membuka halaman pembayaran Midtrans...');
+                            window.open(data.redirect_url, '_blank');
+                        }
+                    });
+                } else {
+                    showToast('❌ Gagal membuat transaksi Midtrans: ' + (data.message || 'Periksa konfigurasi Midtrans.'));
+                    console.warn('Midtrans snap-token gagal:', data);
+                }
+            })
+            .catch(err => {
+                console.warn('Gagal menghubungi API Midtrans:', err);
+                showToast('❌ Tidak dapat terhubung ke Midtrans: ' + err.message);
+            });
+        }
+
+        // Buka Pop-up Snap Interaktif Identik Gambar 2
+        function openMidtransSnapModal(orderId, total, bulanStr) {
+            document.getElementById('snapAmountText').innerHTML = 'Rp' + total.toLocaleString('id-ID') + ' <span class="snap-copy-icon" onclick="copySnapText(\'' + total + '\')">📋</span>';
+            document.getElementById('snapOrderIdText').innerText = '#' + orderId;
+            document.getElementById('snapItemDesc').innerText = 'SPP ' + bulanStr + ' (SMP Muhammadiyah 3 Metro)';
+            document.getElementById('snapStudentDesc').innerText = currentUser.nama + ' (NISN: ' + currentUser.nisn + ')';
+
+            // Apply custom payment method names from localStorage
+            const snapTitle = document.getElementById('snapMerchantTitle');
+            const customQrisName = sanitizeQrisName(localStorage.getItem('payment_qris_name'));
+            if (snapTitle && customQrisName) snapTitle.innerText = customQrisName;
+            
+            // Countdown timer 23:59:36
+            startSnapCountdown();
+
+            // Reset view to main
+            document.getElementById('snapMainView').style.display = 'flex';
+            document.getElementById('snapDetailView').style.display = 'none';
+            document.getElementById('modalSnapMidtrans').style.display = 'flex';
+        }
+
+        function closeMidtransSnapModal() {
+            document.getElementById('modalSnapMidtrans').style.display = 'none';
+            if (snapCountdownInterval) clearInterval(snapCountdownInterval);
+        }
+
+        // Deteksi popup Snap yang tidak tampil (mis. iframe diblokir browser HP).
+        // Jika tetap tersembunyi, tawarkan halaman pembayaran Midtrans resmi.
+        function watchSnapPopup(redirectUrl) {
+            if (!redirectUrl) return;
+            let checks = 0;
+            const timer = setInterval(function () {
+                checks++;
+                if (snapPopupSettled) {
+                    clearInterval(timer);
+                    return;
+                }
+                const frame = document.getElementById('snap-midtrans');
+                const rect = frame ? frame.getBoundingClientRect() : null;
+                const visible = !!(frame && frame.style.display !== 'none'
+                    && rect && rect.width > 0 && rect.height > 0);
+                if (visible) {
+                    clearInterval(timer);
+                    return;
+                }
+                if (checks >= 15) {
+                    clearInterval(timer);
+                    showSnapFallback(redirectUrl);
+                }
+            }, 700);
+        }
+
+        function showSnapFallback(redirectUrl) {
+            if (!redirectUrl || document.getElementById('snapFallbackOverlay')) return;
+
+            const overlay = document.createElement('div');
+            overlay.id = 'snapFallbackOverlay';
+            overlay.style.cssText = 'position:fixed;inset:0;background:rgba(15,23,42,0.72);z-index:100000;display:flex;align-items:center;justify-content:center;padding:18px;';
+
+            const box = document.createElement('div');
+            box.style.cssText = 'background:#fff;max-width:380px;width:100%;border-radius:16px;padding:22px;box-shadow:0 24px 60px rgba(0,0,0,0.35);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:#1e293b;';
+            box.innerHTML = '<div style="font-size:34px;line-height:1;margin-bottom:10px;">💳</div>'
+                + '<h3 style="font-size:17px;font-weight:800;margin:0 0 8px;">Metode pembayaran belum tampil</h3>'
+                + '<p style="font-size:13px;line-height:1.5;color:#475569;margin:0 0 16px;">Popup pembayaran tidak dapat ditampilkan di browser ini. Buka halaman pembayaran Midtrans untuk memilih QRIS, GoPay, ShopeePay, OVO, DANA, Virtual Account, atau kartu.</p>';
+
+            const link = document.createElement('a');
+            link.href = redirectUrl;
+            link.target = '_blank';
+            link.rel = 'noopener';
+            link.textContent = 'Buka Halaman Pembayaran Midtrans';
+            link.style.cssText = 'display:block;text-align:center;background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;text-decoration:none;font-size:14px;font-weight:800;padding:13px 16px;border-radius:10px;';
+            box.appendChild(link);
+
+            const close = document.createElement('button');
+            close.type = 'button';
+            close.textContent = 'Tutup';
+            close.style.cssText = 'display:block;width:100%;margin-top:10px;background:#f1f5f9;border:none;color:#475569;font-size:13px;font-weight:700;padding:11px 16px;border-radius:10px;cursor:pointer;';
+            close.addEventListener('click', function () { overlay.remove(); });
+            box.appendChild(close);
+
+            overlay.appendChild(box);
+            document.body.appendChild(overlay);
+        }
+
+        function toggleSnapDetails() {
+            const box = document.getElementById('snapOrderDetailsBox');
+            box.style.display = box.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function startSnapCountdown() {
+            if (snapCountdownInterval) clearInterval(snapCountdownInterval);
+            let seconds = 24 * 3600 - 24; // 23h 59m 36s
+            const timerEl = document.getElementById('snapCountdownTimer');
+            
+            snapCountdownInterval = setInterval(() => {
+                seconds--;
+                if (seconds <= 0) {
+                    clearInterval(snapCountdownInterval);
+                    return;
+                }
+                const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+                const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+                const s = String(seconds % 60).padStart(2, '0');
+                timerEl.innerText = h + ':' + m + ':' + s;
+            }, 1000);
+        }
+
+        function openSnapDetail(channel) {
+            document.getElementById('snapMainView').style.display = 'none';
+            document.getElementById('snapDetailView').style.display = 'block';
+
+            const title = document.getElementById('snapDetailTitle');
+            const desc = document.getElementById('snapDetailDesc');
+            const qrBox = document.getElementById('snapQrBox');
+            const vaBox = document.getElementById('snapVaBox');
+
+            if (channel === 'gopay') {
+                const gopayName = localStorage.getItem('payment_gopay_name');
+                const qrisName = sanitizeQrisName(localStorage.getItem('payment_qris_name'));
+                title.innerText = (gopayName && !/kopma/i.test(gopayName)) ? gopayName : 'GoPay QRIS';
+                desc.innerText = 'Buka aplikasi GoPay atau Scan QRIS dengan aplikasi pembayaran pilihan Anda:';
+                const qrMerchantEl = document.getElementById('snapQrMerchantDisplay');
+                if (qrMerchantEl) qrMerchantEl.innerText = qrisName;
+                qrBox.style.display = 'inline-block';
+                vaBox.style.display = 'none';
+            } else if (channel === 'shopee') {
+                const qrisName = sanitizeQrisName(localStorage.getItem('payment_qris_name'));
+                title.innerText = 'ShopeePay QRIS';
+                desc.innerText = 'Buka aplikasi Shopee, pilih Bayar / Scan QRIS di bawah:';
+                const qrMerchantEl = document.getElementById('snapQrMerchantDisplay');
+                if (qrMerchantEl) qrMerchantEl.innerText = qrisName;
+                qrBox.style.display = 'inline-block';
+                vaBox.style.display = 'none';
+            } else if (channel === 'va') {
+                const vaName = localStorage.getItem('payment_va_name') || 'Bank Syariah Indonesia / Mandiri';
+                title.innerText = vaName + ' Virtual Account';
+                desc.innerText = 'Salin nomor Virtual Account resmi pembayaran SPP berikut:';
+                qrBox.style.display = 'none';
+                vaBox.style.display = 'block';
+                document.getElementById('snapVaNumber').innerText = '7268 ' + (currentUser.nisn || '0081234567');
+            } else if (channel === 'card') {
+                const cardName = localStorage.getItem('payment_card_name') || 'Kartu Kredit / Debit Online';
+                title.innerText = cardName;
+                desc.innerText = 'Masukkan informasi kartu pada simulasi pembayaran aman Midtrans:';
+                qrBox.style.display = 'none';
+                vaBox.style.display = 'block';
+                document.getElementById('snapVaNumber').innerText = '4512 •••• •••• 8899 (Visa Verified)';
+            } else if (channel === 'dana') {
+                title.innerText = 'DANA';
+                desc.innerText = 'Konfirmasi notifikasi pembayaran yang masuk ke aplikasi DANA Anda.';
+                qrBox.style.display = 'none';
+                vaBox.style.display = 'block';
+                document.getElementById('snapVaNumber').innerText = '0812-xxxx-' + (currentUser.nisn ? currentUser.nisn.slice(-4) : '4567');
+            } else {
+                title.innerText = 'OVO Instant Checkout';
+                desc.innerText = 'Konfirmasi notifikasi pembayaran yang masuk ke aplikasi OVO Anda.';
+                qrBox.style.display = 'none';
+                vaBox.style.display = 'block';
+                document.getElementById('snapVaNumber').innerText = '0812-xxxx-' + (currentUser.nisn ? currentUser.nisn.slice(-4) : '4567');
+            }
+        }
+
+        function backToSnapMain() {
+            document.getElementById('snapMainView').style.display = 'flex';
+            document.getElementById('snapDetailView').style.display = 'none';
+        }
+
+        function completeSnapPaymentSuccess() {
+            closeMidtransSnapModal();
+            if (snapActivePayment) {
+                showToast('✅ Transaksi berhasil di Midtrans. Menunggu verifikasi pembayaran...');
+                // Jangan langsung proses pembayaran - tunggu verifikasi melalui polling/webhook
+                startPollingCekStatus(snapActivePayment.orderId, snapActivePayment.total, snapActivePayment.bulanStr);
+            }
+        }
+
+        // Proses pelunasan pembayaran & sinkronisasi otomatis
+        function processSuccessfulPayment(orderId, total, bulanStr, method) {
+            showToast('⏳ Memverifikasi pembayaran via Midtrans...');
+
+            setTimeout(() => {
+                // 1. Tambah riwayat transaksi
+                const newTrx = {
+                    no: orderId,
+                    waktu: new Date().toISOString().slice(0, 16).replace('T', ' '),
+                    nisn: currentUser.nisn,
+                    siswa: currentUser.nama + ' (' + currentUser.kelas + ')',
+                    uraian: 'SPP ' + bulanStr,
+                    nominal: total,
+                    metode: method || 'Midtrans Snap QRIS',
+                    status: 'Lunas'
+                };
+                transactions.unshift(newTrx);
+
+                // 2. Tandai HANYA tagihan yang dipilih sebagai lunas. Tagihan
+                // lama yang tidak dipilih tetap tampil dan tetap bisa dibayar.
+                const paidKeys = (snapActivePayment && snapActivePayment.billKeys)
+                    ? snapActivePayment.billKeys.slice()
+                    : selectedPayKeys.slice();
+                const paidBills = getStudentBills().filter(b => paidKeys.includes(b.key));
+
+                paidBills.forEach(bill => {
+                    const bulan = bill.bulan;
+
+                    if (bill.invoiceId) {
+                        const inv = createdInvoices.find(i => i.id === bill.invoiceId);
+                        if (inv) inv.status = 'Lunas';
+                    }
+
+                    if (bulan) {
+                        // Update current user
+                        if (currentUser.tagihanUnpaid) {
+                            currentUser.tagihanUnpaid = currentUser.tagihanUnpaid.filter(b => b !== bulan);
+                        }
+                        // Sync ke semua student dengan NISN ini di DEMO_USERS
+                        DEMO_USERS.siswa.forEach(s => {
+                            if (s.nisn === currentUser.nisn && s.tagihanUnpaid) {
+                                s.tagihanUnpaid = s.tagihanUnpaid.filter(b => b !== bulan);
+                            }
+                        });
+                        // Sync ke orang tua
+                        DEMO_USERS.ortu.forEach(o => {
+                            if (o.nisn === currentUser.nisn && o.tagihanUnpaid) {
+                                o.tagihanUnpaid = o.tagihanUnpaid.filter(b => b !== bulan);
+                            }
+                        });
+                    }
+                });
+
+                // Update badge Ahmad Dahlan jika relevan
+                if (currentUser.nisn === '0081234567') {
+                    const badge = document.getElementById('statusSppAhmad');
+                    if (badge) {
+                        badge.className = 'badge-status badge-lunas';
+                        badge.innerText = 'Lunas';
+                    }
+                }
+
+                // Reset tagihan yang dipilih
+                selectedPayKeys = [];
+
+                // Refresh semua view terkait
+                renderStatsGrid();
+                renderTagihanView();
+                renderRiwayatView();
+                renderCreatedInvoices();
+                saveSppData();
+
+                // Buka Kuitansi Resmi Cetak
+                openReceiptModal(orderId);
+                showToast('🎉 Pembayaran SPP ' + bulanStr + ' via Midtrans BERHASIL!');
+            }, 500);
+        }
+
+        function copySnapText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Teks berhasil disalin ke clipboard!');
+            }).catch(() => {
+                showToast('Nilai: ' + text);
+            });
+        }
+
+        function handleKasirSubmit(e) {
+            e.preventDefault();
+            const nisn = document.getElementById('kasirSiswaSelect').value;
+            const bulan = document.getElementById('kasirBulanSelect').value;
+            const nominal = parseInt(document.getElementById('kasirNominal').value) || 2;
+            const metode = document.getElementById('kasirMetode').value;
+
+            const siswaObj = DEMO_USERS.siswa.find(s => s.nisn === nisn) || DEMO_USERS.siswa[0];
+            const orderId = 'TUNAI-' + Date.now().toString().slice(-6);
+
+            const newTrx = {
+                no: orderId,
+                waktu: new Date().toISOString().slice(0, 16).replace('T', ' '),
+                nisn: siswaObj.nisn,
+                siswa: siswaObj.nama + ' (' + siswaObj.kelas + ')',
+                uraian: 'SPP ' + bulan,
+                nominal: nominal,
+                metode: metode,
+                status: 'Lunas'
+            };
+
+            transactions.unshift(newTrx);
+
+            // Mark paid for student
+            if (siswaObj.tagihanUnpaid) {
+                siswaObj.tagihanUnpaid = siswaObj.tagihanUnpaid.filter(b => b !== bulan);
+            }
+
+            if (siswaObj.nisn === '0081234567') {
+                const badge = document.getElementById('statusSppAhmad');
+                if (badge) {
+                    badge.className = 'badge-status badge-lunas';
+                    badge.innerText = 'Lunas';
+                }
+            }
+
+            saveSppData();
+            renderRiwayatView();
+            openReceiptModal(orderId);
+            showToast('✅ Pembayaran kasir berhasil dicatat!');
+        }
+
+        // 16. STAFF MANAGEMENT FUNCTIONS
+        // Hide staff views
+        function hideCreateStaff() {
+            document.getElementById('viewStaffCreate').style.display = 'none';
+            document.getElementById('viewStaffEdit').style.display = 'none';
+            document.getElementById('viewStaffShow').style.display = 'none';
+            document.getElementById('viewStaff').style.display = 'block';
+        }
+
+        function showCreateStaff() {
+            document.getElementById('viewStaffCreate').style.display = 'block';
+            document.getElementById('viewStaff').style.display = 'none';
+            document.getElementById('viewStaffEdit').style.display = 'none';
+            document.getElementById('viewStaffShow').style.display = 'none';
+            document.getElementById('staffUserId').value = '';
+            document.getElementById('staffNoTelp').value = '';
+            document.getElementById('staffEmail').value = '';
+            document.getElementById('staffStatus').value = 'aktif';
+            document.getElementById('staffUserId').disabled = true;
+            getPetugasList();
+        }
+
+        function getPetugasList() {
+            fetch('/api/petugas/role', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                const select = document.getElementById('staffUserId');
+                select.innerHTML = '<option value="">-- Pilih Username --</option>';
+                data.forEach(petugas => {
+                    select.innerHTML += `<option value="${petugas.id_user}">${petugas.user.username} (Role: ${petugas.user.role})</option>`;
+                });
+                select.disabled = false;
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert('Gagal memuat daftar petugas.');
+            });
+        }
+
+        function resetStaffForm() {
+            document.getElementById('createStaffForm').reset();
+            document.getElementById('staffStatus').value = 'aktif';
+        }
+
+                function storeStaff() {
+            const form = document.getElementById('createStaffForm');
+            const data = new FormData(form);
+
+            fetch('/api/petugas', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: data
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Petugas berhasil ditambahkan!');
+                    resetStaffForm();
+                    hideCreateStaff();
+                    loadPetugas();
+                } else {
+                    alert('Gagal menambahkan petugas: ' + data.message);
+                }
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert('Terjadi kesalahan saat menyimpan petugas.');
+            });
+        }
+
+        // Load petugas from API
+        function loadPetugas() {
+            fetch('/api/petugas')
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.getElementById('petugasTableBody');
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text-muted);">Belum ada data petugas.</td></tr>';
+                    return;
+                }
+
+                let html = '';
+                data.forEach((petugas, index) => {
+                    const statusClass = petugas.status_petugas === 'aktif' ? 'status-aktif' : 'status-tidak-aktif';
+                    const statusLabel = petugas.status_petugas === 'aktif' ? 'Aktif' : 'Tidak Aktif';
+                    html += `<tr>
+                        <td>${index + 1}</td>
+                        <td>${petugas.user.username}</td>
+                        <td>${petugas.jabatan}</td>
+                        <td>${petugas.user.role}</td>
+                        <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
+                        <td style="white-space:nowrap;">
+                            <button class="btn-action-secondary" onclick="showStaffDetail(${petugas.id_petugas})">Detail</button>
+                            <button class="btn-action-secondary" onclick="editStaff(${petugas.id_petugas})">Edit</button>
+                            <button class="btn-action-secondary" onclick="deleteStaffConfirm(${petugas.id_petugas})">Hapus</button>
+                        </td>
+                    </tr>`;
+                });
+                tbody.innerHTML = html;
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert('Gagal memuat data petugas.');
+            });
+        }
+
+        // Show tagihan detail
+        function openDetailTagihan(id) {
+            fetch(`/api/tagihan/${id}`)
+            .then(res => res.json())
+            .then(data => {
+                alert(`Detail Tagihan:\n\n` +
+                      `Siswa: ${data.siswa?.nama_siswa || '-'}\n` +
+                      `Kelas: ${data.kelas?.nama_kelas || '-'}\n` +
+                      `Bulan: ${data.bulan}\n` +
+                      `Nominal: Rp ${parseInt(data.nominal).toLocaleString('id-ID')}\n` +
+                      `Status: ${data.status === 'lunas' ? 'Lunas' : 'Belum Lunas'}\n` +
+                      `Keterangan: ${data.keterangan || '-'}\n` +
+                      `Waktu: ${new Date(data.created_at).toLocaleString('id-ID')}`);
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert('Gagal memuat detail tagihan.');
+            });
+        }
+
+        // Show edit staff view
+        function showEditStaff() {
+            document.getElementById('viewStaffEdit').style.display = 'block';
+            document.getElementById('viewStaff').style.display = 'none';
+            document.getElementById('viewStaffShow').style.display = 'none';
+        }
+
+        // Hide show staff view
+        function hideShowStaff() {
+            document.getElementById('viewStaffShow').style.display = 'none';
+            document.getElementById('viewStaff').style.display = 'block';
+        }
+
+        // Refresh tagihan view using API
+        function refreshTagihanView() {
+            fetch('/api/tagihan')
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.getElementById('tagihanTableBody');
+                const totalBelumLunasEl = document.getElementById('totalBelumLunas');
+                const totalLunasEl = document.getElementById('totalLunas');
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    if (tbody) tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--text-muted);">Belum ada tagihan.</td></tr>';
+                    if (totalBelumLunasEl) totalBelumLunasEl.innerText = '0';
+                    if (totalLunasEl) totalLunasEl.innerText = '0';
+                    return;
+                }
+
+                let totalBelum = 0;
+                let totalLunas = 0;
+                let html = '';
+                data.forEach((tagihan, index) => {
+                    const statusClass = tagihan.status === 'lunas' ? 'status-lunas' : 'status-belum';
+                    const statusLabel = tagihan.status === 'lunas' ? 'Lunas' : 'Belum Lunas';
+                    if (tagihan.status === 'lunas') totalLunas++;
+                    else totalBelum++;
+
+                    html += `<tr>
+                        <td>${index + 1}</td>
+                        <td>${tagihan.siswa?.nama_siswa || '-'}</td>
+                        <td>${tagihan.kelas?.nama_kelas || '-'}</td>
+                        <td>${tagihan.bulan}</td>
+                        <td style="font-weight:700;">Rp ${parseInt(tagihan.nominal).toLocaleString('id-ID')}</td>
+                        <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
+                        <td>${new Date(tagihan.created_at).toLocaleDateString('id-ID')}</td>
+                        <td style="white-space:nowrap;">
+                            <button class="btn-action-secondary" onclick="openDetailTagihan(${tagihan.id_tagihan})">Detail</button>
+                            <button class="btn-action-secondary" onclick="openEditTagihan(${tagihan.id_tagihan})">Edit</button>
+                            <button class="btn-action-secondary" onclick="deleteTagihan(${tagihan.id_tagihan})">Hapus</button>
+                        </td>
+                    </tr>`;
+                });
+                if (tbody) tbody.innerHTML = html;
+                if (totalBelumLunasEl) totalBelumLunasEl.innerText = totalBelum;
+                if (totalLunasEl) totalLunasEl.innerText = totalLunas;
+            })
+            .catch(err => {
+                console.error('Error:', err);
+            });
+        }
+
+        // Open edit tagihan form
+        function openEditTagihan(id) {
+            fetch(`/api/tagihan/${id}`)
+            .then(res => res.json())
+            .then(data => {
+                alert(`Buka form edit tagihan ${id}...`);
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert('Gagal memuat data tagihan untuk diedit.');
+            });
+        }
+
+        // Delete tagihan
+        function deleteTagihan(id) {
+            if (confirm('Anda yakin ingin menghapus tagihan ini?')) {
+                fetch(`/api/tagihan/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Tagihan berhasil dihapus!');
+                        refreshTagihanView();
+                    } else {
+                        alert('Gagal menghapus tagihan: ' + data.message);
+                    }
+                })
+                .catch(err => {
+                    console.error('Error:', err);
+                    alert('Terjadi kesalahan saat menghapus tagihan.');
+                });
+            }
+        }
+
+        // Show staff detail
+        function showStaffDetail(id) {
+            fetch(`/api/petugas/${id}`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('viewStaffShow').style.display = 'block';
+                document.getElementById('viewStaff').style.display = 'none';
+                document.getElementById('staffName').innerText = data.user.username;
+                document.getElementById('staffAvatarLetter').innerText = data.user.username.charAt(0);
+                document.getElementById('staffJabatan').innerText = data.jabatan;
+                document.getElementById('staffUsername').innerText = data.user.username;
+                document.getElementById('staffRole').innerText = data.user.role;
+                document.getElementById('staffNoTelp').innerText = data.no_telp || '-';
+                document.getElementById('staffEmail').innerText = data.email || '-';
+                const statusEl = document.getElementById('staffStatus');
+                statusEl.innerText = data.status_petugas === 'aktif' ? 'Aktif' : 'Tidak Aktif';
+                statusEl.className = 'detail-value status-badge ' + (data.status_petugas === 'aktif' ? 'status-aktif' : 'status-tidak-aktif');
+                document.getElementById('staffCreated').innerText = data.created_at ? new Date(data.created_at).toLocaleDateString('id-ID') : '-';
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert('Gagal memuat detail petugas.');
+            });
+        }
+
+        // Edit staff
+        function editStaff(id) {
+            fetch(`/api/petugas/${id}`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('editStaffId').value = data.id_petugas;
+                document.getElementById('editStaffNama').value = data.user.username;
+                document.getElementById('editStaffJabatan').value = data.jabatan;
+                document.getElementById('editStaffNoTelp').value = data.no_telp || '';
+                document.getElementById('editStaffEmail').value = data.email || '';
+                document.getElementById('editStaffStatus').value = data.status_petugas || 'aktif';
+                showEditStaff();
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert('Gagal memuat data petugas.');
+            });
+        }
+
+        // Update staff
+        function updateStaff() {
+            const form = document.getElementById('editStaffForm');
+            const data = new FormData(form);
+
+            fetch(`/api/petugas/${data.get('editStaffId')}`, {
+                method: 'PUT',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: data
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Petugas berhasil diperbarui!');
+                    hideEditStaff();
+                    loadPetugas();
+                } else {
+                    alert('Gagal memperbarui petugas: ' + data.message);
+                }
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert('Terjadi kesalahan saat memperbarui petugas.');
+            });
+        }
+
+        // Delete staff
+        function deleteStaffConfirm(id) {
+            if (confirm('Anda yakin ingin menghapus petugas ini?')) {
+                deleteStaff(id);
+            }
+        }
+
+        function deleteStaff(id) {
+            fetch(`/api/petugas/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Petugas berhasil dihapus!');
+                    loadPetugas();
+                } else {
+                    alert('Gagal menghapus petugas: ' + data.message);
+                }
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert('Terjadi kesalahan saat menghapus petugas.');
+            });
+        }
+
+function updateKasirSiswaInfo() {
+            const nisn = document.getElementById('kasirSiswaSelect').value;
+            const siswa = DEMO_USERS.siswa.find(s => s.nisn === nisn);
+            if (siswa) {
+                document.getElementById('kasirNominal').value = siswa.tarif;
+            }
+        }
+
+        // 16. Receipt Modal Logic
+        function openReceiptModal(trxNo) {
+            const item = transactions.find(t => t.no === trxNo) || transactions[0];
+            if (!item) return;
+
+            document.getElementById('rcptNo').innerText = item.no;
+            document.getElementById('rcptTanggal').innerText = item.waktu + ' WIB';
+            document.getElementById('rcptNama').innerText = item.siswa;
+            document.getElementById('rcptNisn').innerText = item.nisn;
+            document.getElementById('rcptUraian').innerText = item.uraian;
+            document.getElementById('rcptMetode').innerText = item.metode;
+            document.getElementById('rcptNominal').innerText = 'Rp ' + item.nominal.toLocaleString('id-ID');
+            document.getElementById('rcptPenyetor').innerText = item.siswa;
+
+            document.getElementById('modalReceipt').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            const el = document.getElementById(modalId);
+            if (el) {
+                el.classList.remove('active');
+                el.style.display = 'none';
+            }
+        }
+
+        function printReceiptDirect() {
+            window.print();
+        }
+
+        function printReceiptList() {
+            window.print();
+        }
+
+        // 17. Midtrans Settings Handlers
+        function handleMidtransSave(e) {
+            e.preventDefault();
+            const serverKey = document.getElementById('cfgServerKey').value;
+            const clientKey = document.getElementById('cfgClientKey').value;
+            const merchantId = document.getElementById('cfgMerchantId').value;
+            const isProd = document.querySelector('input[name="cfgMode"]:checked').value === 'production';
+
+            // Send to Laravel API
+            fetch('/api/midtrans/config', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    server_key: serverKey,
+                    client_key: clientKey,
+                    merchant_id: merchantId,
+                    is_production: isProd,
+                    enabled: document.getElementById('cfgEnabled').value === 'true'
+                })
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok || data.status !== 'success') {
+                    throw new Error(data.message || 'Konfigurasi Midtrans gagal disimpan.');
+                }
+                return data;
+            })
+            .then(data => {
+                midtransConfigCache = null;
+                showToast('✅ Konfigurasi Midtrans berhasil disimpan ke server!');
+                // Muat ulang konfigurasi & snap.js agar mode/client key langsung berlaku
+                loadMidtransConfig(true)
+                    .then(cfg => loadSnapSdk(cfg))
+                    .catch(err => console.warn('Snap SDK gagal dimuat ulang:', err));
+            })
+            .catch(err => {
+                showToast('❌ Gagal menyimpan pengaturan Midtrans: ' + err.message);
+            });
+        }
+
+        function testMidtransConnection() {
+            showToast('Menguji koneksi ke API Midtrans Gateway...');
+            // Endpoint ini hanya memeriksa kredensial, tidak membuat transaksi
+            // atau tagihan uji sehingga data pembayaran tetap bersih.
+            fetch('/api/midtrans/test-connection', {
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    throw new Error(data.message || 'Cek Server Key & Client Key');
+                }
+                return data;
+            })
+            .then(data => {
+                showToast('✅ Koneksi API Midtrans BERHASIL! (Merchant: SMP MUHAMMADIYAH 3 METRO, Mode: ' + (data.mode || (data.is_production ? 'Production' : 'Sandbox')) + ')');
+            })
+            .catch(err => {
+                showToast('❌ Gagal terhubung ke Midtrans: ' + err.message);
+            });
+        }
+
+        function resetMidtransDefaults() {
+            document.getElementById('cfgServerKey').value = '';
+            document.getElementById('cfgClientKey').value = '';
+            document.getElementById('cfgMerchantId').value = '';
+            const sandboxRadio = document.querySelector('input[name="cfgMode"][value="sandbox"]');
+            if (sandboxRadio) sandboxRadio.checked = true;
+            const enabledSelect = document.getElementById('cfgEnabled');
+            if (enabledSelect) enabledSelect.value = 'true';
+            showToast('Kolom kredensial dikosongkan. Masukkan kunci Midtrans milik merchant Anda sebelum menyimpan.');
+        }
+
+        function savePaymentMethodNames() {
+            const qrisName = sanitizeQrisName(document.getElementById('cfgQrisName').value);
+            const vaName = document.getElementById('cfgVaName').value;
+            const cardName = document.getElementById('cfgCardName').value;
+            const gopayName = document.getElementById('cfgGopayName').value;
+
+            // Pastikan nama lama "KOPMA" tidak tersimpan lagi
+            document.getElementById('cfgQrisName').value = qrisName;
+
+            // Save to localStorage for real-time updates
+            localStorage.setItem('payment_qris_name', qrisName);
+            localStorage.setItem('payment_va_name', vaName);
+            localStorage.setItem('payment_card_name', cardName);
+            localStorage.setItem('payment_gopay_name', gopayName);
+
+            // Update snap popup merchant title immediately
+            const snapTitle = document.getElementById('snapMerchantTitle');
+            if (snapTitle) snapTitle.innerText = qrisName;
+
+            // Simpan juga ke server agar nama tidak kembali ke default saat
+            // halaman dimuat ulang di perangkat/browser lain.
+            fetch('/api/midtrans/config', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    qris_name: qrisName,
+                    va_name: vaName,
+                    card_name: cardName,
+                    gopay_name: gopayName
+                })
+            })
+            .then(async res => {
+                const data = await res.json();
+                if (!res.ok || data.status !== 'success') {
+                    throw new Error(data.message || 'Gagal menyimpan nama metode ke server.');
+                }
+                midtransConfigCache = null;
+                return data;
+            })
+            .then(() => {
+                showToast('✅ Nama metode pembayaran berhasil disimpan & diterapkan secara real-time!', 'success');
+            })
+            .catch(err => {
+                showToast('⚠️ Nama metode tersimpan di perangkat, tetapi gagal disimpan ke server: ' + err.message);
+            });
+        }
+
+        // Load payment method names from localStorage on page load
+        function loadPaymentMethodNames() {
+            const storedQrisName = localStorage.getItem('payment_qris_name');
+            const qrisName = sanitizeQrisName(storedQrisName);
+            const vaName = localStorage.getItem('payment_va_name');
+            const cardName = localStorage.getItem('payment_card_name');
+            const gopayName = localStorage.getItem('payment_gopay_name');
+
+            // Migrasi otomatis: ubah nama lama "KOPMA" menjadi nama sekolah
+            if (storedQrisName !== qrisName) {
+                localStorage.setItem('payment_qris_name', qrisName);
+            }
+
+            document.getElementById('cfgQrisName').value = qrisName;
+            if (vaName) document.getElementById('cfgVaName').value = vaName;
+            if (cardName) document.getElementById('cfgCardName').value = cardName;
+            if (gopayName && !/kopma/i.test(gopayName)) document.getElementById('cfgGopayName').value = gopayName;
+
+            // Update snap popup merchant title
+            const snapTitle = document.getElementById('snapMerchantTitle');
+            if (snapTitle) snapTitle.innerText = qrisName;
+
+            if (typeof initQrisSettingsView === 'function') {
+                initQrisSettingsView();
+            }
+        }
+
+        // ============================================================
+        // PENGATURAN NAMA QRIS & METODE PEMBAYARAN (PETUGAS - TANPA CODING)
+        // ============================================================
+        function initQrisSettingsView() {
+            const currentQris = sanitizeQrisName(localStorage.getItem('payment_qris_name'));
+            const currentGopay = localStorage.getItem('payment_gopay_name') || 'GoPay QRIS';
+            const currentVa = localStorage.getItem('payment_va_name') || 'Bank Syariah Indonesia / Mandiri';
+            const currentCard = localStorage.getItem('payment_card_name') || 'Kartu Kredit / Debit Online';
+
+            const nameInput = document.getElementById('qrisSettingName');
+            const gopayInput = document.getElementById('qrisSettingGopay');
+            const vaInput = document.getElementById('qrisSettingVa');
+            const cardInput = document.getElementById('qrisSettingCard');
+
+            if (nameInput) nameInput.value = currentQris;
+            if (gopayInput) gopayInput.value = currentGopay;
+            if (vaInput) vaInput.value = currentVa;
+            if (cardInput) cardInput.value = currentCard;
+
+            updateQrisLivePreview();
+        }
+
+        function updateQrisLivePreview() {
+            const nameInput = document.getElementById('qrisSettingName');
+            const val = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : DEFAULT_MERCHANT_NAME;
+
+            const previewHeader = document.getElementById('previewSnapHeader');
+            const previewName = document.getElementById('previewQrisName');
+
+            if (previewHeader) previewHeader.innerText = val;
+            if (previewName) previewName.innerText = val;
+        }
+
+        function saveQrisSettingsCustom() {
+            const nameInput = document.getElementById('qrisSettingName');
+            const gopayInput = document.getElementById('qrisSettingGopay');
+            const vaInput = document.getElementById('qrisSettingVa');
+            const cardInput = document.getElementById('qrisSettingCard');
+
+            let qrisName = sanitizeQrisName(nameInput ? nameInput.value : '');
+            let gopayName = (gopayInput && gopayInput.value.trim()) ? gopayInput.value.trim() : 'GoPay QRIS';
+            let vaName = (vaInput && vaInput.value.trim()) ? vaInput.value.trim() : 'Bank Syariah Indonesia / Mandiri';
+            let cardName = (cardInput && cardInput.value.trim()) ? cardInput.value.trim() : 'Kartu Kredit / Debit Online';
+
+            // Simpan ke localStorage
+            localStorage.setItem('payment_qris_name', qrisName);
+            localStorage.setItem('payment_gopay_name', gopayName);
+            localStorage.setItem('payment_va_name', vaName);
+            localStorage.setItem('payment_card_name', cardName);
+
+            // Sinkronkan ke form viewMidtransSettings jika ada
+            const cfgQris = document.getElementById('cfgQrisName');
+            const cfgGopay = document.getElementById('cfgGopayName');
+            const cfgVa = document.getElementById('cfgVaName');
+            const cfgCard = document.getElementById('cfgCardName');
+            if (cfgQris) cfgQris.value = qrisName;
+            if (cfgGopay) cfgGopay.value = gopayName;
+            if (cfgVa) cfgVa.value = vaName;
+            if (cfgCard) cfgCard.value = cardName;
+
+            // Update Snap popup titles
+            const snapTitle = document.getElementById('snapMerchantTitle');
+            if (snapTitle) snapTitle.innerText = qrisName;
+            const snapQrMerchant = document.getElementById('snapQrMerchantDisplay');
+            if (snapQrMerchant) snapQrMerchant.innerText = qrisName;
+
+            updateQrisLivePreview();
+
+            // Simpan ke server backend Laravel
+            showToast('💾 Menyimpan perubahan nama QRIS ke server...');
+            fetch('/api/midtrans/config', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    qris_name: qrisName,
+                    gopay_name: gopayName,
+                    va_name: vaName,
+                    card_name: cardName
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                midtransConfigCache = null;
+                showToast('✅ Nama QRIS berhasil diubah menjadi "' + qrisName + '" (Tersimpan tanpa coding)!');
+                const badge = document.getElementById('qrisStatusBadge');
+                if (badge) {
+                    badge.innerText = '✅ Tersimpan & Aktif';
+                    badge.className = 'badge-status badge-lunas';
+                }
+            })
+            .catch(err => {
+                showToast('✅ Nama QRIS diterapkan di browser: ' + qrisName);
+            });
+        }
+
+        function resetQrisSettingsToDefault() {
+            const nameInput = document.getElementById('qrisSettingName');
+            const gopayInput = document.getElementById('qrisSettingGopay');
+            if (nameInput) nameInput.value = DEFAULT_MERCHANT_NAME;
+            if (gopayInput) gopayInput.value = 'GoPay QRIS';
+            updateQrisLivePreview();
+            saveQrisSettingsCustom();
+            showToast('🔄 Nama QRIS dikembalikan ke: ' + DEFAULT_MERCHANT_NAME);
+        }
+
+        function showSiswaDetail(nisn) {
+            const s = DEMO_USERS.siswa.find(x => x.nisn === nisn);
+            if (s) {
+                alert(`DETAIL SISWA SMP MUHAMMADIYAH 3 METRO\n` +
+                      `------------------------------------\n` +
+                      `Nama: ${s.nama}\n` +
+                      `NISN: ${s.nisn} / NIS: ${s.nis}\n` +
+                      `Kelas: ${s.kelas} (Tingkat ${s.tingkat})\n` +
+                      `Wali: ${s.namaOrtu} (${s.noTelp})\n` +
+                      `Alamat: ${s.alamat}\n` +
+                      `Tarif SPP: Rp ${s.tarif.toLocaleString('id-ID')}/bln`);
+            }
+        }
+
+        function filterSiswaTable(query) {
+            query = query.toLowerCase();
+            const rows = document.querySelectorAll('#manajemenSiswaBody tr');
+            rows.forEach(r => {
+                const text = r.innerText.toLowerCase();
+                r.style.display = text.includes(query) ? '' : 'none';
+            });
+        }
+
+        // ============================================================
+        // RENDER DATA SISWA, AKUN, DAN PENCARIAN TAGIHAN (AJAX)
+        // ============================================================
+        function escapeHtml(value) {
+            return String(value == null ? '' : value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function sortSiswaByKelas(list) {
+            return list.slice().sort((a, b) => {
+                const ka = KELAS_DEMO.indexOf(a.kelas);
+                const kb = KELAS_DEMO.indexOf(b.kelas);
+                if (ka !== kb) return ka - kb;
+                return String(a.nama).localeCompare(String(b.nama), 'id');
+            });
+        }
+
+        // 1. Data siswa pada menu "Data Siswa & SPP"
+        function renderManajemenSiswa() {
+            const tbody = document.getElementById('manajemenSiswaBody');
+            if (!tbody) return;
+
+            const kelasFilter = (document.getElementById('filterKelasManajemen') || {}).value || 'ALL';
+            const keyword = ((document.getElementById('searchSiswaManajemen') || {}).value || '').toLowerCase().trim();
+
+            let list = DEMO_USERS.siswa.filter(s => kelasFilter === 'ALL' || s.kelas === kelasFilter);
+            if (keyword) {
+                list = list.filter(s => (s.nama + ' ' + s.nisn + ' ' + s.nis + ' ' + s.kelas).toLowerCase().includes(keyword));
+            }
+            list = sortSiswaByKelas(list);
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-muted);">Tidak ada siswa yang cocok dengan filter.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = list.map(s => {
+                const belum = s.tagihanUnpaid && s.tagihanUnpaid.length > 0;
+                return `
+                    <tr>
+                        <td><strong>${escapeHtml(s.nisn)}</strong></td>
+                        <td>${escapeHtml(s.nama)}</td>
+                        <td><span class="user-role-badge role-badge-siswa">${escapeHtml(s.kelas)}</span></td>
+                        <td>Rp ${Number(s.tarif).toLocaleString('id-ID')} / bln</td>
+                        <td><span class="badge-status badge-lunas">Aktif</span></td>
+                        <td><span class="badge-status ${belum ? 'badge-belum' : 'badge-lunas'}">${belum ? 'Belum Lunas' : 'Lunas'}</span></td>
+                        <td style="text-align:right;">
+                            <button class="btn-action-secondary" style="padding:4px 10px;font-size:12px;" onclick="showSiswaDetail('${escapeHtml(s.nisn)}')">Rincian</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // 2. Data siswa per kelas (29 siswa setiap kelas)
+        function renderSiswaPerKelas() {
+            const tbody = document.getElementById('siswaPerKelasBody');
+            if (!tbody) return;
+
+            const kelasFilter = (document.getElementById('filterKelasSiswa') || {}).value || '7A';
+            const keyword = ((document.getElementById('searchSiswaKelas') || {}).value || '').toLowerCase().trim();
+
+            let list = DEMO_USERS.siswa.filter(s => kelasFilter === 'ALL' || s.kelas === kelasFilter);
+            if (keyword) {
+                list = list.filter(s => (s.nama + ' ' + s.nisn + ' ' + s.nis).toLowerCase().includes(keyword));
+            }
+            list = sortSiswaByKelas(list);
+
+            const summaryEl = document.getElementById('siswaKelasSummary');
+            if (summaryEl) {
+                const belum = list.filter(s => s.tagihanUnpaid && s.tagihanUnpaid.length > 0).length;
+                summaryEl.innerHTML = `
+                    <div class="stat-card stat-blue">
+                        <div class="stat-icon">${SVG_ICONS.users}</div>
+                        <div class="stat-info">
+                            <h5>TOTAL SISWA</h5>
+                            <div class="stat-val">${list.length} Siswa</div>
+                            <div class="stat-desc">${kelasFilter === 'ALL' ? 'Semua kelas (9 kelas)' : 'Kelas ' + escapeHtml(kelasFilter) + ' • 29 siswa'}</div>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-orange">
+                        <div class="stat-icon">${SVG_ICONS.warning}</div>
+                        <div class="stat-info">
+                            <h5>BELUM LUNAS</h5>
+                            <div class="stat-val">${belum} Siswa</div>
+                            <div class="stat-desc">Perlu ditindaklanjuti petugas</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--text-muted);">Tidak ada siswa pada filter ini.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = list.map((s, index) => {
+                const belum = s.tagihanUnpaid && s.tagihanUnpaid.length > 0;
+                const jk = s.jenisKelamin === 'P' ? 'Perempuan' : 'Laki-laki';
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td><strong>${escapeHtml(s.nisn)}</strong></td>
+                        <td>${escapeHtml(s.nama)}</td>
+                        <td><span class="user-role-badge role-badge-siswa">${escapeHtml(s.kelas)}</span></td>
+                        <td>${jk}</td>
+                        <td>${escapeHtml(s.namaOrtu)}</td>
+                        <td><span class="badge-status ${belum ? 'badge-belum' : 'badge-lunas'}">${belum ? 'Belum Lunas' : 'Lunas'}</span></td>
+                        <td style="text-align:right;">
+                            <button class="btn-action-secondary" style="padding:4px 10px;font-size:12px;" onclick="showSiswaDetail('${escapeHtml(s.nisn)}')">Rincian</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // 3. Menu akun petugas, guru, dan kepala sekolah
+        function renderAkunStaff() {
+            const petugasBody = document.getElementById('akunPetugasBody');
+            const guruBody = document.getElementById('akunGuruBody');
+            const kepalaBody = document.getElementById('akunKepalaBody');
+            if (!petugasBody || !guruBody || !kepalaBody) return;
+
+            const petugas = DEMO_USERS.petugas.filter(u => u.kategori === 'petugas');
+            const guru = DEMO_USERS.petugas.filter(u => u.kategori === 'guru');
+            const kepala = DEMO_USERS.petugas.filter(u => u.kategori === 'kepala');
+
+            document.getElementById('countPetugas').innerText = petugas.length + ' akun';
+            document.getElementById('countGuru').innerText = guru.length + ' akun';
+            document.getElementById('countKepala').innerText = kepala.length + ' akun';
+
+            petugasBody.innerHTML = petugas.map((u, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${escapeHtml(u.nama)}</td>
+                    <td>${escapeHtml(u.subRole || 'Petugas')}</td>
+                    <td><code>${escapeHtml(u.username)}</code></td>
+                    <td><span class="credential-pass">${escapeHtml(u.password)}</span></td>
+                    <td><span class="badge-status badge-lunas">Aktif</span></td>
+                </tr>
+            `).join('');
+
+            guruBody.innerHTML = guru.map((u, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${escapeHtml(u.nama)}</td>
+                    <td>${escapeHtml(u.mapel || '-')}</td>
+                    <td><code>${escapeHtml(u.username)}</code></td>
+                    <td><span class="credential-pass">${escapeHtml(u.password)}</span></td>
+                    <td><span class="badge-status badge-lunas">Aktif</span></td>
+                </tr>
+            `).join('');
+
+            kepalaBody.innerHTML = kepala.map((u, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td>${escapeHtml(u.nama)}</td>
+                    <td>${escapeHtml(u.subRole || 'Kepala Sekolah')}</td>
+                    <td><code>${escapeHtml(u.username)}</code></td>
+                    <td><span class="credential-pass">${escapeHtml(u.password)}</span></td>
+                    <td><span class="badge-status badge-lunas">Aktif</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function filterAkunStaff(query) {
+            const keyword = String(query || '').toLowerCase();
+            document.querySelectorAll('#akunPetugasBody tr, #akunGuruBody tr, #akunKepalaBody tr').forEach(row => {
+                row.style.display = row.innerText.toLowerCase().includes(keyword) ? '' : 'none';
+            });
+        }
+
+        // 4. Menu akun siswa & wali kelas
+        function renderAkunSiswa() {
+            const tbody = document.getElementById('akunSiswaBody');
+            if (!tbody) return;
+
+            const kelasFilter = (document.getElementById('filterKelasAkunSiswa') || {}).value || '7A';
+            const keyword = ((document.getElementById('searchAkunSiswa') || {}).value || '').toLowerCase().trim();
+
+            let list = DEMO_USERS.siswa.filter(s => s.kelas === kelasFilter);
+            if (keyword) {
+                list = list.filter(s => (s.nama + ' ' + s.nisn).toLowerCase().includes(keyword));
+            }
+            list = sortSiswaByKelas(list);
+
+            document.getElementById('countAkunSiswa').innerText = list.length + ' akun';
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text-muted);">Tidak ada akun siswa pada filter ini.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = list.map((s, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td><code>${escapeHtml(s.nisn)}</code></td>
+                    <td>${escapeHtml(s.nama)}</td>
+                    <td><span class="user-role-badge role-badge-siswa">${escapeHtml(s.kelas)}</span></td>
+                    <td><span class="credential-pass">${escapeHtml(s.password)}</span></td>
+                    <td><span class="badge-status badge-lunas">Aktif</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function renderAkunWaliKelas() {
+            const tbody = document.getElementById('akunWaliKelasBody');
+            if (!tbody) return;
+
+            document.getElementById('countWaliKelas').innerText = DEMO_WALI_KELAS.length + ' akun';
+            tbody.innerHTML = DEMO_WALI_KELAS.map((u, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td><span class="user-role-badge role-badge-petugas">${escapeHtml(u.kelas)}</span></td>
+                    <td>${escapeHtml(u.nama)}</td>
+                    <td><code>${escapeHtml(u.username)}</code></td>
+                    <td><span class="credential-pass">${escapeHtml(u.password)}</span></td>
+                    <td>29 siswa</td>
+                </tr>
+            `).join('');
+        }
+
+        // 5. Pencarian tagihan real-time (AJAX / Fetch, debounce 300 ms)
+        let tagihanAjaxTimer = null;
+
+        function onTagihanSearchInput(value) {
+            const statusEl = document.getElementById('ajaxTagihanStatus');
+            if (statusEl) {
+                statusEl.innerText = value
+                    ? 'Mencari "' + value + '"...'
+                    : 'Ketik kata kunci untuk mencari tagihan.';
+            }
+            clearTimeout(tagihanAjaxTimer);
+            tagihanAjaxTimer = setTimeout(() => runTagihanAjaxSearch(value), 300);
+        }
+
+        function runTagihanAjaxSearch(query) {
+            const tbody = document.getElementById('ajaxTagihanBody');
+            const statusEl = document.getElementById('ajaxTagihanStatus');
+            if (!tbody) return;
+
+            const inputEl = document.getElementById('ajaxTagihanSearch');
+            const q = String(query !== undefined ? query : (inputEl ? inputEl.value : '')).trim();
+            const status = (document.getElementById('ajaxFilterStatus') || {}).value || '';
+
+            if (q.length < 2 && !status) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--text-muted);">Ketik minimal 2 karakter, atau pilih status tagihan.</td></tr>';
+                if (statusEl) statusEl.innerText = 'Belum ada pencarian. Ketik nama siswa atau NISN di atas.';
+                return;
+            }
+
+            if (statusEl) statusEl.innerText = '⏳ Memuat data tagihan...';
+
+            const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+            const csrf = csrfMeta ? csrfMeta.getAttribute('content') : '';
+            const url = '/api/tagihan/search?query=' + encodeURIComponent(q) + '&status=' + encodeURIComponent(status);
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrf
+                }
+            })
+            .then(res => res.json())
+            .then(payload => {
+                const rows = Array.isArray(payload) ? payload : ((payload && payload.data) || []);
+                const total = Array.isArray(payload)
+                    ? rows.reduce((sum, item) => sum + (Number(item.nominal) || 0), 0)
+                    : (Number(payload.total_nominal) || 0);
+
+                if (statusEl) {
+                    statusEl.innerText = rows.length + ' tagihan ditemukan • Total Rp ' + total.toLocaleString('id-ID');
+                }
+
+                if (rows.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--text-muted);">Tidak ada tagihan yang cocok.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = rows.map((item, i) => {
+                    const label = item.status_label || (item.status === 'lunas' ? 'Lunas' : 'Belum Lunas');
+                    const badgeClass = item.status === 'lunas' ? 'badge-lunas' : 'badge-belum';
+                    return `
+                        <tr>
+                            <td>${i + 1}</td>
+                            <td><strong>${escapeHtml(item.nisn)}</strong></td>
+                            <td>${escapeHtml(item.nama_siswa)}</td>
+                            <td><span class="user-role-badge role-badge-siswa">${escapeHtml(item.kelas)}</span></td>
+                            <td>${escapeHtml(item.bulan)}</td>
+                            <td style="font-weight:700;">Rp ${Number(item.nominal || 0).toLocaleString('id-ID')}</td>
+                            <td>${escapeHtml(item.tempo || '-')}</td>
+                            <td><span class="badge-status ${badgeClass}">${escapeHtml(label)}</span></td>
+                        </tr>
+                    `;
+                }).join('');
+            })
+            .catch(err => {
+                console.warn('Pencarian tagihan gagal:', err);
+                if (statusEl) statusEl.innerText = '❌ Gagal memuat data tagihan.';
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:24px;color:#b91c1c;">Gagal memuat data. Periksa koneksi atau server Laravel.</td></tr>';
+            });
+        }
+
+        function changeAvatarPhoto() {
+            const avatars = ['👨', '👩', '👧', '👦', '👤', '👤', '👥'];
+            const random = avatars[Math.floor(Math.random() * avatars.length)];
+            document.getElementById('profileLargeAvatar').innerText = random;
+            document.getElementById('topAvatar').innerText = random;
+            showToast('Foto profil diperbarui!');
+        }
+
+        // 18. Logout Handler
+        function performLogout() {
+            if (confirm('Apakah Anda yakin ingin keluar dari sistem?')) {
+                currentUser = null;
+                currentRole = 'siswa';
+                // Clear persisted auth state and route
+                localStorage.removeItem('spp_auth_user');
+                localStorage.removeItem('spp_auth_role');
+                localStorage.removeItem('spp_current_view');
+                localStorage.removeItem('active_spp_menu');
+                try {
+                    window.history.pushState(null, '', window.location.pathname);
+                } catch (e) {
+                    window.location.hash = '';
+                }
+                document.getElementById('appShell').style.display = 'none';
+                document.getElementById('pageLogin').style.display = 'flex';
+                document.getElementById('loginUsername').value = '';
+                document.getElementById('loginPassword').value = '';
+                showToast('Anda telah berhasil keluar.');
+            }
+        }
+
+        // 19. Toast Notification Helper
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast-msg';
+            const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : type === 'warning' ? '⚠️' : 'ℹ️';
+            const bgColor = type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : type === 'warning' ? '#f59e0b' : '#1e40af';
+            toast.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999; background: ' + bgColor + '; color: white; padding: 16px 24px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 12px; min-width: 300px; max-width: 500px; animation: slideInTop 0.3s ease forwards;';
+            toast.innerHTML = '<span style="font-size:20px">' + icon + '</span><span>' + message + '</span>';
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        const style = document.createElement('style');
+        style.textContent = '@keyframes slideInTop { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } } @keyframes slideOutTop { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }';
+        document.head.appendChild(style);
+
+        // 14. MANAJEMEN & KONTROL TAGIHAN SPP (ADMIN / BENDAHARA / KEPSEK)
+        let invoiceCreationMode = 'single'; // 'single' atau 'bulk'
+        // Penomoran tagihan unik, termasuk saat beberapa tagihan dibuat
+        // dalam milidetik yang sama.
+        let invoiceIdCounter = 0;
+        function makeInvoiceId() {
+            invoiceIdCounter++;
+            return 'INV-' + Date.now().toString(36).toUpperCase() + '-' + invoiceIdCounter;
+        }
+        // True bila petugas sudah mengetik nominal sendiri. Selama true,
+        // nominal tidak ditimpa otomatis saat memilih siswa/kelas.
+        let invoiceNominalManual = false;
+
+        function showCreateInvoice() {
+            navigateTo('terbitkan-tagihan');
+        }
+
+        function initInvoiceDashboard() {
+            // Update role badge in hero
+            const roleBadgeEl = document.getElementById('invRoleBadge');
+            if (roleBadgeEl && currentUser) {
+                roleBadgeEl.innerText = 'Akses Kontrol: ' + (currentUser.petugasTitle || 'ADMINISTRATOR');
+            }
+
+            populateInvoiceSiswaSelect();
+            renderCreatedInvoices();
+            renderInvoiceMonthChecklist();
+            loadTahunAjaranOptions();
+            autoCalcDueDate();
+        }
+
+        const INVOICE_MONTH_NAMES = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+        // Tahun ajaran berjalan mengikuti kalender: Juli–Desember masuk tahun
+        // ajaran baru, Januari–Juni masih tahun ajaran sebelumnya.
+        function getCurrentAcademicYear(date) {
+            const d = date || new Date();
+            const y = d.getFullYear();
+            return d.getMonth() >= 6 ? (y + '/' + (y + 1)) : ((y - 1) + '/' + y);
+        }
+
+        // Cadangan bila endpoint /api/tahun-ajaran tidak dapat diakses.
+        // Rentang sama dengan tabel tbl_tahun_ajaran: 2000/2001 - 2045/2046.
+        function buildFallbackTahunAjaran() {
+            const current = getCurrentAcademicYear(new Date());
+            const list = [];
+            let id = 1;
+            for (let start = 2000; start <= 2045; start++) {
+                const name = start + '/' + (start + 1);
+                list.push({
+                    id_tahun_ajaran: id++,
+                    tahun_ajaran: name,
+                    status_aktif: name === current ? 'aktif' : 'nonaktif'
+                });
+            }
+            return list;
+        }
+
+        // Cache daftar tahun ajaran. Dropdown langsung diisi dari cache/cadangan
+        // supaya bisa dipilih seketika, lalu request API hanya dilakukan sekali.
+        // Dengan begitu daftar tidak dibangun ulang di tengah interaksi dan
+        // pilihan petugas tidak kembali ke tahun aktif.
+        let tahunAjaranCache = null;
+        let tahunAjaranRequest = null;
+        let tahunAjaranUserPicked = false;
+
+        function applyTahunAjaranOptions(rows, resetSelection) {
+            const select = document.getElementById('invoiceTahunAjaran');
+            if (!select) return;
+
+            const list = (Array.isArray(rows) && rows.length) ? rows : buildFallbackTahunAjaran();
+            const signature = list.map(item => {
+                const nama = item.tahun_ajaran || item.nama || item.value || '';
+                return nama + '|' + (item.status_aktif || '');
+            }).join(',');
+
+            const previous = select.value;
+            const sameList = select.dataset.signature === signature && select.options.length > 0;
+
+            if (!sameList) {
+                select.innerHTML = '';
+                list.forEach(item => {
+                    const nama = item.tahun_ajaran || item.nama || item.value || '';
+                    if (!nama) return;
+                    const opt = document.createElement('option');
+                    opt.value = nama;
+                    opt.textContent = nama + (item.status_aktif === 'aktif' ? ' (Aktif)' : '');
+                    opt.dataset.aktif = item.status_aktif || '';
+                    select.appendChild(opt);
+                });
+                select.dataset.signature = signature;
+            }
+
+            const active = list.find(x => x.status_aktif === 'aktif');
+            const target = active ? (active.tahun_ajaran || active.nama || active.value) : getCurrentAcademicYear();
+            const keepPrevious = !resetSelection && !tahunAjaranUserPicked && previous &&
+                Array.from(select.options).some(o => o.value === previous);
+
+            // Saat daftar tidak berubah, jangan sentuh pilihan yang sedang aktif.
+            if (!sameList || resetSelection) {
+                const match = Array.from(select.options).find(o => o.value === target);
+                if (keepPrevious) {
+                    select.value = previous;
+                } else if (match) {
+                    select.value = match.value;
+                } else if (select.options.length) {
+                    select.selectedIndex = 0;
+                }
+            }
+        }
+
+        // Ambil pilihan tahun ajaran dari tabel tbl_tahun_ajaran lewat API.
+        // Tahun yang berstatus "aktif" otomatis terpilih pada pemuatan pertama.
+        function loadTahunAjaranOptions(options) {
+            const select = document.getElementById('invoiceTahunAjaran');
+            if (!select) return Promise.resolve();
+
+            const resetSelection = !!(options && options.reset);
+
+            // Langsung isi dropdown (tanpa menunggu API) agar bisa langsung dipilih.
+            applyTahunAjaranOptions(tahunAjaranCache || buildFallbackTahunAjaran(), resetSelection);
+
+            // Request hanya sekali; hasilnya dipakai ulang untuk navigasi berikutnya.
+            if (tahunAjaranRequest) return tahunAjaranRequest;
+
+            tahunAjaranRequest = fetch('/api/tahun-ajaran', { headers: { 'Accept': 'application/json' } })
+                .then(res => (res && res.ok) ? res.json() : null)
+                .then(json => {
+                    const rows = json ? (Array.isArray(json) ? json : (json.data || [])) : [];
+                    if (Array.isArray(rows) && rows.length) tahunAjaranCache = rows;
+                    applyTahunAjaranOptions(tahunAjaranCache || buildFallbackTahunAjaran(), false);
+                })
+                .catch(err => {
+                    console.warn('Gagal memuat tahun ajaran, memakai daftar cadangan:', err);
+                    applyTahunAjaranOptions(buildFallbackTahunAjaran(), false);
+                });
+
+            return tahunAjaranRequest;
+        }
+
+        // Daftar bulan SPP dalam bentuk CHECKBOX (bisa pilih lebih dari satu).
+        // Nilai checkbox memakai format "Bulan Tahun" agar cocok dengan daftar
+        // bulan pada halaman pembayaran SPP.
+        function renderInvoiceMonthChecklist() {
+            const wrap = document.getElementById('invoiceBulanChecklist');
+            if (!wrap) return;
+
+            const now = new Date();
+            const year = now.getFullYear();
+            const currentMonth = now.getMonth();
+            const previous = getSelectedInvoiceMonths();
+
+            wrap.innerHTML = '';
+            INVOICE_MONTH_NAMES.forEach((nama, idx) => {
+                const value = nama + ' ' + year;
+                const checked = previous.length ? previous.indexOf(value) !== -1 : idx === currentMonth;
+
+                const label = document.createElement('label');
+                label.style.cssText = 'display:flex;align-items:center;gap:8px;padding:8px 10px;border:1.5px solid ' + (checked ? '#1e40af' : '#e2e8f0') + ';border-radius:8px;background:' + (checked ? '#eff6ff' : '#fff') + ';cursor:pointer;font-size:13px;font-weight:700;color:#0f172a;';
+
+                const box = document.createElement('input');
+                box.type = 'checkbox';
+                box.className = 'invoice-month-checkbox';
+                box.value = value;
+                box.checked = checked;
+                box.style.cssText = 'width:18px;height:18px;accent-color:var(--primary-blue);';
+                box.addEventListener('change', function () { syncInvoiceMonthLabel(this); });
+
+                const span = document.createElement('span');
+                span.textContent = nama;
+
+                label.appendChild(box);
+                label.appendChild(span);
+                wrap.appendChild(label);
+            });
+        }
+
+        function syncInvoiceMonthLabel(input) {
+            if (!input) return;
+            const label = input.closest('label');
+            if (!label) return;
+            label.style.borderColor = input.checked ? '#1e40af' : '#e2e8f0';
+            label.style.background = input.checked ? '#eff6ff' : '#fff';
+        }
+
+        function getSelectedInvoiceMonths() {
+            return Array.from(document.querySelectorAll('#invoiceBulanChecklist input.invoice-month-checkbox:checked'))
+                .map(cb => cb.value);
+        }
+
+        function switchInvoiceMode(mode) {
+            invoiceCreationMode = mode;
+            const btnSingle = document.getElementById('btnModeSingle');
+            const btnBulk = document.getElementById('btnModeBulk');
+            const groupSiswa = document.getElementById('groupTargetSiswa');
+            const groupKelas = document.getElementById('groupTargetKelas');
+
+            if (mode === 'single') {
+                btnSingle.classList.add('active');
+                btnBulk.classList.remove('active');
+                groupSiswa.style.display = 'block';
+                groupKelas.style.display = 'none';
+                autoFillTarifByStudent();
+            } else {
+                btnSingle.classList.remove('active');
+                btnBulk.classList.add('active');
+                groupSiswa.style.display = 'none';
+                groupKelas.style.display = 'block';
+                autoFillTarifByClass();
+            }
+        }
+
+        function populateInvoiceSiswaSelect() {
+            const select = document.getElementById('invoiceSiswaSelect');
+            if (!select) return;
+            select.innerHTML = '';
+            
+            DEMO_USERS.siswa.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.nisn;
+                opt.innerText = s.nisn + ' - ' + s.nama + ' (Kelas ' + s.kelas + ')';
+                select.appendChild(opt);
+            });
+
+            autoFillTarifByStudent();
+        }
+
+        function autoFillTarifByStudent() {
+            const select = document.getElementById('invoiceSiswaSelect');
+            if (!select) return;
+            // Jangan timpa nominal yang sudah diketik manual oleh petugas.
+            if (invoiceNominalManual) return;
+            const nisn = select.value;
+            const s = DEMO_USERS.siswa.find(x => x.nisn === nisn);
+            if (s) {
+                document.getElementById('invoiceNominalInput').value = s.tarif;
+            }
+        }
+
+        function autoFillTarifByClass() {
+            if (invoiceNominalManual) return;
+            const kelas = document.getElementById('invoiceKelasSelect').value;
+            let tarif = 250000;
+            if (kelas.startsWith('8')) tarif = 250000;
+            if (kelas.startsWith('9')) tarif = 250000;
+            document.getElementById('invoiceNominalInput').value = tarif;
+        }
+
+        function autoCalcDueDate() {
+            const tempoInput = document.getElementById('invoiceJatuhTempo');
+            if (!tempoInput) return;
+
+            // Jatuh tempo selalu memakai tanggal dan tahun hari ini.
+            // Gunakan komponen lokal (bukan toISOString) agar tidak bergeser
+            // satu hari karena perbedaan zona waktu.
+            const now = new Date();
+            const yyyy = now.getFullYear();
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            tempoInput.value = yyyy + '-' + mm + '-' + dd;
+        }
+
+        function resetInvoiceForm() {
+            const form = document.getElementById('formCreateInvoice');
+            if (form) form.reset();
+            invoiceNominalManual = false;
+            tahunAjaranUserPicked = false;
+            switchInvoiceMode('single');
+            autoFillTarifByStudent();
+            // render ulang agar pilihan bulan & tahun ajaran kembali konsisten
+            renderInvoiceMonthChecklist();
+            loadTahunAjaranOptions({ reset: true });
+            autoCalcDueDate();
+        }
+
+        // Terbitkan tagihan baru dan OTOMATIS sinkronisasi ke akun Siswa & Orang Tua
+        
+        // ==========================================
+        // 10 PRESET JENIS POS SPP & SUCCESS MODAL HANDLERS
+        // ==========================================
+        let lastCreatedInvoiceForModal = null;
+
+        function openJenisSppModal() {
+            const m = document.getElementById('modalJenisSpp');
+            if (m) {
+                m.style.display = 'flex';
+                m.classList.add('active');
+            }
+        }
+
+        function selectJenisSpp(nama, nominal, keterangan, bulanTerkait) {
+            const nominalInput = document.getElementById('invoiceNominalInput');
+            const ketInput = document.getElementById('invoiceKeteranganInput');
+
+            if (nominalInput) {
+                nominalInput.value = nominal;
+                invoiceNominalManual = true;
+            }
+            if (ketInput) ketInput.value = keterangan;
+
+            // Bila preset menyebut bulan tertentu dan belum ada bulan yang
+            // dicentang, centang bulan tersebut pada tahun berjalan.
+            if (bulanTerkait && getSelectedInvoiceMonths().length === 0) {
+                const boxes = document.querySelectorAll('#invoiceBulanChecklist input.invoice-month-checkbox');
+                for (const box of boxes) {
+                    if (box.value.indexOf(bulanTerkait + ' ') === 0) {
+                        box.checked = true;
+                        syncInvoiceMonthLabel(box);
+                        break;
+                    }
+                }
+            }
+
+            closeModal('modalJenisSpp');
+
+            // Visual feedback on input field
+            if (nominalInput) {
+                nominalInput.style.borderColor = '#2563eb';
+                nominalInput.style.boxShadow = '0 0 0 3px rgba(37,99,235,0.25)';
+                setTimeout(() => {
+                    nominalInput.style.borderColor = '';
+                    nominalInput.style.boxShadow = '';
+                }, 1200);
+            }
+        }
+
+        function printSuccessInvoice() {
+            if (!lastCreatedInvoiceForModal) return;
+            const inv = lastCreatedInvoiceForModal;
+
+            // Masukkan data invoice ke modalReceipt
+            const rcptNo = document.getElementById('rcptNo');
+            const rcptTanggal = document.getElementById('rcptTanggal');
+            const rcptNama = document.getElementById('rcptNama');
+            const rcptNisn = document.getElementById('rcptNisn');
+            const rcptUraian = document.getElementById('rcptUraian');
+            const rcptMetode = document.getElementById('rcptMetode');
+            const rcptNominal = document.getElementById('rcptNominal');
+            const rcptPenyetor = document.getElementById('rcptPenyetor');
+
+            if (rcptNo) rcptNo.innerText = inv.id;
+            if (rcptTanggal) rcptTanggal.innerText = (inv.tanggal || new Date().toLocaleDateString('id-ID')) + ' (Tagihan)';
+            if (rcptNama) rcptNama.innerText = inv.siswaNama + ' (' + inv.kelas + ')';
+            if (rcptNisn) rcptNisn.innerText = inv.siswaNisn;
+            if (rcptUraian) rcptUraian.innerText = inv.keterangan + ' - ' + inv.bulan + ' (' + inv.tahun + ')';
+            if (rcptMetode) rcptMetode.innerText = 'Midtrans Gateway Online / Kasir';
+            if (rcptNominal) rcptNominal.innerText = 'Rp ' + inv.nominal.toLocaleString('id-ID');
+            if (rcptPenyetor) rcptPenyetor.innerText = inv.siswaNama;
+
+            closeModal('modalInvoiceSuccess');
+            const modalRcpt = document.getElementById('modalReceipt');
+            if (modalRcpt) {
+                modalRcpt.classList.add('active');
+                modalRcpt.style.display = 'flex';
+            }
+        }
+
+        // Sinkronkan status tagihan bulan tertentu ke akun siswa & wali murid.
+        function syncStudentUnpaid(student, bulan, status) {
+            if (!student || !bulan) return;
+
+            if (status === 'Belum Lunas') {
+                if (!student.tagihanUnpaid) student.tagihanUnpaid = [];
+                if (!student.tagihanUnpaid.includes(bulan)) student.tagihanUnpaid.push(bulan);
+
+                DEMO_USERS.ortu.forEach(o => {
+                    if (o.nisn === student.nisn) {
+                        if (!o.tagihanUnpaid) o.tagihanUnpaid = [];
+                        if (!o.tagihanUnpaid.includes(bulan)) o.tagihanUnpaid.push(bulan);
+                    }
+                });
+            } else if (status === 'Lunas') {
+                if (student.tagihanUnpaid) {
+                    student.tagihanUnpaid = student.tagihanUnpaid.filter(b => b !== bulan);
+                }
+                DEMO_USERS.ortu.forEach(o => {
+                    if (o.nisn === student.nisn && o.tagihanUnpaid) {
+                        o.tagihanUnpaid = o.tagihanUnpaid.filter(b => b !== bulan);
+                    }
+                });
+            }
+        }
+
+        function submitCreateInvoice() {
+            const selectedMonths = getSelectedInvoiceMonths();
+            // Tidak ada bulan dicentang = tagihan non-SPP (bulan kosong).
+            const monthsToCreate = selectedMonths.length ? selectedMonths : [''];
+            const tahun = document.getElementById('invoiceTahunAjaran').value || getCurrentAcademicYear();
+            const nominal = parseInt(document.getElementById('invoiceNominalInput').value) || 250000;
+            const status = document.getElementById('invoiceStatusSelect').value;
+            const tempoRaw = document.getElementById('invoiceJatuhTempo').value || new Date().toISOString().split('T')[0];
+            const keterangan = document.getElementById('invoiceKeteranganInput').value || 'SPP Reguler Siswa';
+            const tempoFormatted = formatIndoDate(tempoRaw);
+            const tanggalTerbit = new Date().toLocaleDateString('id-ID');
+            const monthLabel = selectedMonths.length ? 'SPP ' + selectedMonths.join(', ') : keterangan;
+            const nextInvoiceId = () => makeInvoiceId();
+
+            if (invoiceCreationMode === 'single') {
+                const nisn = document.getElementById('invoiceSiswaSelect').value;
+                const student = DEMO_USERS.siswa.find(s => s.nisn === nisn);
+                if (!student) {
+                    showToast('Siswa tidak ditemukan!');
+                    return;
+                }
+
+                // Cek duplikasi untuk setiap bulan yang dicentang.
+                const duplicates = monthsToCreate.filter(bulan => bulan &&
+                    createdInvoices.some(i => i.siswaNisn === nisn && i.bulan === bulan));
+                if (duplicates.length) {
+                    if (!confirm('Tagihan bulan ' + duplicates.join(', ') + ' untuk ' + student.nama +
+                        ' sudah ada. Apakah tetap ingin menerbitkan lagi?')) {
+                        return;
+                    }
+                }
+
+                const created = [];
+                monthsToCreate.forEach(bulan => {
+                    const newInv = {
+                        id: nextInvoiceId(),
+                        siswaNisn: student.nisn,
+                        siswaNama: student.nama,
+                        kelas: student.kelas,
+                        bulan: bulan,
+                        tahun: tahun,
+                        nominal: nominal,
+                        tempo: tempoFormatted,
+                        status: status,
+                        keterangan: keterangan,
+                        tanggal: tanggalTerbit
+                    };
+
+                    createdInvoices.unshift(newInv);
+                    created.push(newInv);
+                    syncStudentUnpaid(student, bulan, status);
+                });
+
+                // TAMPILKAN POP-UP MODAL SUKSES (Bukan toast pojok kanan)
+                lastCreatedInvoiceForModal = created[0];
+                document.getElementById('succInvNo').innerText = created.length > 1
+                    ? 'INV-SERI (' + created.length + ' Tagihan)'
+                    : created[0].id;
+                document.getElementById('succInvStudent').innerText = student.nama + ' (' + student.kelas + ')';
+                document.getElementById('succInvMonth').innerText = monthLabel + ' - TP ' + tahun;
+                document.getElementById('succInvAmount').innerText = 'Rp ' + (nominal * created.length).toLocaleString('id-ID') +
+                    (created.length > 1 ? ' (@ Rp ' + nominal.toLocaleString('id-ID') + '/bulan)' : '');
+                const mSuccess = document.getElementById('modalInvoiceSuccess');
+                if (mSuccess) {
+                    mSuccess.style.display = 'flex';
+                    mSuccess.classList.add('active');
+                }
+            } else {
+                // MASSAL PER KELAS
+                const targetKelas = document.getElementById('invoiceKelasSelect').value;
+                let targetStudents = DEMO_USERS.siswa;
+                if (targetKelas !== 'ALL') {
+                    targetStudents = DEMO_USERS.siswa.filter(s => s.kelas === targetKelas);
+                }
+
+                if (targetStudents.length === 0) {
+                    showToast('Tidak ada siswa di kelas yang dipilih!');
+                    return;
+                }
+
+                let duplicateCount = 0;
+                targetStudents.forEach(student => {
+                    monthsToCreate.forEach(bulan => {
+                        if (bulan && createdInvoices.some(i => i.siswaNisn === student.nisn && i.bulan === bulan)) {
+                            duplicateCount++;
+                        }
+                    });
+                });
+                if (duplicateCount > 0) {
+                    if (!confirm(duplicateCount + ' tagihan untuk bulan yang dipilih sudah ada. Apakah tetap ingin menerbitkan lagi?')) {
+                        return;
+                    }
+                }
+
+                let createdCount = 0;
+                targetStudents.forEach(student => {
+                    monthsToCreate.forEach(bulan => {
+                        const newInv = {
+                            id: nextInvoiceId(),
+                            siswaNisn: student.nisn,
+                            siswaNama: student.nama,
+                            kelas: student.kelas,
+                            bulan: bulan,
+                            tahun: tahun,
+                            nominal: nominal,
+                            tempo: tempoFormatted,
+                            status: status,
+                            keterangan: keterangan,
+                            tanggal: tanggalTerbit
+                        };
+
+                        createdInvoices.unshift(newInv);
+                        createdCount++;
+                        syncStudentUnpaid(student, bulan, status);
+                    });
+                });
+
+                // TAMPILKAN POP-UP MODAL SUKSES (Bukan toast pojok kanan)
+                lastCreatedInvoiceForModal = createdInvoices[0];
+                document.getElementById('succInvNo').innerText = 'INV-MASSAL (' + createdCount + ' Tagihan)';
+                document.getElementById('succInvStudent').innerText = 'Semua Siswa Kelas ' + targetKelas + ' (' + targetStudents.length + ' Siswa)';
+                document.getElementById('succInvMonth').innerText = monthLabel + ' - TP ' + tahun;
+                document.getElementById('succInvAmount').innerText = 'Rp ' + (nominal * createdCount).toLocaleString('id-ID') +
+                    ' (@ Rp ' + nominal.toLocaleString('id-ID') + '/tagihan)';
+                const mSuccess = document.getElementById('modalInvoiceSuccess');
+                if (mSuccess) {
+                    mSuccess.style.display = 'flex';
+                    mSuccess.classList.add('active');
+                }
+            }
+
+            // Refresh UI
+            renderCreatedInvoices();
+            renderStatsGrid();
+            if (currentRole === 'siswa' || currentRole === 'ortu') {
+                renderTagihanView();
+            }
+
+            // Simpan permanen agar tagihan tidak hilang saat halaman di-refresh.
+            saveSppData();
+        }
+
+        // Render Tabel Kontrol Tagihan & Metric Cards
+        function renderCreatedInvoices() {
+            const tbody = document.getElementById('createdInvoiceListBody');
+            if (!tbody) return;
+
+            const filterStatus = document.getElementById('filterStatusInv')?.value || 'ALL';
+            const filterKelas = document.getElementById('filterKelasInv')?.value || 'ALL';
+            const query = (document.getElementById('searchInvQuery')?.value || '').toLowerCase().trim();
+
+            let filtered = createdInvoices;
+
+            if (filterStatus !== 'ALL') {
+                filtered = filtered.filter(inv => inv.status === filterStatus);
+            }
+
+            if (filterKelas !== 'ALL') {
+                filtered = filtered.filter(inv => inv.kelas === filterKelas);
+            }
+
+            if (query) {
+                filtered = filtered.filter(inv => 
+                    inv.siswaNama.toLowerCase().includes(query) ||
+                    inv.siswaNisn.toLowerCase().includes(query) ||
+                    inv.id.toLowerCase().includes(query) ||
+                    inv.bulan.toLowerCase().includes(query)
+                );
+            }
+
+            // Update Metrics
+            const totalInvoices = createdInvoices.length;
+            const unpaidList = createdInvoices.filter(i => i.status === 'Belum Lunas');
+            const paidList = createdInvoices.filter(i => i.status === 'Lunas');
+
+            const nominalUnpaid = unpaidList.reduce((acc, curr) => acc + curr.nominal, 0);
+            const nominalPaid = paidList.reduce((acc, curr) => acc + curr.nominal, 0);
+
+            if (document.getElementById('statTotalInvoices')) {
+                document.getElementById('statTotalInvoices').innerText = totalInvoices + ' Tagihan';
+                document.getElementById('statTotalUnpaid').innerText = unpaidList.length + ' Tagihan';
+                document.getElementById('statTotalPaid').innerText = paidList.length + ' Tagihan';
+                document.getElementById('statNominalUnpaid').innerText = 'Total: Rp ' + nominalUnpaid.toLocaleString('id-ID');
+                document.getElementById('statNominalPaid').innerText = 'Total: Rp ' + nominalPaid.toLocaleString('id-ID');
+            }
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--text-muted);font-weight:600;">Tidak ada tagihan yang cocok dengan filter.</td></tr>';
+                return;
+            }
+
+            let html = '';
+            filtered.forEach((inv, index) => {
+                const isPaid = inv.status === 'Lunas';
+                html += `
+                    <tr>
+                        <td><strong>${index + 1}</strong></td>
+                        <td>
+                            <strong style="color:var(--primary-blue);">${inv.id}</strong>
+                            <div style="font-size:11px;color:var(--text-muted);">${inv.tanggal}</div>
+                        </td>
+                        <td>
+                            <div style="font-weight:800;color:var(--text-dark);">${inv.siswaNama}</div>
+                            <div style="font-size:11.5px;color:var(--text-muted);">
+                                NISN: ${inv.siswaNisn} • <span style="background:#f1f5f9;padding:2px 6px;border-radius:4px;font-weight:700;">Kelas ${inv.kelas}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <strong>${inv.bulan}</strong>
+                            <div style="font-size:11px;color:var(--text-muted);">${inv.tahun}</div>
+                        </td>
+                        <td style="font-weight:800;color:var(--text-dark);">
+                            Rp ${inv.nominal.toLocaleString('id-ID')}
+                        </td>
+                        <td style="font-size:12px;color:var(--text-muted);">
+                            ${inv.tempo}
+                        </td>
+                        <td>
+                            <span class="${isPaid ? 'inv-badge-paid' : 'inv-badge-unpaid'}">
+                                ${isPaid ? '✔ Lunas' : '⏳ Belum Lunas'}
+                            </span>
+                        </td>
+                        <td style="text-align:right;white-space:nowrap;">
+                            <button class="btn-action-secondary" style="padding:5px 10px;font-size:11.5px;margin-right:4px;" onclick="toggleInvoiceStatus('${inv.id}')" title="Klik untuk ubah status">
+                                ${isPaid ? '↩ Batalkan' : '✔ Tandai Lunas'}
+                            </button>
+                            <button class="btn-action-secondary" style="padding:5px 10px;font-size:11.5px;color:#ef4444;border-color:#fca5a5;" onclick="deleteInvoice('${inv.id}')" title="Hapus tagihan">
+                                🗑️ Hapus
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        // Toggle Status Tagihan (Lunas <-> Belum Lunas) dengan sinkronisasi ke akun siswa
+        function toggleInvoiceStatus(id) {
+            const inv = createdInvoices.find(i => i.id === id);
+            if (!inv) return;
+
+            const student = DEMO_USERS.siswa.find(s => s.nisn === inv.siswaNisn);
+
+            if (inv.status === 'Belum Lunas') {
+                inv.status = 'Lunas';
+                // Hapus dari tagihanUnpaid siswa & ortu
+                if (student && student.tagihanUnpaid) {
+                    student.tagihanUnpaid = student.tagihanUnpaid.filter(b => b !== inv.bulan);
+                }
+                DEMO_USERS.ortu.forEach(o => {
+                    if (o.nisn === inv.siswaNisn && o.tagihanUnpaid) {
+                        o.tagihanUnpaid = o.tagihanUnpaid.filter(b => b !== inv.bulan);
+                    }
+                });
+
+                // Tambahkan transaksi
+                transactions.unshift({
+                    no: 'TUNAI-' + Date.now().toString().slice(-6),
+                    waktu: new Date().toISOString().slice(0, 16).replace('T', ' '),
+                    nisn: inv.siswaNisn,
+                    siswa: inv.siswaNama + ' (' + inv.kelas + ')',
+                    uraian: 'SPP ' + inv.bulan,
+                    nominal: inv.nominal,
+                    metode: 'Kasir Pembayaran Sekolah',
+                    status: 'Lunas'
+                });
+
+                showToast('✔ Tagihan ' + inv.id + ' (' + inv.siswaNama + ') ditandai LUNAS!');
+            } else {
+                inv.status = 'Belum Lunas';
+                // Tambahkan kembali ke tagihanUnpaid siswa & ortu
+                if (student) {
+                    if (!student.tagihanUnpaid) student.tagihanUnpaid = [];
+                    if (!student.tagihanUnpaid.includes(inv.bulan)) student.tagihanUnpaid.push(inv.bulan);
+                }
+                DEMO_USERS.ortu.forEach(o => {
+                    if (o.nisn === inv.siswaNisn) {
+                        if (!o.tagihanUnpaid) o.tagihanUnpaid = [];
+                        if (!o.tagihanUnpaid.includes(inv.bulan)) o.tagihanUnpaid.push(inv.bulan);
+                    }
+                });
+                showToast('↩ Status tagihan ' + inv.id + ' diubah menjadi BELUM LUNAS.');
+            }
+
+            renderCreatedInvoices();
+            renderStatsGrid();
+            renderRiwayatView();
+            if (currentRole === 'siswa' || currentRole === 'ortu') {
+                renderTagihanView();
+            }
+
+            saveSppData();
+        }
+
+        // Hapus Tagihan
+        function deleteInvoice(id) {
+            const idx = createdInvoices.findIndex(i => i.id === id);
+            if (idx === -1) return;
+
+            const inv = createdInvoices[idx];
+            if (!confirm('Apakah Anda yakin ingin menghapus tagihan ' + inv.id + ' (' + inv.siswaNama + ' - ' + inv.bulan + ')?')) {
+                return;
+            }
+
+            // Jika statusnya belum lunas, bersihkan dari tagihanUnpaid siswa & ortu
+            if (inv.status === 'Belum Lunas') {
+                const student = DEMO_USERS.siswa.find(s => s.nisn === inv.siswaNisn);
+                if (student && student.tagihanUnpaid) {
+                    student.tagihanUnpaid = student.tagihanUnpaid.filter(b => b !== inv.bulan);
+                }
+                DEMO_USERS.ortu.forEach(o => {
+                    if (o.nisn === inv.siswaNisn && o.tagihanUnpaid) {
+                        o.tagihanUnpaid = o.tagihanUnpaid.filter(b => b !== inv.bulan);
+                    }
+                });
+            }
+
+            createdInvoices.splice(idx, 1);
+            showToast('🗑️ Tagihan ' + inv.id + ' berhasil dihapus.');
+            saveSppData();
+
+            renderCreatedInvoices();
+            renderStatsGrid();
+            if (currentRole === 'siswa' || currentRole === 'ortu') {
+                renderTagihanView();
+            }
+        }
+
+        // Helper format tanggal Indonesia
+        function formatIndoDate(dateStr) {
+            if (!dateStr) {
+                // Default ke tanggal hari ini (tahun berjalan), bukan tanggal hardcoded.
+                const now = new Date();
+                dateStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+            }
+            const parts = dateStr.split('-');
+            if (parts.length === 3) {
+                const day = parseInt(parts[2]);
+                const monthNames = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                const month = monthNames[parseInt(parts[1])];
+                const year = parts[0];
+                return day + ' ' + month + ' ' + year;
+            }
+            return dateStr;
+        }
+
+        function refreshCreatedInvoicesView() {
+            const container = document.getElementById('createdInvoicesInTagihan');
+            if (!container) return;
+
+            // Tampilkan tagihan yang dibuat oleh petugas khusus untuk siswa yang sedang login
+            const list = createdInvoices.filter(i => i.siswaNisn === currentUser.nisn);
+
+            if (list.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-muted);font-size:13px;">Belum ada tagihan khusus yang dibuat oleh petugas.</p>';
+                return;
+            }
+
+            let html = '<table class="invoice-table" style="margin-top:12px;font-size:13px;"><thead><tr><th>No</th><th>No Tagihan</th><th>Bulan</th><th>Nominal</th><th>Jatuh Tempo</th><th>Status</th></tr></thead><tbody>';
+            list.forEach((inv, idx) => {
+                const isPaid = inv.status === 'Lunas';
+                html += '<tr>' +
+                    '<td>' + (idx + 1) + '</td>' +
+                    '<td><strong>' + inv.id + '</strong></td>' +
+                    '<td>' + inv.bulan + '</td>' +
+                    '<td>Rp ' + inv.nominal.toLocaleString('id-ID') + '</td>' +
+                    '<td>' + inv.tempo + '</td>' +
+                    '<td><span class="status-badge ' + (isPaid ? 'status-lunas' : 'status-belum') + '">' + (isPaid ? 'Lunas' : 'Belum Lunas') + '</span></td>' +
+                    '</tr>';
+            });
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Load payment method names on page load
+        loadPaymentMethodNames();
+
+        // Muat konfigurasi Midtrans aktif dari server (mode, key, nama metode)
+        loadMidtransConfig().then(cfg => {
+            if (!cfg) return;
+            const setFieldValue = (id, value) => {
+                const el = document.getElementById(id);
+                if (el && value !== undefined && value !== null && value !== '') el.value = value;
+            };
+            setFieldValue('cfgClientKey', cfg.client_key);
+            setFieldValue('cfgMerchantId', cfg.merchant_id);
+            const serverKeyInput = document.getElementById('cfgServerKey');
+            if (serverKeyInput) {
+                serverKeyInput.value = '';
+                serverKeyInput.placeholder = cfg.has_server_key
+                    ? 'Kunci tersimpan tidak ditampilkan; isi hanya jika ingin mengganti'
+                    : 'Masukkan Server Key dari dashboard Midtrans';
+            }
+            const enabledSelect = document.getElementById('cfgEnabled');
+            if (enabledSelect) enabledSelect.value = cfg.enabled ? 'true' : 'false';
+            setFieldValue('cfgQrisName', sanitizeQrisName(cfg.qris_name));
+            setFieldValue('cfgVaName', cfg.va_name);
+            setFieldValue('cfgCardName', cfg.card_name);
+            setFieldValue('cfgGopayName', cfg.gopay_name);
+
+            const modeValue = cfg.is_production ? 'production' : 'sandbox';
+            const modeRadio = document.querySelector('input[name="cfgMode"][value="' + modeValue + '"]');
+            if (modeRadio) modeRadio.checked = true;
+
+            // Muat snap.js sesuai konfigurasi aktif
+            loadSnapSdk(cfg).catch(err => console.warn('Snap SDK belum siap:', err));
+        });
+        // ==========================================
+        // MIDTRANS SNAP MERCHANT NAME REPLACER
+        // Mengganti nama merchant lama "kopma" menjadi nama sekolah
+        // ==========================================
+        function setupSnapMerchantNameReplacer() {
+            const customName = sanitizeQrisName(localStorage.getItem('payment_qris_name'));
+            if (localStorage.getItem('payment_qris_name') !== customName) {
+                localStorage.setItem('payment_qris_name', customName);
+            }
+            
+            function replaceTextInElement(el) {
+                if (!el) return;
+                try {
+                    if (el.nodeType === 3) { // Text node
+                        if (/kopma(\s*mart)?/i.test(el.textContent)) {
+                            el.textContent = el.textContent.replace(/kopma(\s*mart)?/gi, customName);
+                        }
+                    } else if (el.nodeType === 1) { // Element node
+                        // Check direct text content
+                        if (el.childNodes.length === 1 && el.childNodes[0].nodeType === 3) {
+                            if (/kopma(\s*mart)?/i.test(el.textContent)) {
+                                el.textContent = el.textContent.replace(/kopma(\s*mart)?/gi, customName);
+                            }
+                        }
+                        // Recursively check children
+                        for (let i = 0; i < el.childNodes.length; i++) {
+                            replaceTextInElement(el.childNodes[i]);
+                        }
+                    }
+                } catch (e) {}
+            }
+            
+            function tryReplaceInAllDocuments() {
+                // Try main document
+                try {
+                    replaceTextInElement(document.body);
+                } catch (e) {}
+                
+                // Try all iframes
+                const iframes = document.querySelectorAll('iframe');
+                iframes.forEach(iframe => {
+                    try {
+                        const doc = iframe.contentDocument || iframe.contentWindow.document;
+                        if (doc && doc.body) {
+                            replaceTextInElement(doc.body);
+                        }
+                    } catch (e) {
+                        // Cross-origin - can't access
+                    }
+                });
+            }
+            
+            // Run immediately and on interval
+            tryReplaceInAllDocuments();
+            const interval = setInterval(tryReplaceInAllDocuments, 300);
+            
+            // Stop after 15 seconds
+            setTimeout(() => clearInterval(interval), 15000);
+            
+            // Also use MutationObserver
+            const observer = new MutationObserver(() => {
+                tryReplaceInAllDocuments();
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+        }
+
+        // Initialize the replacer
+        setupSnapMerchantNameReplacer();
+
+        // Initialize focus
+        document.getElementById('loginUsername').focus();
+        // ==========================================
+        // AUTH STATE PERSISTENCE & ROUTE RESTORATION (ON PAGE LOAD / REFRESH)
+        // ==========================================
+        (function restoreAuthState() {
+            try {
+                const savedUser = localStorage.getItem('spp_auth_user');
+                const savedRole = localStorage.getItem('spp_auth_role');
+
+                if (savedUser && savedRole) {
+                    currentUser = JSON.parse(savedUser);
+                    currentRole = savedRole;
+
+                    // Hide Login Page, Show App Shell
+                    document.getElementById('pageLogin').style.display = 'none';
+                    document.getElementById('appShell').style.display = 'flex';
+
+                    // Render UI (topbar username, hero texts, role badges)
+                    renderUserInterface();
+
+                    // Resolve target menu from:
+                    // 1. URL Query Param: ?menu=...
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const menuParam = urlParams.get('menu');
+                    // 2. URL Hash: #...
+                    const hashParam = window.location.hash ? window.location.hash.replace('#', '') : null;
+                    // 3. LocalStorage active_spp_menu
+                    const storedMenu = localStorage.getItem('active_spp_menu');
+                    // 4. LocalStorage spp_current_view
+                    const storedView = localStorage.getItem('spp_current_view');
+
+                    const target = menuParam || hashParam || storedMenu || storedView || 'home';
+                    // Restore without adding duplicate history entry
+                    navigateTo(target, false);
+                }
+            } catch (e) {
+                console.warn('Failed to restore auth state:', e);
+                localStorage.removeItem('spp_auth_user');
+                localStorage.removeItem('spp_auth_role');
+                localStorage.removeItem('active_spp_menu');
+                localStorage.removeItem('spp_current_view');
+            }
+        })();
+
+        // Browser Back / Forward buttons handling (popstate)
+        window.addEventListener('popstate', function(event) {
+            if (!currentUser) return;
+            const urlParams = new URLSearchParams(window.location.search);
+            const menuParam = urlParams.get('menu');
+            const hashParam = window.location.hash ? window.location.hash.replace('#', '') : null;
+            const target = menuParam || hashParam || 'home';
+            navigateTo(target, false);
+        });
+
+        // Browser hash change fallback
+        window.addEventListener('hashchange', function() {
+            if (!currentUser) return;
+            const hash = window.location.hash.replace('#', '');
+            if (hash) {
+                navigateTo(hash, false);
+            }
+        });
+
+        // ==========================================================
+        // PUBLIKASI ONLINE (STATUS SERVER, URL PUBLIK, QR CODE)
+        // ==========================================================
+        let systemStatusData = null;
+
+        function initPublikasi() {
+            checkSystemStatus();
+            loadPublicUrl();
+        }
+
+        function checkSystemStatus(showToastOnDone) {
+            const badge = document.getElementById('publishStatusBadge');
+            if (badge) {
+                badge.innerText = 'Memeriksa...';
+                badge.className = 'badge-status badge-pending';
+            }
+
+            fetch('/api/system/status', { headers: { 'Accept': 'application/json' } })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.success) throw new Error(data.message || 'Gagal mengambil status');
+                    systemStatusData = data;
+
+                    const isOnline = !data.is_local;
+                    if (badge) {
+                        badge.innerText = isOnline ? 'Online' : 'Lokal (localhost)';
+                        badge.className = 'badge-status ' + (isOnline ? 'badge-lunas' : 'badge-pending');
+                    }
+
+                    const grid = document.getElementById('publishInfoGrid');
+                    if (grid) {
+                        const rows = [
+                            ['URL Akses Saat Ini', data.current_url],
+                            ['Lingkungan', String(data.app_env || '').toUpperCase()],
+                            ['PHP', data.php_version],
+                            ['Laravel', data.laravel_version],
+                            ['Database', data.db_connected ? 'Terhubung' : 'Gagal'],
+                            ['Storage', data.storage_writable ? 'Bisa ditulis' : 'Tidak bisa ditulis'],
+                            ['HTTPS', data.is_https ? 'Aktif' : 'Belum aktif'],
+                            ['Waktu Server', data.server_time]
+                        ];
+                        grid.innerHTML = rows.map(r =>
+                            '<div style="background:#f8fafc;border:1.5px solid var(--border-color);border-radius:10px;padding:12px;">' +
+                                '<div style="font-size:11px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px;">' + r[0] + '</div>' +
+                                '<div style="font-size:13px;font-weight:700;margin-top:4px;word-break:break-all;">' + String(r[1]) + '</div>' +
+                            '</div>'
+                        ).join('');
+                    }
+
+                    if (data.public_url) {
+                        const input = document.getElementById('publishUrlInput');
+                        if (input) input.value = data.public_url;
+                        updatePublicUrlPreview(data.public_url);
+                    }
+
+                    if (showToastOnDone) showToast('✅ Status server berhasil diperbarui.');
+                })
+                .catch(err => {
+                    if (badge) {
+                        badge.innerText = 'Tidak diketahui';
+                        badge.className = 'badge-status badge-pending';
+                    }
+                    if (showToastOnDone) showToast('❌ Gagal memeriksa status: ' + err.message);
+                });
+        }
+
+        function loadPublicUrl() {
+            fetch('/api/system/public-url', { headers: { 'Accept': 'application/json' } })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.public_url) {
+                        const input = document.getElementById('publishUrlInput');
+                        if (input) input.value = data.public_url;
+                        updatePublicUrlPreview(data.public_url);
+                    }
+                })
+                .catch(err => console.warn('Gagal memuat URL publik:', err));
+        }
+
+        function updatePublicUrlPreview(url) {
+            const text = document.getElementById('publishUrlText');
+            const qrBox = document.getElementById('publishQrBox');
+
+            if (!url) {
+                if (text) text.innerText = 'Belum ada URL publik.';
+                if (qrBox) qrBox.innerHTML = 'QR muncul setelah URL diisi';
+                return;
+            }
+
+            if (text) text.innerText = url;
+            if (qrBox) {
+                qrBox.innerHTML = '<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(url) + '" alt="QR Code" style="width:100%;height:100%;object-fit:contain;border-radius:8px;">';
+            }
+        }
+
+        function savePublicUrl() {
+            const input = document.getElementById('publishUrlInput');
+            const url = (input ? input.value : '').trim();
+
+            if (url && !/^https?:\/\//i.test(url)) {
+                showToast('❌ URL harus diawali http:// atau https://');
+                return;
+            }
+
+            fetch('/api/system/public-url', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ public_url: url })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    updatePublicUrlPreview(data.public_url);
+                    showToast('✅ URL publikasi berhasil disimpan.');
+                    checkSystemStatus();
+                } else {
+                    showToast('❌ ' + (data.message || 'Gagal menyimpan URL.'));
+                }
+            })
+            .catch(err => showToast('❌ Gagal menyimpan URL: ' + err.message));
+        }
+
+        function copyPublicUrl() {
+            const text = document.getElementById('publishUrlText');
+            const value = text ? text.innerText.trim() : '';
+            if (!value || value === 'Belum ada URL publik.') {
+                showToast('Isi URL publikasi terlebih dahulu.');
+                return;
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(value)
+                    .then(() => showToast('📋 Link disalin: ' + value))
+                    .catch(() => showToast('Salin manual: ' + value));
+            } else {
+                showToast('Salin manual: ' + value);
+            }
+        }
+
+        function openPublicUrl() {
+            const text = document.getElementById('publishUrlText');
+            const value = text ? text.innerText.trim() : '';
+            if (!value || value === 'Belum ada URL publik.') {
+                showToast('Isi URL publikasi terlebih dahulu.');
+                return;
+            }
+            window.open(value, '_blank');
+        }
+
+        // 12. Sidebar menempel tepat di bawah header (tinggi header berubah di HP)
+        function syncSidebarOffset() {
+            const bar = document.querySelector('.topbar');
+            if (!bar) return;
+            const gap = window.innerWidth <= 768 ? 12 : 24;
+            document.documentElement.style.setProperty('--nav-top', (bar.offsetHeight + gap) + 'px');
+        }
+
+        window.addEventListener('resize', syncSidebarOffset);
+        window.addEventListener('load', syncSidebarOffset);
+        syncSidebarOffset();
+    </script>
+
+    <!-- ==========================================
+         MIDTRANS SNAP POPUP MODAL (IDENTICAL TO IMAGE 2)
+         ========================================== -->
+    <div id="modalSnapMidtrans" class="snap-modal-overlay">
+        <div class="snap-modal-box">
+            <!-- Header: Merchant Name & Close -->
+            <div class="snap-header">
+                <div class="snap-merchant-title" id="snapMerchantTitle">SMP MUHAMMADIYAH 3 METRO</div>
+                <button class="snap-btn-close" onclick="closeMidtransSnapModal()">&times;</button>
+            </div>
+
+            <!-- Main Method Selection Screen -->
+            <div id="snapMainView">
+                <!-- Amount Row -->
+                <div class="snap-amount-row">
+                    <div class="snap-amount-val" id="snapAmountText">
+                        Rp2 <span class="snap-copy-icon" onclick="copySnapText('snapAmountRaw')">📋</span>
+                    </div>
+                </div>
+
+                <!-- Order ID Row -->
+                <div class="snap-order-row">
+                    <div class="snap-order-id">
+                        Order ID <span id="snapOrderIdText">#SPP-202501-8123</span>
+                        <span class="snap-copy-icon" onclick="copySnapText('snapOrderIdVal')">📋</span>
+                    </div>
+                    <a href="javascript:void(0)" class="snap-order-details-link" onclick="toggleSnapDetails()">Details &#9660;</a>
+                </div>
+
+                <div id="snapOrderDetailsBox" style="display:none;background:#f8fafc;padding:10px 20px;font-size:12px;border-bottom:1px solid #e2e8f0;">
+                    <div>Item: <strong id="snapItemDesc">SPP Siswa SMP Muhammadiyah 3 Metro</strong></div>
+                    <div>Nama Siswa: <strong id="snapStudentDesc">Ahmad Dahlan Putra</strong></div>
+                </div>
+
+                <!-- Countdown Strip like Image 2 -->
+                <div class="snap-countdown-strip">
+                    <span>Choose within</span> <strong id="snapCountdownTimer">23:59:36</strong> <span>&#9650;</span>
+                </div>
+
+                <!-- Scrollable Methods List -->
+                <div class="snap-body-scroll">
+                    <div class="snap-section-title">Pilih metode pembayaran</div>
+
+                    <!-- GoPay QRIS -->
+                    <div class="snap-method-item" onclick="openSnapDetail('gopay')">
+                        <div>
+                            <div class="snap-method-name" id="snapMethodGopayName">GoPay QRIS</div>
+                            <div class="snap-method-logos">
+                                <span class="snap-logo-badge badge-gopay">gopay</span>
+                                <span class="snap-logo-badge badge-gopay-later">gopaylater</span>
+                                <span class="snap-logo-badge badge-qris">QRIS</span>
+                            </div>
+                        </div>
+                        <div class="snap-method-arrow">&rsaquo;</div>
+                    </div>
+
+                    <!-- Card Payment -->
+                    <div class="snap-method-item" onclick="openSnapDetail('card')">
+                        <div>
+                            <div class="snap-method-name">Card Payment</div>
+                            <div class="snap-method-logos">
+                                <span class="snap-logo-badge badge-visa">VISA</span>
+                                <span class="snap-logo-badge badge-mc">Mastercard</span>
+                                <span class="snap-logo-badge" style="background:#0079bf;color:#fff;">JCB</span>
+                                <span class="snap-logo-badge" style="background:#002663;color:#fff;">AMEX</span>
+                            </div>
+                        </div>
+                        <div class="snap-method-arrow">&rsaquo;</div>
+                    </div>
+
+                    <!-- ShopeePay QRIS -->
+                    <div class="snap-method-item" onclick="openSnapDetail('shopee')">
+                        <div>
+                            <div class="snap-method-name">ShopeePay QRIS</div>
+                            <div class="snap-method-logos">
+                                <span class="snap-logo-badge badge-shopee">ShopeePay</span>
+                                <span class="snap-logo-badge badge-shopee">SPayLater</span>
+                                <span class="snap-logo-badge badge-qris">QRIS</span>
+                            </div>
+                        </div>
+                        <div class="snap-method-arrow">&rsaquo;</div>
+                    </div>
+
+                    <!-- OVO -->
+                    <div class="snap-method-item" onclick="openSnapDetail('ovo')">
+                        <div>
+                            <div class="snap-method-name">OVO</div>
+                            <div class="snap-method-logos">
+                                <span class="snap-logo-badge badge-ovo">OVO</span>
+                            </div>
+                        </div>
+                        <div class="snap-method-arrow">&rsaquo;</div>
+                    </div>
+
+                    <!-- DANA -->
+                    <div class="snap-method-item" onclick="openSnapDetail('dana')">
+                        <div>
+                            <div class="snap-method-name">DANA</div>
+                            <div class="snap-method-logos">
+                                <span class="snap-logo-badge badge-dana">DANA</span>
+                            </div>
+                        </div>
+                        <div class="snap-method-arrow">&rsaquo;</div>
+                    </div>
+
+                    <!-- Bank Virtual Account -->
+                    <div class="snap-method-item" onclick="openSnapDetail('va')">
+                        <div>
+                            <div class="snap-method-name">Bank Virtual Account</div>
+                            <div class="snap-method-logos">
+                                <span class="snap-logo-badge badge-va">BSI</span>
+                                <span class="snap-logo-badge badge-va">Mandiri</span>
+                                <span class="snap-logo-badge badge-va">BRI</span>
+                                <span class="snap-logo-badge badge-va">BCA</span>
+                            </div>
+                        </div>
+                        <div class="snap-method-arrow">&rsaquo;</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub Detail View (QR / VA / Card Simulation) -->
+            <div id="snapDetailView" class="snap-detail-view">
+                <h4 id="snapDetailTitle" style="font-size:16px;font-weight:800;color:#1e293b;">Scan QRIS untuk Bayar</h4>
+                <p id="snapDetailDesc" style="font-size:12px;color:#64748b;margin-top:4px;">Buka aplikasi GoPay / BCA / Mandiri / Shopee / OVO lalu scan kode di bawah:</p>
+                
+                <div class="snap-qr-box" id="snapQrBox" style="background:#fff;border:1.5px solid #fca5a5;border-radius:12px;padding:16px;text-align:center;box-shadow:0 4px 12px rgba(239,68,68,0.06);max-width:280px;margin:0 auto 14px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px 10px;border-bottom:1px solid #f1f5f9;margin-bottom:12px;">
+                        <span style="font-weight:900;font-size:14px;color:#ef4444;letter-spacing:1px;">QRIS</span>
+                        <span style="font-weight:800;font-size:12px;color:#dc2626;">GPN</span>
+                    </div>
+                    <div id="snapQrMerchantDisplay" style="font-size:15px;font-weight:800;color:#0f172a;margin-bottom:12px;letter-spacing:0.3px;word-break:break-word;">
+                        SMP MUHAMMADIYAH 3 METRO
+                    </div>
+                    <!-- SVG QR Code Mockup -->
+                    <svg width="180" height="180" viewBox="0 0 100 100" style="display:block;margin:0 auto;">
+                        <rect width="100" height="100" fill="#ffffff"/>
+                        <!-- QR Corner 1 -->
+                        <rect x="5" y="5" width="28" height="28" fill="#000000"/>
+                        <rect x="9" y="9" width="20" height="20" fill="#ffffff"/>
+                        <rect x="13" y="13" width="12" height="12" fill="#000000"/>
+                        <!-- QR Corner 2 -->
+                        <rect x="67" y="5" width="28" height="28" fill="#000000"/>
+                        <rect x="71" y="9" width="20" height="20" fill="#ffffff"/>
+                        <rect x="75" y="13" width="12" height="12" fill="#000000"/>
+                        <!-- QR Corner 3 -->
+                        <rect x="5" y="67" width="28" height="28" fill="#000000"/>
+                        <rect x="9" y="71" width="20" height="20" fill="#ffffff"/>
+                        <rect x="13" y="75" width="12" height="12" fill="#000000"/>
+                        <!-- QR Pattern Blocks -->
+                        <rect x="40" y="8" width="6" height="6" fill="#000000"/>
+                        <rect x="50" y="8" width="10" height="6" fill="#000000"/>
+                        <rect x="40" y="20" width="8" height="6" fill="#000000"/>
+                        <rect x="54" y="20" width="6" height="12" fill="#000000"/>
+                        <rect x="8" y="40" width="6" height="10" fill="#000000"/>
+                        <rect x="20" y="40" width="14" height="6" fill="#000000"/>
+                        <rect x="40" y="40" width="20" height="20" fill="#000000"/>
+                        <rect x="68" y="40" width="10" height="14" fill="#000000"/>
+                        <rect x="84" y="40" width="8" height="8" fill="#000000"/>
+                        <rect x="40" y="68" width="14" height="8" fill="#000000"/>
+                        <rect x="60" y="68" width="8" height="18" fill="#000000"/>
+                        <rect x="74" y="68" width="18" height="6" fill="#000000"/>
+                        <rect x="40" y="84" width="8" height="8" fill="#000000"/>
+                        <rect x="76" y="82" width="16" height="10" fill="#000000"/>
+                    </svg>
+                    <div style="font-size:11px;color:#64748b;margin-top:10px;">Dicetak oleh: GoPay</div>
+                    <div style="font-size:11px;font-weight:700;color:#0f172a;margin-top:4px;">NMID: ID1020261024070</div>
+                </div>
+
+                <div id="snapVaBox" style="display:none;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:10px;padding:16px;margin:14px 0;">
+                    <div style="font-size:12px;color:#64748b;">Nomor Virtual Account (BSI / Mandiri):</div>
+                    <div style="font-size:22px;font-weight:800;color:#1e40af;letter-spacing:1px;margin:6px 0;" id="snapVaNumber">
+                        7268 0100 8123 4567
+                    </div>
+                    <div style="font-size:12px;color:#15803d;font-weight:600;">Otomatis terverifikasi dalam 1 detik</div>
+                </div>
+
+                <button type="button" class="btn-snap-simulate-pay" onclick="completeSnapPaymentSuccess()">
+                    ✅ Simulasi Pembayaran Berhasil (Snap)
+                </button>
+                <div>
+                    <button type="button" class="btn-snap-back" onclick="backToSnapMain()">&larr; Pilih Metode Lain</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
+
+
+
+
+
+
